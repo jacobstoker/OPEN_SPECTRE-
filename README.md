@@ -10,10 +10,14 @@ Open to contributors with FPGA experience. 😀
 ![EMS SPECTRE](/Spectron%20Resources/Product%20Photos/spectre1.jpg)
 
 ### Design Info
-#### Aim
+#### 🎉Aim 🎉
 The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
 
+#### 🥨Top Level Diagram🥨
+![EMS Diagram](/top%20level%20design/block%20design.jpg)
+*WORK IN PROGRESS*
 
+#### 🍨List of Modules and Details  🍨(TBD)
 
 ### Want to Contribute?
 Amazing! If you have FPGA and or Varilog/VHDL skills we would love to have you involved. But, first there are a few things you should know. 
