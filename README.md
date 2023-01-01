@@ -14,22 +14,25 @@ Open to contributors with FPGA experience. 😀
 The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
 
 #### 🥨Top Level Diagram🥨
-![EMS Diagram](/top%20level%20design/block%20design.jpg)
+![EMS Diagram](/top%20level%20design/block_design_original.JPG)
+#### Digital Side of the EMS Block Diagram
+![EMS Diagram Digital Side](/top%20level%20design/EMS_digital_block_design.jpg)
+
 *WORK IN PROGRESS*
 
-#### 🍨List of Modules and Details  🍨(TBD)
-| Module | Notes |
-| ------ | ------ |
-| Slowcounter | |
-| Digital Patchboard |  |
-| Overlay Gates |  |
-| Inverters ||
-| Flipflops ||
-| Monostables | |
-| XY counters | |
-| Video Timing Generator | |
-| Shape Gen 1 | |
-| Shape Gen 2 | |
+#### 🍨List of Modules and Details Phase 1🍨(TBD)
+| Module | Notes | Circuits PDF |
+| ------ | ------ |-----|
+| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz, common clock ||
+| Digital Patchboard | 57x53 matrix switcher (1bit width on all ports) (Interface? shift reg? registers?)  ||
+| Overlay Gates |  |pg5|
+|Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13|
+| Inverters |4x digital inverters (1bit)|pg5|
+| Flipflops ||pg5|
+| Monostables | |pg 5|
+| XY counters |9 bit counter  |pg5(xorgates & invertors)|
+| Video Timing Generator | ||
+
 
 ### Want to Contribute?
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
