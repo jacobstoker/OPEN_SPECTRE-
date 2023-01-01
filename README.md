@@ -18,6 +18,18 @@ The aim of this project is to preserve this rare and unique video synth by recre
 *WORK IN PROGRESS*
 
 #### 🍨List of Modules and Details  🍨(TBD)
+| Module | Notes |
+| ------ | ------ |
+| Slowcounter | |
+| Digital Patchboard |  |
+| Overlay Gates |  |
+| Inverters ||
+| Flipflops ||
+| Monostables | |
+| XY counters | |
+| Video Timing Generator | |
+| Shape Gen 1 | |
+| Shape Gen 2 | |
 
 ### Want to Contribute?
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
