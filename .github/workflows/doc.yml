@@ -1,0 +1,45 @@
+name: 'Documentation'
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  BTD:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - { format: html,     branch: gh-pages }
+        - { format: markdown, branch: documentation-markdown }
+    name: '📓 Docs | ${{ matrix.format }}'
+
+    steps:
+
+    - name: '🧰 Checkout'
+      uses: actions/checkout@v2
+
+    - name: '⚙️ Install TerosHDL and VUnit'
+      run: |
+        sudo pip3 install vunit_hdl
+        git clone https://github.com/TerosTechnology/colibri.git
+        cd colibri
+        sudo npm install -g .
+
+    - name: '📓 Generate documentation ${{ matrix.format }}'
+      run: ./generate_doc.py ${{ matrix.format }}
+
+    - name: '📤 Upload artifact: ${{ matrix.format }}'
+      uses: actions/upload-artifact@master
+      with:
+        name: documentation-${{ matrix.format }}
+        path: teroshdl_doc
+
+    - name: '🚀 Deploy'
+      if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || contains(github.ref, 'refs/tags/'))
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: ${{ matrix.branch }}
+        folder: teroshdl_doc
