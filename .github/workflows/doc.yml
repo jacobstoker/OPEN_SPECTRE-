@@ -1,0 +1,37 @@
+name: 'Documentation HTML'
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  BTD:
+    name: '📓 Docs'
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: '🧰 Checkout'
+      uses: actions/checkout@v2
+
+    - name: '📓 Install TerosHDL and VUnit'
+      run: |
+        sudo pip3 install vunit_hdl
+        git clone https://github.com/TerosTechnology/colibri.git
+        cd colibri
+        sudo npm install -g .
+        sudo npm install -g teroshdl
+    - name: 'Generate documentation HTML '
+      run: |
+         python3 generate_doc.py html
+    - name: '📤 Upload artifact: HTML '
+      uses: actions/upload-artifact@master
+      with:
+        name: documentation-html
+        path: |
+          teroshdl_doc
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages 
+        folder: teroshdl_doc 
