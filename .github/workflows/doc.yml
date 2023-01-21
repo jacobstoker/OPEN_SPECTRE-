@@ -21,7 +21,7 @@ jobs:
         git clone https://github.com/TerosTechnology/colibri.git
         cd colibri
         sudo npm install -g .
-    - name: 'Generate documentation HTML'
+    - name: 'Generate documentation HTML '
       run: |
         python3 generate_doc.py html
     - name: '📤 Upload artifact: HTML'
