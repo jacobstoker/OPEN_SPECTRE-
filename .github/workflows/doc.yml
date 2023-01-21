@@ -20,9 +20,10 @@ jobs:
         git clone https://github.com/TerosTechnology/colibri.git
         cd colibri
         sudo npm install -g .
+        sudo npm install -g teroshdl
     - name: 'Generate documentation HTML '
       run: |
-        python3 generate_doc.py html
+        sudo python3 generate_doc.py html
     - name: '📤 Upload artifact: HTML'
       uses: actions/upload-artifact@master
       with:
