@@ -1,5 +1,5 @@
 
-name: 'Documentation'
+name: 'AUTO Documentation'
 on:
   push:
   pull_request:
