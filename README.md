@@ -24,10 +24,18 @@ The aim of this project is to preserve this rare and unique video synth by recre
 
 *WORK IN PROGRESS*
 
-#### 🍨List of Modules and Details Phase 1🍨(TBD)
-| Module | Notes | Circuits PDF |
-| ------ | ------ |-----|
-| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz, common clock ||
+#### 🍨List of Modules and Details Phase 1🍨(WIP)
+##### Common Modules:
+| Module | Notes | Built |Tested |
+| ------ | ------ |-----|-----|
+| inverter | n-bit wide |YES| YES|
+| xor | n-bit wide |YES| YES|
+
+##### Digital Side Modules:
+
+| Module | Notes | Circuits PDF | Built |Tested |
+| ------ | ------ |-----|-----|-----|
+| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz ||||
 | Digital Patchboard | 57x53 matrix switcher (1bit width on all ports) (Interface? shift reg? registers?)  ||
 | Overlay Gates |  |pg5|
 |Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13|
