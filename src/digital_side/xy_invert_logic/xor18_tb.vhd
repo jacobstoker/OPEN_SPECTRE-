@@ -35,28 +35,32 @@ begin
 
     -- test stimulus process
     stim_proc: process
-    begin
-        -- set the input signals and wait for the output to be stable
-        a <= "000000000000000000";
-        b <= "000000000000000000";
-        wait for 10 ns;
+  begin
+    -- set the input signals and wait for the output to be stable
+    a <= "000000000000000000";
+    b <= "000000000000000000";
+    wait for 10 ns;
+    assert y = "000000000000000000" report "Test 1 failed" severity error;
 
-        -- set the input signals and wait for the output to be stable
-        a <= "111111111111111111";
-        b <= "111111111111111111";
-        wait for 10 ns;
+    -- set the input signals and wait for the output to be stable
+    a <= "111111111111111111";
+    b <= "111111111111111111";
+    wait for 10 ns;
+    assert y = "000000000000000000" report "Test 2 failed" severity error;
 
-        -- set the input signals and wait for the output to be stable
-        a <= "101010101010101010";
-        b <= "010101010101010101";
-        wait for 10 ns;
+    -- set the input signals and wait for the output to be stable
+    a <= "101010101010101010";
+    b <= "010101010101010101";
+    wait for 10 ns;
+    assert y = "111111111111111111" report "Test 3 failed" severity error;
 
-        -- set the input signals and wait for the output to be stable
-        a <= "010101010101010101";
-        b <= "101010101010101010";
-        wait for 10 ns;
+    -- set the input signals and wait for the output to be stable
+    a <= "010101010101010101";
+    b <= "101010101010101010";
+    wait for 10 ns;
+    assert y = "111111111111111111" report "Test 4 failed" severity error;
 
-        -- end the test
-        wait;
+    -- end the test
+    wait;
     end process;
 end architecture;

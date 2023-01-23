@@ -13,7 +13,7 @@ architecture behavioral of delay_800us is
     -- 800 us delay = 800 us * 25 MHz = 20,000 clock cycles
     constant DELAY: integer := 20000;
     signal counter: integer range 0 to DELAY;
-    signal buffer: std_logic;
+    signal bufferA: std_logic;
 begin
     process (clk)
     begin
@@ -26,6 +26,6 @@ begin
         end if;
     end process;
 
-    buffer <= input when counter = 0 else 'Z';
-    output <= buffer;
+    bufferA <= input when counter = 0 else 'Z';
+    output <= bufferA;
 end architecture;

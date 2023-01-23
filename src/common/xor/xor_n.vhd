@@ -19,9 +19,11 @@ entity xor_n is
 end entity;
 
 architecture behavioral of xor_n is
+
+       
 begin
     -- implement the XOR gates
-    for i in 0 to n-1 generate
+    g_GENERATE_XOR: for i in 0 to n-1 generate
         y(i) <= a(i) xor b(i);
-    end generate;
+    end generate g_GENERATE_XOR;
 end architecture;
