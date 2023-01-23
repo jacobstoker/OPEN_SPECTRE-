@@ -35,15 +35,16 @@ The aim of this project is to preserve this rare and unique video synth by recre
 
 | Module | Notes | Circuits PDF | Built |Tested |
 | ------ | ------ |-----|-----|-----|
-| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz ||||
-| Digital Patchboard | 57x53 matrix switcher (1bit width on all ports) (Interface? shift reg? registers?)  ||
-| Overlay Gates |  |pg5|
-|Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13|
-| Inverters |4x digital inverters (1bit)|pg5|
-| Flipflops ||pg5|
-| Monostables | |pg 5|
-| XY counters |9 bit counter  |pg5(xorgates & invertors)|
-| Video Timing Generator | ||
+| 800us delay | clk'd delay |-----|YES|YES|
+| Overlay Gates |  |pg5|YES|YES|
+| XY counters |9 bit counter  |pg5(xorgates & invertors)|YES|YES|
+| Edge Detector | 1clk edge, make longer |-----|YES|YES|
+| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz ||YES|YES|
+|Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| NO | NO|
+| Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
+| Flipflops ||pg5| NO | NO |
+| Monostables | |pg 5| NO| NO
+| Video Timing Generator | |NO|NO|
 
 
 ### 🍣Want to Contribute?🍣
