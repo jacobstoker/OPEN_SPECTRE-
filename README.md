@@ -14,6 +14,9 @@ Open to donations and contributors with FPGA experience. 😀
 #### 🎉Aim 🎉
 The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
 
+#### 🍒Documentation🍒
+[Auto Generated Documentation](https://cfoge.github.io/OPEN_SPECTRE-/)
+
 #### 🥨Top Level Diagram🥨
 ![EMS Diagram](/top%20level%20design/block_design_original.JPG)
 #### Digital Side of the EMS Block Diagram
@@ -35,7 +38,7 @@ The aim of this project is to preserve this rare and unique video synth by recre
 | Video Timing Generator | ||
 
 
-### Want to Contribute?
+### 🍣Want to Contribute?🍣
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
 #### What to do first
 - Look through the resources folder to get an idea of what the EMS SPECTRE is and how it works
@@ -55,7 +58,7 @@ Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you i
 - Branch the repo, make a module and submit a pull request 
 - If you are not any good at git/GitHub, if you write any modules you can email them to us and we will integrate them into the project
 
-### License
+### 🐙License🐙
 MIT
 
 
