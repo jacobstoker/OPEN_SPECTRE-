@@ -36,13 +36,14 @@ The aim of this project is to preserve this rare and unique video synth by recre
 | XY counters |9 bit counter  |pg5(xorgates & invertors)|YES|YES|
 | XY invert logic |  |pg5(xorgates & invertors)|YES|YES|
 | Edge Detector | 1clk edge, make longer ||YES|YES|
-| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz ||YES|YES|
+| Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||NO|NO|
 |Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| NO | NO|
 | Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
 | Flipflops ||pg5| NO | NO |
 | Monostables | |pg 5| NO| NO|
 | Video Timing Generator || |NO|NO|
 
+* check counter frequencys, solve slower then 1hz freqs
 
 ### 🍣Want to Contribute?🍣
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
