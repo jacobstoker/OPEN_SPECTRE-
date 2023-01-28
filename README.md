@@ -36,8 +36,13 @@ The aim of this project is to preserve this rare and unique video synth by recre
 | XY counters |9 bit counter  |pg5(xorgates & invertors)|YES|YES|
 | XY invert logic |  |pg5(xorgates & invertors)|YES|YES|
 | Edge Detector | 1clk edge, make longer ||YES|YES|
+<<<<<<< HEAD
 | Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||NO|NO|
 |Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| NO | NO|
+=======
+| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz ||YES|YES|
+|Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
+>>>>>>> c93d5825ec3f43d8e15fe0bbb665c425987a6fe6
 | Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
 | Flipflops ||pg5| NO | NO |
 | Monostables | |pg 5| NO| NO|
