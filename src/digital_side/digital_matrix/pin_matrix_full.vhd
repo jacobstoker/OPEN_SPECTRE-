@@ -39,7 +39,7 @@ generic (
 );
 port
 (
-    Data_In  :in    std_logic_vector(x_in - 1 downto 0);
+    Data_In  :in    std_logic_vector((x_in * 8) - 1 downto 0);
     en       :in    std_logic_vector(x_in -1 downto 0);
     mux_sel  :in    std_logic_vector((x_in * 3)-1 downto 0);
     dmux_sel  :in    std_logic_vector((y_out * 3)-1 downto 0);
@@ -72,7 +72,7 @@ begin
   for index in 0 to (x_in-1) generate
     begin
       mux_inst : entity work.mux_8_to_1
-      port map (data=>Data_In, sel=>mux_sel(((index+1) * 3)-1 downto (index * 3)), mux_out => matrix_in(index));  
+      port map (data=>Data_In(((index + 1) * 8)-1 downto (index * 8)), sel=>mux_sel(((index+1) * 3)-1 downto (index * 3)), mux_out => matrix_in(index));  
 
       end generate;
   
@@ -81,9 +81,21 @@ begin
     begin
       demux_inst : entity work.demux_1_to_8
       port map (data=>matrix_out(index), sel=>dmux_sel(((index+1) * 3)-1 downto (index * 3)), demux_out => Data_out( ((index + 1) * 8)-1 downto (index * 8) ));
-     --  port map (data=>matrix_out(index), sel=>dmux_sel(((index+1) * 3)-1 downto (index * 3)), demux_out => Data_out( (index + 1 * 8)-1 downto (index * 8) ) );
-
   end generate;
 
+--need logic for seting the enable signals
+process(en, en_sel)
+    begin
+        case en_sel is
+        when "000" => en_arr_data(0) <= en;
+        when "001" => en_arr_data(1) <= en;
+        when "010" => en_arr_data(2) <= en;
+        when "011" => en_arr_data(3) <= en;
+        when "100" => en_arr_data(4) <= en;
+        when "101" => en_arr_data(5) <= en;
+        when "110" => en_arr_data(6) <= en;
+        when "111" => en_arr_data(7) <= en;
+        end case;
+    end process;
 
 end Behavioral;
