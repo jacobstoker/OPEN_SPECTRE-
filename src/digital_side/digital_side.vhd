@@ -47,6 +47,7 @@ signal slow_cnt_1_5 : STD_LOGIC;
 signal slow_cnt_0_6 : STD_LOGIC;
 signal slow_cnt_0_4 : STD_LOGIC;
 signal slow_cnt_0_2 : STD_LOGIC;
+signal ext_vid_in : std_logic_vector(5 downto 0);
 
 --External signals
 signal clk_25 : STD_LOGIC;
@@ -96,6 +97,13 @@ begin
         
         );
         
+    video_in : entity work.compare_7
+        Port map ( 
+           clk => clk_25,
+           luma_i => "00000000",
+           output => ext_vid_in,
+           span => "11111111"
+         );
 
 
 
