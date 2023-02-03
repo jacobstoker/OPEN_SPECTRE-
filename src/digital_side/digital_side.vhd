@@ -34,11 +34,15 @@ signal ff_clk : STD_LOGIC;
 signal inv_in : std_logic_vector(3 downto 0);
 signal xy_inv_in : std_logic_vector(17 downto 0);
 signal delay_in : STD_LOGIC;
+signal edge_detector_in : STD_LOGIC;
 
 --Matrix In from module out
 signal ff_q : STD_LOGIC;
 signal ff_nq : STD_LOGIC;
 signal inv_out : std_logic_vector(3 downto 0);
+signal x_count : std_logic_vector(8 downto 0);
+signal y_count : std_logic_vector(8 downto 0);
+signal xy_count : std_logic_vector(17 downto 0);
 signal xy_inv_out : std_logic_vector(17 downto 0);
 signal delay_out : STD_LOGIC;
 signal slow_cnt_6 : STD_LOGIC;
@@ -48,6 +52,7 @@ signal slow_cnt_0_6 : STD_LOGIC;
 signal slow_cnt_0_4 : STD_LOGIC;
 signal slow_cnt_0_2 : STD_LOGIC;
 signal ext_vid_in : std_logic_vector(5 downto 0);
+signal edge_detector_out : std_logic_vector(3 downto 0);
 
 --External signals
 signal clk_25 : STD_LOGIC;
@@ -71,9 +76,26 @@ begin
         output =>  inv_out   
        );
        
+    x_counter : entity work.counter
+        port map (
+         clk => clk_25, -- check what it is actualy driven by
+        rst => '0',
+        enable => '1',
+        count => x_count
+        );
+        
+    y_counter : entity work.counter
+        port map (
+         clk => clk_25, -- check what it is actualy driven by
+        rst => '0',
+        enable => '1',
+        count => y_count
+        );
+       
+    xy_count <= (y_count & x_count); -- concat x & y 
     xy_invert_logic: entity work.xor18
        port map (
-        a => xy_inv_in, -- comes from the x/y counters !! change it!!
+        a => xy_count, -- comes from the x/y counters !! change it!!
         b => xy_inv_in,
         y =>  xy_inv_out   
        );
@@ -103,6 +125,13 @@ begin
            luma_i => "00000000",
            output => ext_vid_in,
            span => "11111111"
+         );
+         
+    edge_detector : entity work.monstable_4
+        Port map ( 
+            clk => clk_25,
+            input => edge_detector_in,
+            output => edge_detector_out
          );
 
 
