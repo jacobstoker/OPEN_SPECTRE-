@@ -38,6 +38,8 @@ signal edge_detector_in : STD_LOGIC;
 signal colour_swap : STD_LOGIC;
 signal luma_in1 : std_logic_vector(3 downto 0);
 signal luma_in2 : std_logic_vector(3 downto 0);
+signal chroma_in1 : std_logic_vector(5 downto 0);
+signal chroma_in2 : std_logic_vector(5 downto 0);
 
 
 --Matrix Out to global
@@ -46,6 +48,7 @@ signal chroma_out1 : std_logic_vector(2 downto 0);
 signal chroma_out2 : std_logic_vector(2 downto 0);
 
 -- Chroma Mux input/output signals
+signal chroma_xor_1   : std_logic_vector(5 downto 0);
 signal chroma_mux_in1 : std_logic_vector(5 downto 0);
 signal chroma_mux_in2 : std_logic_vector(5 downto 0);
 signal chroma_mux_out : std_logic_vector(5 downto 0);
@@ -157,6 +160,21 @@ begin
         b =>  luma_in2,
         y =>  luma_out  
        );
+       
+    chroma_xor: entity work.xor_n
+       generic map (
+        n => 5
+       )
+       port map (
+        a => chroma_in1,
+        b =>  chroma_in2,
+        y =>  chroma_xor_1  
+       );
+       
+    -- split xor chrma siognals to mux inputs
+    chroma_mux_in1 <= (chroma_xor_1(5) & chroma_xor_1(2) & chroma_xor_1(1) & chroma_xor_1(3) & chroma_xor_1(0));
+    chroma_mux_in2 <= (chroma_xor_1(2) & chroma_xor_1(5) & chroma_xor_1(0) & chroma_xor_1(4) & chroma_xor_1(1));
+    
     chroma_output : entity work.mux_5 -- needs x_or infromnt of inputs
         Port map ( 
             sel => colour_swap,
