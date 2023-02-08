@@ -84,18 +84,18 @@ begin
   end generate;
 
 --need logic for seting the enable signals
-process(en, en_sel)
-    begin
-        case en_sel is
-        when "000" => en_arr_data(0) <= en;
-        when "001" => en_arr_data(1) <= en;
-        when "010" => en_arr_data(2) <= en;
-        when "011" => en_arr_data(3) <= en;
-        when "100" => en_arr_data(4) <= en;
-        when "101" => en_arr_data(5) <= en;
-        when "110" => en_arr_data(6) <= en;
-        when "111" => en_arr_data(7) <= en;
-        end case;
-    end process;
+--process(en, en_sel)
+--    begin
+--        case en_sel is
+--        when "000" => en_arr_data(0) <= en;
+--        when "001" => en_arr_data(1) <= en;
+--        when "010" => en_arr_data(2) <= en;
+--        when "011" => en_arr_data(3) <= en;
+--        when "100" => en_arr_data(4) <= en;
+--        when "101" => en_arr_data(5) <= en;
+--        when "110" => en_arr_data(6) <= en;
+--        when "111" => en_arr_data(7) <= en;
+--        end case;
+--    end process;
 
 end Behavioral;
