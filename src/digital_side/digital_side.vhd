@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.math_real.all;
 
 entity digital_side is
 --  Port ( );
@@ -40,6 +41,8 @@ signal luma_in1 : std_logic_vector(3 downto 0);
 signal luma_in2 : std_logic_vector(3 downto 0);
 signal chroma_in1 : std_logic_vector(5 downto 0);
 signal chroma_in2 : std_logic_vector(5 downto 0);
+signal overlay_gate1 : std_logic_vector(3 downto 0);
+signal overlay_gate2 : std_logic_vector(3 downto 0);
 
 
 --Matrix Out to global
@@ -52,6 +55,9 @@ signal chroma_xor_1   : std_logic_vector(5 downto 0);
 signal chroma_mux_in1 : std_logic_vector(5 downto 0);
 signal chroma_mux_in2 : std_logic_vector(5 downto 0);
 signal chroma_mux_out : std_logic_vector(5 downto 0);
+
+-- Overlay Gates Signals
+signal not_overlay_gate2 : std_logic_vector(3 downto 0);
 
 --Matrix In from module out
 signal ff_q : STD_LOGIC;
@@ -70,6 +76,19 @@ signal slow_cnt_0_4 : STD_LOGIC;
 signal slow_cnt_0_2 : STD_LOGIC;
 signal ext_vid_in : std_logic_vector(5 downto 0);
 signal edge_detector_out : std_logic_vector(3 downto 0);
+signal overlay_gate_out : std_logic_vector(3 downto 0);
+signal acm_out1 : STD_LOGIC;
+signal acm_out2 : STD_LOGIC;
+
+-- Matrix control signals
+ constant x_in : integer := 8;
+ constant y_out : integer := 8;
+ signal  Data_In  :    std_logic_vector((x_in * 8) - 1 downto 0);
+ signal  en       :    std_logic_vector(x_in -1 downto 0);
+ signal  mux_sel  :    std_logic_vector((x_in * 3)-1 downto 0);
+ signal  dmux_sel  :    std_logic_vector((y_out * 3)-1 downto 0);
+ signal  en_sel   :    std_logic_vector(positive(ceil(log2(real(x_in)))) downto 0); --this is ugly, i should fix it
+ signal  Data_out :   std_logic_vector((y_out * 8)-1 downto 0);
 
 --External signals
 signal clk_25 : STD_LOGIC;
@@ -77,6 +96,11 @@ signal ff_clr : STD_LOGIC;
 
 
 begin
+
+-- add shape gen
+-- add acm filters to analog side??
+-- add matrix with muxes
+-- add module to split and overlap signals programaticly
 
     flip_flops: entity work.D_flipflop_ext
       port map (
@@ -160,6 +184,15 @@ begin
         b =>  luma_in2,
         y =>  luma_out  
        );
+    
+    not_overlay_gate2 <= NOT overlay_gate2;
+    
+    overlay_gates: entity work.nand4
+       port map (
+        a => overlay_gate1,
+        b =>  not_overlay_gate2,
+        y =>  overlay_gate_out  
+       );
        
     chroma_xor: entity work.xor_n
        generic map (
@@ -175,13 +208,31 @@ begin
     chroma_mux_in1 <= (chroma_xor_1(5) & chroma_xor_1(2) & chroma_xor_1(1) & chroma_xor_1(3) & chroma_xor_1(0));
     chroma_mux_in2 <= (chroma_xor_1(2) & chroma_xor_1(5) & chroma_xor_1(0) & chroma_xor_1(4) & chroma_xor_1(1));
     
-    chroma_output : entity work.mux_5 -- needs x_or infromnt of inputs
+    chroma_output : entity work.mux_5 
         Port map ( 
             sel => colour_swap,
             a => chroma_mux_in1,
             b => chroma_mux_in2,
             c => chroma_mux_out
          );
+         
+    pin_matrix : entity work.pin_matrix_full
+        generic map (
+            x_in => 8,
+            y_out => 8
+        )
+        Port map ( 
+            Data_In => Data_In,
+            en => en,
+            mux_sel => mux_sel,
+            dmux_sel => dmux_sel,
+            en_sel => en_sel,
+            Data_out => Data_out
+         );
+         
+
+
+    
 
 
 end Behavioral;
