@@ -74,13 +74,16 @@ signal slow_cnt_1_5 : STD_LOGIC;
 signal slow_cnt_0_6 : STD_LOGIC;
 signal slow_cnt_0_4 : STD_LOGIC;
 signal slow_cnt_0_2 : STD_LOGIC;
-signal ext_vid_in : std_logic_vector(5 downto 0);
+signal ext_vid_in : std_logic_vector(6 downto 0);
 signal edge_detector_out : std_logic_vector(3 downto 0);
 signal overlay_gate_out : std_logic_vector(3 downto 0);
+
+--To analog side
 signal acm_out1 : STD_LOGIC;
 signal acm_out2 : STD_LOGIC;
 
 -- Matrix control signals
+-- Matrix full
  constant x_in : integer := 8;
  constant y_out : integer := 8;
  signal  Data_In  :    std_logic_vector((x_in * 8) - 1 downto 0);
@@ -89,6 +92,11 @@ signal acm_out2 : STD_LOGIC;
  signal  dmux_sel  :    std_logic_vector((y_out * 3)-1 downto 0);
  signal  en_sel   :    std_logic_vector(positive(ceil(log2(real(x_in)))) downto 0); --this is ugly, i should fix it
  signal  Data_out :   std_logic_vector((y_out * 8)-1 downto 0);
+-- bus overlap and interleaver
+signal  interleaver_in  :    std_logic_vector((x_in * 8) - 1 downto 0);
+signal  interleaver_out  :    std_logic_vector((x_in * 8) - 1 downto 0);
+signal  overlap_in  :    std_logic_vector((x_in * 8) - 1 downto 0);
+signal  overlap_out  :    std_logic_vector((x_in * 8) - 1 downto 0);
 
 --External signals
 signal clk_25 : STD_LOGIC;
@@ -99,8 +107,8 @@ begin
 
 -- add shape gen
 -- add acm filters to analog side??
--- add matrix with muxes
--- add module to split and overlap signals programaticly
+-- add delay
+--add video comparitor
 
     flip_flops: entity work.D_flipflop_ext
       port map (
@@ -196,7 +204,7 @@ begin
        
     chroma_xor: entity work.xor_n
        generic map (
-        n => 5
+        n => 6
        )
        port map (
         a => chroma_in1,
@@ -205,8 +213,8 @@ begin
        );
        
     -- split xor chrma siognals to mux inputs
-    chroma_mux_in1 <= (chroma_xor_1(5) & chroma_xor_1(2) & chroma_xor_1(1) & chroma_xor_1(3) & chroma_xor_1(0));
-    chroma_mux_in2 <= (chroma_xor_1(2) & chroma_xor_1(5) & chroma_xor_1(0) & chroma_xor_1(4) & chroma_xor_1(1));
+    chroma_mux_in1 <= (chroma_xor_1(5) & chroma_xor_1(2) & chroma_xor_1(4) & chroma_xor_1(3) & chroma_xor_1(0) & chroma_xor_1(1));
+    chroma_mux_in2 <= (chroma_xor_1(2) & chroma_xor_1(5) & chroma_xor_1(1) & chroma_xor_1(0) & chroma_xor_1(3) & chroma_xor_1(4));
     
     chroma_output : entity work.mux_5 
         Port map ( 
@@ -215,6 +223,33 @@ begin
             b => chroma_mux_in2,
             c => chroma_mux_out
          );
+         
+     interleaver_in <=  x_count & y_count & slow_cnt_6 & slow_cnt_3 & slow_cnt_1_5 & slow_cnt_0_6 & slow_cnt_0_4 & slow_cnt_0_2 & overlay_gate_out & inv_out & edge_detector_out & '0' & ff_nq & "00" & "00" & "0000000";
+         
+     interleaver : entity work.interleaver
+        generic map (
+            n => 8,
+            p => 64
+        )
+        Port map ( 
+            a => interleaver_in,
+            y => interleaver_out
+         );         
+     
+     overlap_in <= interleaver_out;    
+         
+     bus_overlap : entity work.bus_ovrlap
+        generic map (
+            n => 2,
+            k => 8,
+            p => 70
+        )
+        Port map ( 
+            a => overlap_in,
+            y => overlap_out
+         );     
+         
+         Data_In <= overlap_out;
          
     pin_matrix : entity work.pin_matrix_full
         generic map (
