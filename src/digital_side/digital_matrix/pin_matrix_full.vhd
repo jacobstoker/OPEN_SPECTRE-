@@ -39,10 +39,12 @@ generic (
 );
 port
 (
+    clk      :in    STD_LOGIC;
+    wr       :in    STD_LOGIC;
     Data_In  :in    std_logic_vector((x_in * 8) - 1 downto 0);
     en       :in    std_logic_vector(x_in -1 downto 0);
     mux_sel  :in    std_logic_vector((x_in * 3)-1 downto 0);
-    dmux_sel  :in    std_logic_vector((y_out * 3)-1 downto 0);
+    dmux_sel :in    std_logic_vector((y_out * 3)-1 downto 0);
     en_sel   :in    std_logic_vector(positive(ceil(log2(real(x_in)))) downto 0); --this is ugly, i should fix it
     Data_out :out   std_logic_vector((y_out * 8)-1 downto 0)
     
@@ -84,18 +86,22 @@ begin
   end generate;
 
 --need logic for seting the enable signals
---process(en, en_sel)
---    begin
---        case en_sel is
---        when "000" => en_arr_data(0) <= en;
---        when "001" => en_arr_data(1) <= en;
---        when "010" => en_arr_data(2) <= en;
---        when "011" => en_arr_data(3) <= en;
---        when "100" => en_arr_data(4) <= en;
---        when "101" => en_arr_data(5) <= en;
---        when "110" => en_arr_data(6) <= en;
---        when "111" => en_arr_data(7) <= en;
---        end case;
---    end process;
+process(clk)
+    begin
+        if rising_edge(clk) then
+            if wr = '1' then
+                case en_sel is
+                when "000" => en_arr_data(0) <= en;
+                when "001" => en_arr_data(1) <= en;
+                when "010" => en_arr_data(2) <= en;
+                when "011" => en_arr_data(3) <= en;
+                when "100" => en_arr_data(4) <= en;
+                when "101" => en_arr_data(5) <= en;
+                when "110" => en_arr_data(6) <= en;
+                when "111" => en_arr_data(7) <= en;
+                end case;
+           end if;
+        end if;
+    end process;
 
 end Behavioral;
