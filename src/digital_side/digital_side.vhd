@@ -24,10 +24,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.math_real.all;
 
 entity digital_side is
---  Port ( );
+ -- Port ( );
 end digital_side;
 
 architecture Behavioral of digital_side is
+
+--Global Signals
 
 --Matrix Out to module in
 signal ff_d : STD_LOGIC;
@@ -86,6 +88,8 @@ signal acm_out2 : STD_LOGIC;
 -- Matrix full
  constant x_in : integer := 8;
  constant y_out : integer := 8;
+ signal clk       : STD_LOGIC;
+ signal wr        : STD_LOGIC;
  signal  Data_In  :    std_logic_vector((x_in * 8) - 1 downto 0);
  signal  en       :    std_logic_vector(x_in -1 downto 0);
  signal  mux_sel  :    std_logic_vector((x_in * 3)-1 downto 0);
@@ -104,7 +108,7 @@ signal ff_clr : STD_LOGIC;
 
 
 begin
-
+--logic to set pin matrix enable needed
 -- add shape gen
 -- add acm filters to analog side??
 -- add delay
@@ -224,7 +228,7 @@ begin
             c => chroma_mux_out
          );
          
-     interleaver_in <=  x_count & y_count & slow_cnt_6 & slow_cnt_3 & slow_cnt_1_5 & slow_cnt_0_6 & slow_cnt_0_4 & slow_cnt_0_2 & overlay_gate_out & inv_out & edge_detector_out & '0' & ff_nq & "00" & "00" & "0000000";
+     interleaver_in <=  x_count & y_count & slow_cnt_6 & slow_cnt_3 & slow_cnt_1_5 & slow_cnt_0_6 & slow_cnt_0_4 & slow_cnt_0_2 & overlay_gate_out & inv_out & edge_detector_out & '0' & ff_nq & "00" & "00" & "0000000" & "000000000000000";
          
      interleaver : entity work.interleaver
         generic map (
@@ -242,7 +246,7 @@ begin
         generic map (
             n => 2,
             k => 8,
-            p => 70
+            p => 64 -- was 70
         )
         Port map ( 
             a => overlap_in,
@@ -257,6 +261,8 @@ begin
             y_out => 8
         )
         Port map ( 
+            clk => clk,
+            wr => wr,
             Data_In => Data_In,
             en => en,
             mux_sel => mux_sel,
