@@ -1,17 +1,17 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity demux_8_to_1 is
+entity demux_1_to_8 is
     Port (
         data: in std_logic;
         sel: in  std_logic_vector(2 downto 0);
-        mux_out: out  std_logic_vector(7 downto 0)
+        demux_out: out  std_logic_vector(7 downto 0)
     );
-end demux_8_to_1;
+end demux_1_to_8;
 
-architecture Behavioral of demux_8_to_1 is
+architecture Behavioral of demux_1_to_8 is
 begin
-    mux_out <= (data & "0000000") when (sel="000") else
+    demux_out <= (data & "0000000") when (sel="000") else
             ('0' & data & "000000") when (sel="001") else
             ("00" & data & "00000") when (sel="010") else
             ("000" & data & "0000") when (sel="011") else
