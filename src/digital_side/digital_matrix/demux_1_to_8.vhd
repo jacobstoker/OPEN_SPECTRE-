@@ -1,28 +1,22 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity mux_8_to_1 is
-    Port ( 
-        data: in  std_logic_vector(7 downto 0);
+entity demux_8_to_1 is
+    Port (
+        data: in std_logic;
         sel: in  std_logic_vector(2 downto 0);
-        mux_out: out  std_logic
+        mux_out: out  std_logic_vector(7 downto 0)
     );
-end mux_8_to_1;
+end demux_8_to_1;
 
-architecture Behavioral of mux_8_to_1 is
+architecture Behavioral of demux_8_to_1 is
 begin
-    process(sel, data)
-    begin
-        case sel is
-            when "000" => mux_out <= data(0);
-            when "001" => mux_out <= data(1);
-            when "010" => mux_out <= data(2);
-            when "011" => mux_out <= data(3);
-            when "100" => mux_out <= data(4);
-            when "101" => mux_out <= data(5);
-            when "110" => mux_out <= data(6);
-            when "111" => mux_out <= data(7);
-            when others => mux_out <= '0';
-        end case;
-    end process;
+    mux_out <= (data & "0000000") when (sel="000") else
+            ('0' & data & "000000") when (sel="001") else
+            ("00" & data & "00000") when (sel="010") else
+            ("000" & data & "0000") when (sel="011") else
+            ("0000" & data & "000") when (sel="100") else
+            ("00000" & data & "00") when (sel="101") else
+            ("000000" & data & '0') when (sel="110") else
+            ("0000000" & data) ;
 end Behavioral;
