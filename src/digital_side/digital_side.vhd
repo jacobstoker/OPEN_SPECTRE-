@@ -24,7 +24,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.math_real.all;
 
 entity digital_side is
- -- Port ( );
+  Port ( 
+      sys_clk      :in    STD_LOGIC;
+      clk_25_in      :in    STD_LOGIC;
+      rst      :in    STD_LOGIC;
+      video_in_ext : in STD_LOGIC_VECTOR (7 downto 0)
+  );
 end digital_side;
 
 architecture Behavioral of digital_side is
@@ -76,9 +81,13 @@ signal slow_cnt_1_5 : STD_LOGIC;
 signal slow_cnt_0_6 : STD_LOGIC;
 signal slow_cnt_0_4 : STD_LOGIC;
 signal slow_cnt_0_2 : STD_LOGIC;
-signal ext_vid_in : std_logic_vector(6 downto 0);
+signal ext_vid_out : std_logic_vector(6 downto 0);
 signal edge_detector_out : std_logic_vector(3 downto 0);
 signal overlay_gate_out : std_logic_vector(3 downto 0);
+
+--Matrix Module controls
+signal vid_span : std_logic_vector(7 downto 0);
+
 
 --To analog side
 signal acm_out1 : STD_LOGIC;
@@ -108,10 +117,14 @@ signal ff_clr : STD_LOGIC;
 
 
 begin
+
+--assignemt from external in
+  clk    <= sys_clk;
+  clk_25    <= clk_25_in;
+
 --logic to set pin matrix enable needed
 -- add shape gen
--- add acm filters to analog side??
--- add delay
+-- add acm filters to analog side?? or just use the tbar rolling average ciode for the lpf??
 --add video comparitor
 
     flip_flops: entity work.D_flipflop_ext
@@ -132,7 +145,7 @@ begin
     x_counter : entity work.counter
         port map (
          clk => clk_25, -- check what it is actualy driven by
-        rst => '0',
+        rst => rst,
         enable => '1',
         count => x_count
         );
@@ -140,7 +153,7 @@ begin
     y_counter : entity work.counter
         port map (
          clk => clk_25, -- check what it is actualy driven by
-        rst => '0',
+        rst => rst,
         enable => '1',
         count => y_count
         );
@@ -175,9 +188,9 @@ begin
     video_in : entity work.compare_7
         Port map ( 
            clk => clk_25,
-           luma_i => "00000000",
-           output => ext_vid_in,
-           span => "11111111"
+           luma_i => video_in_ext,
+           output => ext_vid_out,
+           span => vid_span
          );
          
     edge_detector : entity work.monstable_4
