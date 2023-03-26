@@ -8,6 +8,7 @@ def generate_waveform(width, depth, waveform_type):
     step_size = 2 * math.pi / depth
 
     # Generate the waveform and convert each value to a hex string
+    tally = []
     waveform = []
     for i in range(depth):
         t = i / (depth - 1)
@@ -18,7 +19,7 @@ def generate_waveform(width, depth, waveform_type):
         elif waveform_type == 'cos':
             value = int(max_value * (1 + math.cos(i * step_size)) / 2)
         elif waveform_type == 'triangle':
-            value = int(max_value * abs(1 - 2 * (i / depth))*-1 + max_value)
+            value = int(max_value * abs(1 - 2 * (i / depth))*-1 + (max_value-1))
         elif waveform_type == 'parabola':
             value = int(max_value * (i / depth) ** 2)
         elif waveform_type == 'staircase':
@@ -26,11 +27,15 @@ def generate_waveform(width, depth, waveform_type):
         elif waveform_type == 'sqrt':
             value = int(max_value * math.sqrt(i / depth))
         elif waveform_type == 'scurve':
-            value = int(max_value * (1 - math.cos(i * step_size)) / 2)
+            value = int((max_value-1) * (1 - math.cos(i * step_size)) / 2)
         else:
             raise ValueError("Invalid waveform type: {}".format(waveform_type))
-
+        
+        tally.append(value)#.zfill(width))
         waveform.append(hex(value)[2:])#.zfill(width))
+
+    maxValMade = max(tally)
+    maxValMade = maxValMade
 
     return waveform
 
@@ -103,17 +108,16 @@ sine        = generate_waveform(width, depth, 'sine')
 tri         = generate_waveform(width, depth, 'triangle')
 
 
-display_waveform(sqrt)
-display_waveform(parab)
-display_waveform(scurve)
-display_waveform(str)
-display_waveform(sine)
-display_waveform(tri)
+# display_waveform(sqrt)
+# display_waveform(parab)
+# display_waveform(scurve)
+# display_waveform(str)
+# display_waveform(sine)
+# display_waveform(tri)
 
 save_waveform(sqrt  , 'waveforms.coe', False, False)
 save_waveform(parab , 'waveforms.coe', True,False)
 save_waveform(scurve, 'waveforms.coe', True,False) # needs to be fixed so it doesnt fall at the end
-save_waveform(str   , 'waveforms.coe', True,False)
 save_waveform(sine  , 'waveforms.coe', True,False)
 save_waveform(tri   , 'waveforms.coe', True,True)
 
