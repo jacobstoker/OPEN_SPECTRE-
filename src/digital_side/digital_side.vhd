@@ -27,12 +27,17 @@ entity digital_side is
   Port ( 
       sys_clk      :in    STD_LOGIC;
       clk_25_in      :in    STD_LOGIC;
+      clk_x      :in    STD_LOGIC;
+      clk_y      :in    STD_LOGIC;
       rst      :in    STD_LOGIC;
-      video_in_ext : in STD_LOGIC_VECTOR (7 downto 0)
+      video_in_ext : in STD_LOGIC_VECTOR (7 downto 0);
+      luma_vid_out : out std_logic_vector(3 downto 0);
+      chroma_vid_out : out std_logic_vector(5 downto 0)
   );
 end digital_side;
 
 architecture Behavioral of digital_side is
+
 
 --Global Signals
 
@@ -54,8 +59,8 @@ signal overlay_gate2 : std_logic_vector(3 downto 0);
 
 --Matrix Out to global
 signal luma_out : std_logic_vector(3 downto 0);
-signal chroma_out1 : std_logic_vector(2 downto 0);
-signal chroma_out2 : std_logic_vector(2 downto 0);
+--signal chroma_out1 : std_logic_vector(2 downto 0);
+--signal chroma_out2 : std_logic_vector(2 downto 0);
 
 -- Chroma Mux input/output signals
 signal chroma_xor_1   : std_logic_vector(5 downto 0);
@@ -116,11 +121,50 @@ signal clk_25 : STD_LOGIC;
 signal ff_clr : STD_LOGIC;
 
 
+attribute dont_touch : string;
+attribute dont_touch of ff_d : signal is "true";
+attribute dont_touch of ff_clk : signal is "true";
+attribute dont_touch of inv_in : signal is "true";
+attribute dont_touch of xy_inv_in : signal is "true";
+attribute dont_touch of delay_in : signal is "true";
+attribute dont_touch of edge_detector_in : signal is "true";
+attribute dont_touch of colour_swap : signal is "true";
+attribute dont_touch of luma_in1 : signal is "true";
+attribute dont_touch of luma_in2 : signal is "true";
+attribute dont_touch of chroma_in1 : signal is "true";
+attribute dont_touch of chroma_in2 : signal is "true";
+attribute dont_touch of overlay_gate1 : signal is "true";
+attribute dont_touch of overlay_gate2 : signal is "true";
+
+
+
+attribute dont_touch of ff_q : signal is "true";
+attribute dont_touch of ff_nq : signal is "true";
+attribute dont_touch of inv_out : signal is "true";
+attribute dont_touch of x_count : signal is "true";
+attribute dont_touch of y_count : signal is "true";
+
+
+--signal xy_count : std_logic_vector(17 downto 0);
+--signal xy_inv_out : std_logic_vector(17 downto 0);
+--signal delay_out : STD_LOGIC;
+--signal slow_cnt_6 : STD_LOGIC;
+--signal slow_cnt_3 : STD_LOGIC;
+--signal slow_cnt_1_5 : STD_LOGIC;
+--signal slow_cnt_0_6 : STD_LOGIC;
+--signal slow_cnt_0_4 : STD_LOGIC;
+--signal slow_cnt_0_2 : STD_LOGIC;
+--signal ext_vid_out : std_logic_vector(6 downto 0);
+--signal edge_detector_out : std_logic_vector(3 downto 0);
+--signal overlay_gate_out : std_logic_vector(3 downto 0);
+
 begin
 
 --assignemt from external in
   clk    <= sys_clk;
   clk_25    <= clk_25_in;
+  luma_vid_out <= luma_out;
+  chroma_vid_out <= chroma_mux_out;
 
 --logic to set pin matrix enable needed
 -- add shape gen
@@ -144,7 +188,7 @@ begin
        
     x_counter : entity work.counter
         port map (
-         clk => clk_25, -- check what it is actualy driven by
+         clk => clk_x, -- check what it is actualy driven by, pixel clk right?
         rst => rst,
         enable => '1',
         count => x_count
@@ -152,7 +196,7 @@ begin
         
     y_counter : entity work.counter
         port map (
-         clk => clk_25, -- check what it is actualy driven by
+         clk => clk_y, -- check what it is actualy driven by, hoz sync right
         rst => rst,
         enable => '1',
         count => y_count
@@ -243,7 +287,7 @@ begin
          
      interleaver_in <=  x_count & y_count & slow_cnt_6 & slow_cnt_3 & slow_cnt_1_5 & slow_cnt_0_6 & slow_cnt_0_4 & slow_cnt_0_2 & overlay_gate_out & inv_out & edge_detector_out & '0' & ff_nq & "00" & "00" & "0000000" & "000000000000000";
          
-     interleaver : entity work.interleaver
+     interleaver_matrix_in : entity work.interleaver
         generic map (
             n => 8,
             p => 64
@@ -278,13 +322,35 @@ begin
             wr => wr,
             Data_In => Data_In,
             en => en,
-            mux_sel => mux_sel,
-            dmux_sel => dmux_sel,
+            mux_sel_t => mux_sel,
+            dmux_sel_t => dmux_sel,
             en_sel => en_sel,
             Data_out => Data_out
          );
-         
 
+         -- Split data_out into individual bits and assign them to signals
+        ff_d <= data_out(0);
+        ff_clk <= data_out(1);
+        inv_in <= data_out(5 downto 2);
+        xy_inv_in <= data_out(23 downto 6);
+        delay_in <= data_out(24);
+        edge_detector_in <= data_out(25);
+        colour_swap <= data_out(26);
+        luma_in1 <= data_out(30 downto 27);
+        luma_in2 <= data_out(34 downto 31);
+        chroma_in1 <= data_out(40 downto 35);
+        chroma_in2 <= data_out(46 downto 41);
+        overlay_gate1 <= data_out(50 downto 47);
+        overlay_gate2 <= data_out(54 downto 51);
+--     interleaver_matrix_out : entity work.interleaver
+--        generic map (
+--            n => 8,
+--            p => 64
+--        )
+--        Port map ( 
+--            a => interleaver_B_in,
+--            y => interleaver_B_out
+--         );   
 
     
 

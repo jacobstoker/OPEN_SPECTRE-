@@ -43,8 +43,8 @@ port
     wr       :in    STD_LOGIC;
     Data_In  :in    std_logic_vector((x_in * 8) - 1 downto 0);
     en       :in    std_logic_vector(x_in -1 downto 0);
-    mux_sel  :in    std_logic_vector((x_in * 3)-1 downto 0);
-    dmux_sel :in    std_logic_vector((y_out * 3)-1 downto 0);
+    mux_sel_t  :in    std_logic_vector((x_in * 3)-1 downto 0); -- remove t
+    dmux_sel_t :in    std_logic_vector((y_out * 3)-1 downto 0); --remve t
     en_sel   :in    std_logic_vector(positive(ceil(log2(real(x_in)))) downto 0); --this is ugly, i should fix it
     Data_out :out   std_logic_vector((y_out * 8)-1 downto 0)
     
@@ -60,7 +60,114 @@ signal en_arr_data : en_array;
 signal matrix_in : std_logic_vector (x_in -1 downto 0);
 signal matrix_out : std_logic_vector (y_out -1 downto 0);
 
+------ vio signal
+    signal mux_sel  :   std_logic_vector((x_in * 3)-1 downto 0);
+    signal dmux_sel :   std_logic_vector((y_out * 3)-1 downto 0);
+    signal probe_in0 :  STD_LOGIC_VECTOR(0 DOWNTO 0);
+    signal probe_out0 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal probe_out1 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out2 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out3 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out4 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out5 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out6 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out7 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out8 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out9 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal  probe_out10 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out11 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out12 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out13 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal   probe_out14 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal  probe_out15 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal  probe_out16 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal  probe_out17 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal   probe_out18 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal  probe_out19 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal    probe_out20 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal  probe_out21 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal  probe_out22 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+    signal   probe_out23 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+
+COMPONENT vio_0
+  PORT (
+    clk : IN STD_LOGIC;
+    probe_in0 : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    probe_out0 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out1 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out2 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out3 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out4 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out5 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out6 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out7 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out8 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out9 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out10 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out11 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out12 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out13 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out14 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out15 : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    probe_out16 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out17 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out18 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out19 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out20 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out21 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out22 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+    probe_out23 : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+  );
+END COMPONENT;
+-- COMP_TAG_END ------ End COMPONENT Declaration ------------
+
+
 begin
+
+--------------------vio to test drive matix
+
+vio_matrix : vio_0
+  PORT MAP (
+    clk => clk,
+    probe_in0 => probe_in0,
+    probe_out0 => probe_out0,
+    probe_out1 => probe_out1,
+    probe_out2 => probe_out2,
+    probe_out3 => probe_out3,
+    probe_out4 => probe_out4,
+    probe_out5 => probe_out5,
+    probe_out6 => probe_out6,
+    probe_out7 => probe_out7,
+    probe_out8 => probe_out8,
+    probe_out9 => probe_out9,
+    probe_out10 => probe_out10,
+    probe_out11 => probe_out11,
+    probe_out12 => probe_out12,
+    probe_out13 => probe_out13,
+    probe_out14 => probe_out14,
+    probe_out15 => probe_out15,
+    probe_out16 => probe_out16,
+    probe_out17 => probe_out17,
+    probe_out18 => probe_out18,
+    probe_out19 => probe_out19,
+    probe_out20 => probe_out20,
+    probe_out21 => probe_out21,
+    probe_out22 => probe_out22,
+    probe_out23 => probe_out23
+  );
+
+    mux_sel <= probe_out0 & probe_out1 & probe_out2 & probe_out3 & probe_out4 & probe_out5 & probe_out6 & probe_out7;
+    dmux_sel <= probe_out8 & probe_out9 & probe_out10 & probe_out11 & probe_out12 & probe_out13 & probe_out14 & probe_out15;
+              en_arr_data(0) <= probe_out16;
+             en_arr_data(1) <= probe_out16;
+              en_arr_data(2) <= probe_out17;
+               en_arr_data(3) <= probe_out18;
+             en_arr_data(4) <= probe_out19;
+              en_arr_data(5) <= probe_out20;
+             en_arr_data(6) <= probe_out21;
+              en_arr_data(7) <= probe_out22;
+
+----------------------------------------
 
   gen_code_matrix:
   for index in 0 to y_out-1 generate
@@ -86,22 +193,22 @@ begin
   end generate;
 
 --need logic for seting the enable signals
-process(clk)
-    begin
-        if rising_edge(clk) then
-            if wr = '1' then
-                case en_sel is
-                when "000" => en_arr_data(0) <= en;
-                when "001" => en_arr_data(1) <= en;
-                when "010" => en_arr_data(2) <= en;
-                when "011" => en_arr_data(3) <= en;
-                when "100" => en_arr_data(4) <= en;
-                when "101" => en_arr_data(5) <= en;
-                when "110" => en_arr_data(6) <= en;
-                when "111" => en_arr_data(7) <= en;
-                end case;
-           end if;
-        end if;
-    end process;
+--process(clk)
+--    begin
+--        if rising_edge(clk) then
+--            if wr = '1' then
+--                case en_sel is
+--                when "000" => en_arr_data(0) <= en;
+--                when "001" => en_arr_data(1) <= en;
+--                when "010" => en_arr_data(2) <= en;
+--                when "011" => en_arr_data(3) <= en;
+--                when "100" => en_arr_data(4) <= en;
+--                when "101" => en_arr_data(5) <= en;
+--                when "110" => en_arr_data(6) <= en;
+--                when "111" => en_arr_data(7) <= en;
+--                end case;
+--           end if;
+--        end if;
+--    end process;
 
 end Behavioral;
