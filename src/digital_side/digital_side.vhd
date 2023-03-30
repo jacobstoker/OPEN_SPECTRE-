@@ -22,6 +22,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.math_real.all;
+use ieee.numeric_std.all; 
 
 entity digital_side is
   Port ( 
@@ -31,8 +32,7 @@ entity digital_side is
       clk_y      :in    STD_LOGIC;
       rst      :in    STD_LOGIC;
       video_in_ext : in STD_LOGIC_VECTOR (7 downto 0);
-      luma_vid_out : out std_logic_vector(3 downto 0);
-      chroma_vid_out : out std_logic_vector(5 downto 0)
+      RBG_out       : out STD_LOGIC_VECTOR (23 downto 0)
   );
 end digital_side;
 
@@ -115,6 +115,17 @@ signal  interleaver_in  :    std_logic_vector((x_in * 8) - 1 downto 0);
 signal  interleaver_out  :    std_logic_vector((x_in * 8) - 1 downto 0);
 signal  overlap_in  :    std_logic_vector((x_in * 8) - 1 downto 0);
 signal  overlap_out  :    std_logic_vector((x_in * 8) - 1 downto 0);
+
+-- Colour Output
+signal luma_vid_out : std_logic_vector(3 downto 0);
+signal chroma_vid_out : std_logic_vector(5 downto 0);
+
+signal Y : std_logic_vector(7 downto 0);
+signal U : std_logic_vector(7 downto 0);
+signal V : std_logic_vector(7 downto 0);
+signal R : std_logic_vector(7 downto 0);
+signal G : std_logic_vector(7 downto 0);
+signal B : std_logic_vector(7 downto 0);
 
 --External signals
 signal clk_25 : STD_LOGIC;
@@ -352,7 +363,23 @@ begin
 --            y => interleaver_B_out
 --         );   
 
-    
+    -- Pack chroma and luma into YUV converter
+    Y <= std_logic_vector(shift_left(unsigned(luma_vid_out), 4));  
+    U <= std_logic_vector(shift_left(unsigned(chroma_vid_out(5 downto 3)), 6));  
+    V <= std_logic_vector(shift_left(unsigned(chroma_vid_out(2 downto 0)), 6));  
+    -- YUV to RGB converter
+    YUV_to_RGB_i : entity work.YUV_to_RGB
+        Port map (
+            Y => Y,
+            U => U,
+            V => V,
+            R => R,
+            G => G,
+            B => B
+        );
+     -- Pack rgb output into output bus
+     RBG_out <= R & g & B;
+        
 
 
 end Behavioral;
