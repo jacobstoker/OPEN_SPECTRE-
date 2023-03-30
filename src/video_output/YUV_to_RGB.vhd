@@ -32,8 +32,8 @@ end function saturation;
 
 
     signal Ys, Us, Vs : signed(7 downto 0);
-    signal Rs, Gs, Bs : signed(7 downto 0);
-    signal C1, C2, C3, C4, C5 : signed(7 downto 0);
+    signal Rs, Gs, Bs : signed(16 downto 0);
+    signal C1, C2, C3, C4, C5 : signed(16 downto 0);
 
     -- Constants for color conversion
     constant Kr : integer := 298;
@@ -47,11 +47,11 @@ begin
     Us <= signed(U) - 128;
     Vs <= signed(V) - 128;
 
-    C1 <= to_signed(Kr, C1'length) * Ys;
-    C2 <= to_signed(Kb, C2'length) * Us;
-    C3 <= to_signed(Kg, C3'length) * Us;
-    C4 <= to_signed(Kr, C4'length) * Ys;
-    C5 <= to_signed(Kg, C5'length) * Vs;
+    C1 <= to_signed(Kr, 9) * Ys;
+    C2 <= to_signed(Kb, 9) * Us;
+    C3 <= to_signed(Kg, 9) * Us;
+    C4 <= to_signed(Kr, 9) * Ys;
+    C5 <= to_signed(Kg, 9) * Vs;
 
     Rs <= C1 + C2 + C5;
     Gs <= C1 - C3 - C5;
