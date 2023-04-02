@@ -127,6 +127,7 @@ signal R : std_logic_vector(7 downto 0);
 signal G : std_logic_vector(7 downto 0);
 signal B : std_logic_vector(7 downto 0);
 
+
 --External signals
 signal clk_25 : STD_LOGIC;
 signal ff_clr : STD_LOGIC;
@@ -199,16 +200,20 @@ begin
        
     x_counter : entity work.counter
         port map (
+
          clk => clk_x, -- check what it is actualy driven by, pixel clk right?
         rst => rst,
+        
         enable => '1',
         count => x_count
         );
         
     y_counter : entity work.counter
         port map (
+
          clk => clk_y, -- check what it is actualy driven by, hoz sync right
         rst => rst,
+
         enable => '1',
         count => y_count
         );
@@ -246,6 +251,13 @@ begin
            luma_i => video_in_ext,
            output => ext_vid_out,
            span => vid_span
+         );
+         
+    edge_detector : entity work.monstable_4
+        Port map ( 
+            clk => clk_25,
+            input => edge_detector_in,
+            output => edge_detector_out
          );
          
     edge_detector : entity work.monstable_4
