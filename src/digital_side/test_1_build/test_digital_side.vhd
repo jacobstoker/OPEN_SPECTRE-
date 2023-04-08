@@ -42,7 +42,14 @@ entity test_digital_side is
       clk_y      :in    STD_LOGIC;
       rst      :in    STD_LOGIC;
       video_in_ext : in STD_LOGIC_VECTOR (7 downto 0);
-      RBG_out       : out STD_LOGIC_VECTOR (23 downto 0)
+      RBG_out       : out STD_LOGIC_VECTOR (23 downto 0);
+      
+      --temp signals to drive the mux's
+         mux_selB_i : in std_logic_vector(16 downto 0);
+         mux_selC_i : in std_logic_vector(16 downto 0);
+         mux_selD_i : in std_logic_vector(16 downto 0);
+         mux_selE_i : in std_logic_vector(16 downto 0);
+         chrom_swap_i      :in    STD_LOGIC
   );
 end test_digital_side;
 
@@ -164,7 +171,12 @@ begin
       clk_25    <= clk_25_in;
       luma_vid_out <= luma_out;
       chroma_vid_out <= chroma_mux_out;
-
+    --temp controlls of muxes
+ mux_selB <= mux_selB_i;
+ mux_selC <= mux_selC_i;
+ mux_selD <= mux_selD_i;
+ mux_selE <= mux_sele_i;
+ chrom_swap <= chrom_swap_i;
 
     x_counter : entity work.counter
         port map (
