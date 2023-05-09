@@ -31,17 +31,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity mux2_1 is
---  Port ( );
-end mux2_1;
-
-architecture Behavioral of mux2_1 is
-
-begin
-
-
-end Behavioral;
---2:1 mux
 
 library ieee;
 use ieee.std_logic_1164.all;

@@ -1,57 +1,31 @@
+--5 paralell 2:1 muxes with a common select
+
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity mux_5tb is
-end mux_5tb;
+entity mux5p is
+    port (
+        sel: in std_logic;
+        a: in std_logic_vector(5 downto 0);
+        b: in std_logic_vector(5 downto 0);
+        c: out std_logic_vector(5 downto 0)
+    );
+end mux5p;
 
-architecture behavior of mux_5tb is
-
-signal sel: std_logic;
-signal a: std_logic_vector(5 downto 0);
-signal b: std_logic_vector(5 downto 0);
-signal c: std_logic_vector(5 downto 0);
-
+architecture beh of mux5p is
+    component mux is
+        port (
+            sel: in std_logic;
+            a: in std_logic;
+            b: in std_logic;
+            c: out std_logic
+        );
+    end component;
 begin
-
-DUT: entity work.mux_5 port map (sel=>sel, a=>a, b=>b, c=>c);
-
-stim_proc: process 
-begin
-    -- Initialize inputs
-    sel <= '0';
-    a <= "000000";
-    b <= "111111";
-    
-    -- Wait for 100 ns
-    wait for 100 ns;
-    
-    -- Add assert statement
-    assert c = "000000" report "Error: Output not as expected" severity error;
-    
-    -- Change inputs
-    sel <= '1';
-    a <= "101010";
-    b <= "010101";
-    
-    -- Wait for 100 ns
-    wait for 100 ns;
-    
-    -- Add assert statement
-    assert c = "010101" report "Error: Output not as expected" severity error;
-    
-    -- Change inputs
-    sel <= '0';
-    a <= "111000";
-    b <= "000111";
-    
-    -- Wait for 100 ns
-    wait for 100 ns;
-    
-    -- Add assert statement
-    assert c = "111000" report "Error: Output not as expected" severity error;
-    
-    -- Stop the simulation
-    wait;
-end process;
-
-end behavior;
+    mux1: mux port map (sel=>sel, a=>a(0), b=>b(0), c=>c(0));
+    mux2: mux port map (sel=>sel, a=>a(1), b=>b(1), c=>c(1));
+    mux3: mux port map (sel=>sel, a=>a(2), b=>b(2), c=>c(2));
+    mux4: mux port map (sel=>sel, a=>a(3), b=>b(3), c=>c(3));
+    mux5: mux port map (sel=>sel, a=>a(4), b=>b(4), c=>c(4));
+    mux6: mux port map (sel=>sel, a=>a(5), b=>b(5), c=>c(5));
+end beh;

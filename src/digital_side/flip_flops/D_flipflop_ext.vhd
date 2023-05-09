@@ -11,6 +11,9 @@ entity D_flipflop_ext is
 end D_flipflop_ext;
 
 architecture Behavioral of D_flipflop_ext is
+
+signal q_out : STD_LOGIC;
+
 begin
     process (clk) begin
         if (clk'event and clk = '1') then
@@ -19,9 +22,12 @@ begin
             elsif (preset = '1') then
                 Q <= '1';
             else
-                Q <= D;
+                q_out <= D;
+                
             end if;
         end if;
+        Q_not <= not q_out;
+        Q <=  q_out;
     end process;
-    Q_not <= not Q;
+    
 end Behavioral;

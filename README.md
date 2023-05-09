@@ -21,6 +21,11 @@ The aim of this project is to preserve this rare and unique video synth by recre
 ![EMS Diagram](/top%20level%20design/block_design_original.JPG)
 
 #### 🍨List of Modules and Details Phase 1🍨(WIP)
+
+##### TEST BUILD 1 NOTES:
+Simplified elemnts simulated, need to build a reg file to drive the muxes, there is too much logic for a vio32.
+Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, Luma2 chroma 1 and cheoma 2 (4bit select lines on the Mux)
+
 ##### Common Modules:
 | Module | Notes | Built |Tested |
 | ------ | ------ |-----|-----|
