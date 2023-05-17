@@ -50,16 +50,16 @@ begin
             
             -- Horizontal sync
             if h_count < h_sync_width + h_front_porch then
-                h_sync <= '0';
-            else
                 h_sync <= '1';
+            else
+                h_sync <= '0';
             end if;
             
             -- Vertical sync
             if v_count < v_sync_width + v_front_porch then
-                v_sync <= '0';
-            else
                 v_sync <= '1';
+            else
+                v_sync <= '0';
             end if;
         end if;
     end process;
