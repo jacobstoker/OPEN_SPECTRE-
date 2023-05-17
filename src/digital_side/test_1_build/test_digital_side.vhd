@@ -46,7 +46,10 @@ entity test_digital_side is
          mux_selC_i : in std_logic_vector(16 downto 0);
          mux_selD_i : in std_logic_vector(31 downto 0);
          mux_selE_i : in std_logic_vector(31 downto 0);
-         chrom_swap_i      :in    STD_LOGIC
+         chrom_swap_i      :in    STD_LOGIC;
+         
+         clk_x_out  : out STD_LOGIC;
+         clk_y_out  : out STD_LOGIC
   );
 end test_digital_side;
 
@@ -175,6 +178,8 @@ begin
  mux_selD <= mux_selD_i;
  mux_selE <= mux_sele_i;
  chrom_swap <= chrom_swap_i;
+ clk_x_out <= clk_x;
+  clk_y_out <= clk_y;
 
 vga_trimming_signals : entity work.vga_trimming_signals
         port map (
