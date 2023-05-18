@@ -72,9 +72,9 @@ begin
             clk  => clk_25_in,
             hs   => clk_x_out,   
             vs   => clk_y_out,  
-            r    => RBG(7 downto 0),
-            g    => RBG(15 downto 8),
-            b    => RBG(23 downto 16)
+            r    => RBG(23 downto 16),--RBG(7 downto 0),
+            g    => RBG(23 downto 16),--RBG(15 downto 8),
+            b    => RBG(23 downto 16)--RBG(23 downto 16)
             
         );
 
@@ -94,8 +94,8 @@ begin
         rst <= '1';
         wait for 100 ns;
         rst <= '0';
-        mux_selB_i <= std_logic_vector(to_unsigned(16, 17));
-        mux_selC_i <= std_logic_vector(to_unsigned(15, 17));
+        mux_selB_i <= '0'&"0101"&"0101"&"0101"&"0011";--std_logic_vector(to_unsigned(16, 17));
+        mux_selC_i <= '0'&"1110"&"1110"&"1110"&"1101";--std_logic_vector(to_unsigned(15, 17));
         mux_selD_i <= std_logic_vector(to_unsigned(16, 32));
         mux_selE_i <= std_logic_vector(to_unsigned(1, 32));
         
