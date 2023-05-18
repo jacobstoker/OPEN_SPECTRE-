@@ -191,7 +191,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
 
     x_counter : entity work.counter
         port map (
-         clk => clk_x, -- check what it is actualy driven by, pixel clk right?
+         clk => clk_25_in, -- check what it is actualy driven by, pixel clk right?
         rst => rst,
         enable => '1',
         count => x_count
@@ -199,7 +199,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
         
     y_counter : entity work.counter
         port map (
-         clk => clk_y, -- check what it is actualy driven by, hoz sync right
+         clk => clk_x, -- check what it is actualy driven by, hoz sync right
         rst => rst,
         enable => '1',
         count => y_count
