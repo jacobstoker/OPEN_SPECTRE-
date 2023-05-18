@@ -15,7 +15,7 @@ Open to donations and contributors with FPGA experience. 😀
 The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
 
 #### 🍒Documentation🍒
-[Auto Generated Documentation](https://cfoge.github.io/OPEN_SPECTRE-/)
+[Auto Generated Documentation](https://cfoge.github.io/OPEN_SPECTRE-/) **CURENTLY BROKEN LINK**
 
 #### 🥨Top Level Diagram🥨
 ![EMS Diagram](/top%20level%20design/block_design_original.JPG)
