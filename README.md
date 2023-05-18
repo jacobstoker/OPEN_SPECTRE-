@@ -31,6 +31,13 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | ------ | ------ |-----|-----|
 | inverter | n-bit wide |YES| YES|
 | xor | n-bit wide |YES| YES|
+| mux func | 32:1 mux |YES| YES|
+| debounceer | counter based |YES| NO|
+| rotery encoder | not tested on HW |YES| YES (sim)|
+| bus overlap | * |YES| YES (no TB)|
+| interlev | ** |YES| YES (no TB)|
+* *Takes a vector, splis it into a number of busses with k width n bits overlap (kind of clumsy, not very general)
+** *Takes a bus that is n number of concatinated signals (A,B,C,D) and re aragnes them (A1,B1,C1,D1,A2,B2,C2.......
 
 ##### Digital Side Modules:
 
@@ -47,9 +54,18 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 |Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
 | Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
 | Flipflops ||pg5| NO | NO |
-| Video Timing Generator || |NO|NO|
+| Video Timing Generator || |YES|YES|
 
-* check counter frequencys, solve slower then 1hz freqs
+* *check counter frequencys, solve slower then 1hz freqs
+
+##### Tools and scripts:
+
+| Module | Notes | Design Stage | Built |Tested |
+| ------ | ------ |-----|-----|-----|
+| make_coe_wave.py | makes xilinx coe for rom IP |pre synth|YES|YES|
+| write_file_ex.vhd | logs video signal to csv file |simulation|YES|YES|
+| vga_sim.py* | reads csv from above makes image |simulation|YES|YES|
+* *it is way too hard to see what is happening from the signal traces alone, so this python script turns a single frame of video. [Simulated Images](https://github.com/cfoge/OPEN_SPECTRE-/tree/MVP_1/src/synth_tools/sim_images)
 
 ### 🍣Want to Contribute?🍣
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
