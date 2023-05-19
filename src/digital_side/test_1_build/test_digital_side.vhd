@@ -192,7 +192,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
     x_counter : entity work.counter
         port map (
          clk => clk_25_in, -- check what it is actualy driven by, pixel clk right?
-        rst => rst,
+        rst => clk_x,--rst, -- x needs to be reset by hs otherwise some bits out run over and get out of sync on the next line
         enable => '1',
         count => x_count
         );
@@ -200,7 +200,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
     y_counter : entity work.counter
         port map (
          clk => clk_x, -- check what it is actualy driven by, hoz sync right
-        rst => rst,
+        rst => clk_y, --vsync reset to stop rolling
         enable => '1',
         count => y_count
         );
@@ -252,7 +252,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
        )
        port map (
         a => luma_in1,
-        b =>  luma_in2,
+        b =>  "0000",-- luma_in2,
         y =>  luma_out  
        );
        
