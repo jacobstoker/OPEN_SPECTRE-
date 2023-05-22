@@ -63,17 +63,16 @@ begin
 load_en  <= load and cs;
 latch_en <= latch and cs;
 reset    <= rst and cs;
-mux_sel <= in_addr;
 
 process(clk)
     begin
        if rising_edge(clk) then
         if(reset = '1') then
             mux_sel_A <= (others => '0');
-            mux_sel_latch <= (others => '0');
+            --mux_sel_latch <= (others => '0'); -- this line creates multi drive
             
         elsif (load_en = '1') then
-            mux_sel_A((6 * to_integer(unsigned(in_addr)) + 5)  downto 6*to_integer(unsigned(in_addr))) <= mux_sel;
+            mux_sel_A((6 * to_integer(unsigned(in_addr)) + 5)  downto 6*to_integer(unsigned(in_addr))) <= in_addr;
         end if;
         end if;
 end process;
@@ -81,7 +80,7 @@ end process;
 process(clk)
     begin
        if rising_edge(clk) then
-        if(latch_en = '1') then
+        if(latch_en = '1' and reset = '0') then
             mux_sel_latch <= mux_sel_A;
         end if;
          end if;
