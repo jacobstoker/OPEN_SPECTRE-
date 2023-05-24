@@ -13,6 +13,7 @@ Open to donations and contributors with FPGA experience. 😀
 ### Design Info
 #### 🎉Aim 🎉
 The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
+[Cloning Hardware Ethos](top level design/Cloning a process not a device.md)
 
 #### 🍒Documentation🍒
 [Auto Generated Documentation](https://cfoge.github.io/OPEN_SPECTRE-/)
@@ -49,8 +50,6 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | XY invert logic |  |pg5(xorgates & invertors)|YES|YES|
 | Edge Detector/Monostables | 1clk edge, make longer |pg 5|YES|YES|
 | Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||NO|NO|
-|Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| NO | NO|
-| Slowcounter | counters with rates of 6,3,15,8,4 & 2Hz ||YES|YES|
 |Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
 | Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
 | Flipflops ||pg5| NO | NO |
@@ -66,6 +65,7 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | write_file_ex.vhd | logs video signal to csv file |simulation|YES|YES|
 | vga_sim.py* | reads csv from above makes image |simulation|YES|YES|
 * it is way too hard to see what is happening from the signal traces alone, so this python script turns a single frame of video. [Simulated Images](https://github.com/cfoge/OPEN_SPECTRE-/tree/MVP_1/src/synth_tools/sim_images)
+![VGA simulator output](src/synth_tools/sim_images/x&y_cnt_combo.png)
 
 ### 🍣Want to Contribute?🍣
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
