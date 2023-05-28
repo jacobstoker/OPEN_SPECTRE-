@@ -119,6 +119,12 @@ signal xy_inv_out : std_logic_vector(17 downto 0);
 -- constant x_in : integer := 8;
 -- constant y_out : integer := 8;
  signal clk       : STD_LOGIC;
+ signal matrix_in : STD_LOGIC_VECTOR (64 downto 0) := (others => '0');
+ signal matrix_in_addr  : STD_LOGIC_VECTOR (5 downto 0);
+ signal matrix_load        : std_logic ;
+ signal matrix_latch        :  std_logic ;
+ signal matrix_cs        :  STD_LOGIC_VECTOR(3 downto 0) ;
+ signal matrix_out :  STD_LOGIC_VECTOR (64 downto 0);
 -- signal wr        : STD_LOGIC;
 -- signal  Data_In  :    std_logic_vector((x_in * 8) - 1 downto 0);
 -- signal  en       :    std_logic_vector(x_in -1 downto 0);
@@ -206,42 +212,66 @@ vga_trimming_signals : entity work.vga_trimming_signals
         );
        
     xy_count <= (y_count & x_count); -- concat x & y 
---    xy_invert_logic: entity work.xor18
---       port map (
---        a => xy_count, -- comes from the x/y counters !! change it!!
---        b => "000000000000000000",--xy_inv_in,
---        y =>  xy_inv_out   
---       );
+    xy_invert_logic: entity work.xor18
+       port map (
+        a => xy_count, -- comes from the x/y counters !! change it!!
+        b => "000000000000000000",--xy_inv_in,
+        y =>  xy_inv_out   
+       );
        
+       matrix_in(17 downto 0) <= xy_inv_out;
+    ---------------------------------------------------------------
+    -- HUGE MULTIPLEXER 
+    pin_matrix : entity work.huge_crospoint_wraper
+    Port map ( 
+           matrix_in => matrix_in,
+           in_addr => matrix_in_addr,
+           clk        => clk,
+           rst       => rst,
+           load       =>matrix_load,
+           latch      =>matrix_latch,
+           cs        => matrix_cs,
+           matrix_out  => matrix_out
+           );
+
        
        ----------------------------------------asignments
        mux_in(17 downto 0) <= xy_count;
        mux_in(31 downto 18) <= (others => '0');
        
+       luma_in1(3 downto 0)       <= matrix_out(40 downto 37);
+       chroma_mux_in1(2 downto 0) <= matrix_out(43 downto 41);
+       chroma_mux_in2(2 downto 0) <= matrix_out(46 downto 44);
+       luma_in2(3 downto 0)       <= matrix_out(50 downto 47);
+       chroma_mux_in1(5 downto 3) <= matrix_out(53 downto 51); 
+       chroma_mux_in2(5 downto 3) <= matrix_out(56 downto 54);
+
        
-       luma_in1(0) <= multi321(mux_in, mux_selB(3 downto 0));
-       luma_in1(1) <= multi321(mux_in, mux_selB(7 downto 4));
-       luma_in1(2) <= multi321(mux_in, mux_selB(11 downto 8));
-       luma_in1(3) <= multi321(mux_in, mux_selB(15 downto 12));
+
+
+--       luma_in1(0) <= multi321(mux_in, mux_selB(3 downto 0));
+--       luma_in1(1) <= multi321(mux_in, mux_selB(7 downto 4));
+--       luma_in1(2) <= multi321(mux_in, mux_selB(11 downto 8));
+--       luma_in1(3) <= multi321(mux_in, mux_selB(15 downto 12));
        
-       luma_in2(0) <= multi321(mux_in, mux_selC(3 downto 0));
-       luma_in2(1) <= multi321(mux_in, mux_selC(7 downto 4));
-       luma_in2(2) <= multi321(mux_in, mux_selC(11 downto 8));
-       luma_in2(3) <= multi321(mux_in, mux_selC(15 downto 12));
+--       luma_in2(0) <= multi321(mux_in, mux_selC(3 downto 0));
+--       luma_in2(1) <= multi321(mux_in, mux_selC(7 downto 4));
+--       luma_in2(2) <= multi321(mux_in, mux_selC(11 downto 8));
+--       luma_in2(3) <= multi321(mux_in, mux_selC(15 downto 12));
        
-       chroma_mux_in1(0) <= multi321(mux_in, mux_selD(3 downto 0));
-       chroma_mux_in1(1) <= multi321(mux_in, mux_selD(7 downto 4));
-       chroma_mux_in1(2) <= multi321(mux_in, mux_selD(11 downto 8));
-       chroma_mux_in1(3) <= multi321(mux_in, mux_selD(15 downto 12));
-       chroma_mux_in1(4) <= multi321(mux_in, mux_selD(19 downto 16));
-       chroma_mux_in1(5) <= multi321(mux_in, mux_selD(23 downto 20));
+--       chroma_mux_in1(0) <= multi321(mux_in, mux_selD(3 downto 0));
+--       chroma_mux_in1(1) <= multi321(mux_in, mux_selD(7 downto 4));
+--       chroma_mux_in1(2) <= multi321(mux_in, mux_selD(11 downto 8));
+--       chroma_mux_in1(3) <= multi321(mux_in, mux_selD(15 downto 12));
+--       chroma_mux_in1(4) <= multi321(mux_in, mux_selD(19 downto 16));
+--       chroma_mux_in1(5) <= multi321(mux_in, mux_selD(23 downto 20));
        
-       chroma_mux_in2(0) <= multi321(mux_in, mux_selE(3 downto 0));
-       chroma_mux_in2(1) <= multi321(mux_in, mux_selE(7 downto 4));
-       chroma_mux_in2(2) <= multi321(mux_in, mux_selE(11 downto 8));
-       chroma_mux_in2(3) <= multi321(mux_in, mux_selE(15 downto 12));
-       chroma_mux_in2(4) <= multi321(mux_in, mux_selE(19 downto 16));
-       chroma_mux_in2(5) <= multi321(mux_in, mux_selE(23 downto 20));
+--       chroma_mux_in2(0) <= multi321(mux_in, mux_selE(3 downto 0));
+--       chroma_mux_in2(1) <= multi321(mux_in, mux_selE(7 downto 4));
+--       chroma_mux_in2(2) <= multi321(mux_in, mux_selE(11 downto 8));
+--       chroma_mux_in2(3) <= multi321(mux_in, mux_selE(15 downto 12));
+--       chroma_mux_in2(4) <= multi321(mux_in, mux_selE(19 downto 16));
+--       chroma_mux_in2(5) <= multi321(mux_in, mux_selE(23 downto 20));
        
        -------------------------------------- out put
        
