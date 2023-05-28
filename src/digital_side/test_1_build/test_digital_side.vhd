@@ -63,7 +63,7 @@ signal video_on: std_logic;
 --signal ff_d : STD_LOGIC;
 --signal ff_clk : STD_LOGIC;
 --signal inv_in : std_logic_vector(3 downto 0);
---signal xy_inv_in : std_logic_vector(17 downto 0);
+signal xy_inv_in : std_logic_vector(17 downto 0);
 --signal delay_in : STD_LOGIC;
 --signal edge_detector_in : STD_LOGIC;
 signal colour_swap : STD_LOGIC;
@@ -212,8 +212,8 @@ vga_trimming_signals : entity work.vga_trimming_signals
     xy_count <= (y_count & x_count); -- concat x & y
     xy_invert_logic: entity work.xor18
        port map (
-        a => xy_count, -- comes from the x/y counters !! change it!!
-        b => "000000000000000000",--xy_inv_in,
+        a => xy_count, 
+        b => xy_inv_in,
         y =>  xy_inv_out   
        );
        
@@ -238,7 +238,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
 
        
        ----------------------------------------asignments
-       
+       xy_inv_in(17 downto 0)       <= matrix_out(17 downto 0);
        
        luma_in1(3 downto 0)       <= matrix_out(40 downto 37);
        chroma_mux_in1(2 downto 0) <= matrix_out(43 downto 41);
@@ -283,7 +283,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
        )
        port map (
         a => luma_in1,
-        b => "0000",--luma_in2,
+        b => luma_in2,
         y => luma_out  
        );
        

@@ -49,6 +49,7 @@ architecture behavior of tb_test_digital_side is
     signal clk_x_out: std_logic := '0';
     signal clk_Y_out: std_logic := '0';
     
+  
 
 begin
     RBG<= RBG_out;
@@ -104,27 +105,42 @@ begin
         rst <= '0';
         wait for 100 ns;
         -- Test case 1
-        matrix_in_addr <= "100101"; -- this is the output
+        
+        ---------------------------------------------------------MUX WR COMAND -- luma out x1
+        matrix_in_addr <= "100111"; -- this is the output
         matrix_in_mux  <= "000001"; -- ithis is the input
-        matrix_cs <= "0001";
-        
+        matrix_cs <= "0001";   
         wait for 50 ns;
         matrix_load <= '1';
         matrix_latch <= '1';
         wait for 50 ns;
         matrix_load <= '0';
         matrix_latch <= '0';
-        
-        matrix_cs <= "0010";
-        matrix_in_addr <= "100101";
-        matrix_in_mux  <= "000111";
-        
+        ---------------------------------------------------------
+        ---------------------------------------------------------MUX WR COMAND -- luma out x7
+        matrix_in_addr <= "100111"; -- this is the output
+        matrix_in_mux  <= "000111"; -- ithis is the input
+        matrix_cs <= "0010";   
         wait for 50 ns;
         matrix_load <= '1';
         matrix_latch <= '1';
         wait for 50 ns;
         matrix_load <= '0';
         matrix_latch <= '0';
+        ---------------------------------------------------------
+        ---------------------------------------------------------MUX WR COMAND -- xy invert bit x0 from x5
+        matrix_in_addr <= "000000"; -- this is the output
+        matrix_in_mux  <= "000101"; -- ithis is the input
+        matrix_cs <= "0010";   
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        ---------------------------------------------------------
+        
+
 
         -- End simulation
        -- wait for 10 ns;
