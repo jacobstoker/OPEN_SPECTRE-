@@ -12,10 +12,11 @@ architecture behavior of tb_test_digital_side is
             clk_25_in: in std_logic;
             rst: in std_logic;
             RBG_out: out std_logic_vector(23 downto 0);
-            mux_selB_i: in std_logic_vector(16 downto 0);
-            mux_selC_i: in std_logic_vector(16 downto 0);
-            mux_selD_i: in std_logic_vector(31 downto 0);
-            mux_selE_i: in std_logic_vector(31 downto 0);
+            matrix_in_addr: in std_logic_vector(5 downto 0);
+            matrix_in_mux   : in STD_LOGIC_VECTOR (5 downto 0);
+            matrix_load: in STD_LOGIC;
+            matrix_latch: in STD_LOGIC;
+            matrix_cs: in std_logic_vector(3 downto 0);
             chrom_swap_i: in std_logic;
             clk_x_out  : out STD_LOGIC;
             clk_y_out  : out STD_LOGIC
@@ -39,10 +40,11 @@ architecture behavior of tb_test_digital_side is
     signal rst: std_logic := '0';
     signal RBG_out: std_logic_vector(23 downto 0);
     signal RBG: std_logic_vector(23 downto 0);
-    signal mux_selB_i: std_logic_vector(16 downto 0);
-    signal mux_selC_i: std_logic_vector(16 downto 0);
-    signal mux_selD_i: std_logic_vector(31 downto 0);
-    signal mux_selE_i: std_logic_vector(31 downto 0);
+    signal matrix_in_addr:  std_logic_vector(5 downto 0);
+    signal matrix_in_mux:  std_logic_vector(5 downto 0);
+    signal matrix_load:  STD_LOGIC;
+    signal matrix_latch: STD_LOGIC;
+    signal matrix_cs:  std_logic_vector(3 downto 0);
     signal chrom_swap_i: std_logic := '0';
     signal clk_x_out: std_logic := '0';
     signal clk_Y_out: std_logic := '0';
@@ -57,10 +59,11 @@ begin
             clk_25_in => clk_25_in,
             rst => rst,
             RBG_out => RBG_out,
-            mux_selB_i => mux_selB_i,
-            mux_selC_i => mux_selC_i,
-            mux_selD_i => mux_selD_i,
-            mux_selE_i => mux_selE_i,
+            matrix_in_addr => matrix_in_addr,
+            matrix_in_mux => matrix_in_mux,
+            matrix_load => matrix_load,
+            matrix_latch => matrix_latch,
+            matrix_cs => matrix_cs,
             chrom_swap_i => chrom_swap_i,
             clk_x_out => clk_x_out,
             clk_Y_out => clk_Y_out
@@ -91,22 +94,37 @@ begin
     simulation: process
     begin
         -- Reset
+        rst <= '0';
+        wait for 100 ns;
         rst <= '1';
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        matrix_cs <= "0000";
         wait for 100 ns;
         rst <= '0';
-        mux_selB_i <= '0'&"0101"&"0101"&"0101"&"0011";--std_logic_vector(to_unsigned(16, 17));
-        mux_selC_i <= '0'&"1110"&"1110"&"1110"&"1101";--std_logic_vector(to_unsigned(15, 17));
-        mux_selD_i <= std_logic_vector(to_unsigned(16, 32));
-        mux_selE_i <= std_logic_vector(to_unsigned(1, 32));
-        
-
+        wait for 100 ns;
         -- Test case 1
-        chrom_swap_i <= '0';
-        wait for 200 ns;
-
---        -- Test case 2
---        chrom_swap_i <= '1';
---        wait for 200 ns;
+        matrix_in_addr <= "100101"; -- this is the output
+        matrix_in_mux  <= "000001"; -- ithis is the input
+        matrix_cs <= "0001";
+        
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        
+        matrix_cs <= "0010";
+        matrix_in_addr <= "100101";
+        matrix_in_mux  <= "000111";
+        
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
 
         -- End simulation
        -- wait for 10 ns;

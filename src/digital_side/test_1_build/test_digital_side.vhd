@@ -36,20 +36,21 @@ use ieee.numeric_std.all;
 
 entity test_digital_side is
   Port ( 
-        sys_clk      :in    STD_LOGIC;
+      sys_clk      :in    STD_LOGIC;
       clk_25_in      :in    STD_LOGIC;
       rst      :in    STD_LOGIC;
       RBG_out       : out STD_LOGIC_VECTOR (23 downto 0);
       
       --temp signals to drive the mux's
-         mux_selB_i : in std_logic_vector(16 downto 0);
-         mux_selC_i : in std_logic_vector(16 downto 0);
-         mux_selD_i : in std_logic_vector(31 downto 0);
-         mux_selE_i : in std_logic_vector(31 downto 0);
-         chrom_swap_i      :in    STD_LOGIC;
+    matrix_in_addr: in std_logic_vector(5 downto 0);
+    matrix_in_mux   : in STD_LOGIC_VECTOR (5 downto 0);
+    matrix_load: in STD_LOGIC;
+    matrix_latch: in STD_LOGIC;
+    matrix_cs: in std_logic_vector(3 downto 0);
+    chrom_swap_i      :in    STD_LOGIC;
          
-         clk_x_out  : out STD_LOGIC;
-         clk_y_out  : out STD_LOGIC
+     clk_x_out  : out STD_LOGIC;
+     clk_y_out  : out STD_LOGIC
   );
 end test_digital_side;
 
@@ -57,6 +58,7 @@ architecture Behavioral of test_digital_side is
 --Global Signals
 signal clk_x : STD_LOGIC;
 signal clk_y : STD_LOGIC;
+signal video_on: std_logic; 
 --Matrix Out to module in
 --signal ff_d : STD_LOGIC;
 --signal ff_clk : STD_LOGIC;
@@ -120,11 +122,11 @@ signal xy_inv_out : std_logic_vector(17 downto 0);
 -- constant y_out : integer := 8;
  signal clk       : STD_LOGIC;
  signal matrix_in : STD_LOGIC_VECTOR (64 downto 0) := (others => '0');
- signal matrix_in_addr  : STD_LOGIC_VECTOR (5 downto 0);
- signal matrix_load        : std_logic ;
- signal matrix_latch        :  std_logic ;
- signal matrix_cs        :  STD_LOGIC_VECTOR(3 downto 0) ;
- signal matrix_out :  STD_LOGIC_VECTOR (64 downto 0);
+-- signal matrix_in_addr  : STD_LOGIC_VECTOR (5 downto 0);
+-- signal matrix_load        : std_logic ;
+-- signal matrix_latch        :  std_logic ;
+-- signal matrix_cs        :  STD_LOGIC_VECTOR(3 downto 0) ;
+ signal matrix_out :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
 -- signal wr        : STD_LOGIC;
 -- signal  Data_In  :    std_logic_vector((x_in * 8) - 1 downto 0);
 -- signal  en       :    std_logic_vector(x_in -1 downto 0);
@@ -179,10 +181,6 @@ begin
       luma_vid_out <= luma_out;
       chroma_vid_out <= chroma_mux_out;
     --temp controlls of muxes
- mux_selB <= mux_selB_i;
- mux_selC <= mux_selC_i;
- mux_selD <= mux_selD_i;
- mux_selE <= mux_sele_i;
  chrom_swap <= chrom_swap_i;
  clk_x_out <= clk_x;
   clk_y_out <= clk_y;
@@ -192,7 +190,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
       clk_25mhz   => clk_25, 
         h_sync => clk_x,      
         v_sync  => clk_y,     
-        video_on  => open
+        video_on  => video_on
         );
 
     x_counter : entity work.counter
@@ -211,7 +209,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
         count => y_count
         );
        
-    xy_count <= (y_count & x_count); -- concat x & y 
+    xy_count <= (y_count & x_count); -- concat x & y
     xy_invert_logic: entity work.xor18
        port map (
         a => xy_count, -- comes from the x/y counters !! change it!!
@@ -219,13 +217,17 @@ vga_trimming_signals : entity work.vga_trimming_signals
         y =>  xy_inv_out   
        );
        
-       matrix_in(17 downto 0) <= xy_inv_out;
+      
+       matrix_in(0) <= '0';
+       matrix_in(18 downto 1) <= xy_inv_out;  -- the 0 at the start is a place holder for no pins
+       matrix_in(31 downto 19) <= (others => '0');
     ---------------------------------------------------------------
     -- HUGE MULTIPLEXER 
     pin_matrix : entity work.huge_crospoint_wraper
     Port map ( 
            matrix_in => matrix_in,
            in_addr => matrix_in_addr,
+           in_mux => matrix_in_mux,
            clk        => clk,
            rst       => rst,
            load       =>matrix_load,
@@ -236,8 +238,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
 
        
        ----------------------------------------asignments
-       mux_in(17 downto 0) <= xy_count;
-       mux_in(31 downto 18) <= (others => '0');
+       
        
        luma_in1(3 downto 0)       <= matrix_out(40 downto 37);
        chroma_mux_in1(2 downto 0) <= matrix_out(43 downto 41);
@@ -273,7 +274,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
 --       chroma_mux_in2(4) <= multi321(mux_in, mux_selE(19 downto 16));
 --       chroma_mux_in2(5) <= multi321(mux_in, mux_selE(23 downto 20));
        
-       -------------------------------------- out put
+       -------------------------------------- output
        
        
        luma_output: entity work.xor_n
@@ -282,8 +283,8 @@ vga_trimming_signals : entity work.vga_trimming_signals
        )
        port map (
         a => luma_in1,
-        b =>  "0000",-- luma_in2,
-        y =>  luma_out  
+        b => "0000",--luma_in2,
+        y => luma_out  
        );
        
            chroma_output : entity work.mux_5 
@@ -297,7 +298,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
        -----------------------------------------
 
    -- -- Pack chroma and luma into YUV converter
-    Y <= luma_vid_out & "0000";  
+    Y <= (luma_vid_out) & "0000";  
     U <= chroma_vid_out(5 downto 3) & "00000";  
     V <= chroma_vid_out(2 downto 0) & "00000";  
     -- YUV to RGB converter

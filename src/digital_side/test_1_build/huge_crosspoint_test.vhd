@@ -36,6 +36,7 @@ use ieee.numeric_std.all;
 entity huge_crospoint_test is
     Port ( matrix_in : in STD_LOGIC_VECTOR (64 downto 0);
            in_addr  : in STD_LOGIC_VECTOR (5 downto 0);
+           in_mux   : in STD_LOGIC_VECTOR (5 downto 0);
            clk        : in std_logic ;
            rst        : in std_logic ;
            load        : in std_logic ;
@@ -72,7 +73,7 @@ process(clk)
             --mux_sel_latch <= (others => '0'); -- this line creates multi drive
             
         elsif (load_en = '1') then
-            mux_sel_A((6 * to_integer(unsigned(in_addr)) + 5)  downto 6*to_integer(unsigned(in_addr))) <= in_addr;
+            mux_sel_A((6 * to_integer(unsigned(in_addr)) + 5)  downto 6*to_integer(unsigned(in_addr))) <= in_mux;
         end if;
         end if;
 end process;
@@ -89,7 +90,7 @@ process(clk)
  g_GENERATE_HUGE_MATRIX_A: for ii in 0 to 63 generate
     matrix_out_A(ii) <= mux_n(matrix_in, mux_sel_latch((ii*6 + 5) downto ii*6));
   end generate g_GENERATE_HUGE_MATRIX_A;
-  
+  matrix_out_A(64) <= '0'; -- somthing about the above generate has issues with the 64th mux so ill just fix it to 0 for now
 matrix_out <= matrix_out_A;
 
 
