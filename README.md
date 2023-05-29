@@ -72,7 +72,7 @@ Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you i
 - If you are not any good at git/GitHub, if you write any modules you can email them to us and we will integrate them into the project
 
 ### 🐙License🐙
-MIT
+Creative Commons CC BY-NC (if you want to use any part let me know.... this is just to stop large comercial companies from taking this if they ever decided to cloan the Spectre)
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
