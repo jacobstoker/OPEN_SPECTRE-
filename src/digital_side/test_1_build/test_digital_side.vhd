@@ -47,7 +47,6 @@ entity test_digital_side is
     matrix_load: in STD_LOGIC;
     matrix_latch: in STD_LOGIC;
     matrix_cs: in std_logic_vector(3 downto 0);
-    chrom_swap_i      :in    STD_LOGIC;
          
      clk_x_out  : out STD_LOGIC;
      clk_y_out  : out STD_LOGIC
@@ -59,10 +58,12 @@ architecture Behavioral of test_digital_side is
 signal clk_x : STD_LOGIC;
 signal clk_y : STD_LOGIC;
 signal video_on: std_logic; 
+
+   
 --Matrix Out to module in
 --signal ff_d : STD_LOGIC;
 --signal ff_clk : STD_LOGIC;
---signal inv_in : std_logic_vector(3 downto 0);
+signal inv_in : std_logic_vector(3 downto 0);
 signal xy_inv_in : std_logic_vector(17 downto 0);
 --signal delay_in : STD_LOGIC;
 --signal edge_detector_in : STD_LOGIC;
@@ -71,14 +72,12 @@ signal luma_in1 : std_logic_vector(3 downto 0);
 signal luma_in2 : std_logic_vector(3 downto 0);
 --signal chroma_in1 : std_logic_vector(5 downto 0);
 --signal chroma_in2 : std_logic_vector(5 downto 0);
---signal overlay_gate1 : std_logic_vector(3 downto 0);
---signal overlay_gate2 : std_logic_vector(3 downto 0);
+signal overlay_gate1 : std_logic_vector(3 downto 0);
+signal overlay_gate2 : std_logic_vector(3 downto 0);
 
 
 --Matrix Out to global
 signal luma_out : std_logic_vector(3 downto 0);
---signal chroma_out1 : std_logic_vector(2 downto 0);
---signal chroma_out2 : std_logic_vector(2 downto 0);
 
 -- Chroma Mux input/output signals
 --signal chroma_xor_1   : std_logic_vector(5 downto 0);
@@ -87,7 +86,7 @@ signal chroma_mux_in2 : std_logic_vector(5 downto 0);
 signal chroma_mux_out : std_logic_vector(5 downto 0);
 
 -- Overlay Gates Signals
---signal not_overlay_gate2 : std_logic_vector(3 downto 0);
+signal not_overlay_gate2 : std_logic_vector(3 downto 0);
 
 --Matrix In from module out
 --signal ff_q : STD_LOGIC;
@@ -98,28 +97,29 @@ signal y_count : std_logic_vector(8 downto 0);
 signal xy_count : std_logic_vector(17 downto 0);
 signal xy_inv_out : std_logic_vector(17 downto 0);
 --signal delay_out : STD_LOGIC;
---signal slow_cnt_6 : STD_LOGIC;
---signal slow_cnt_3 : STD_LOGIC;
---signal slow_cnt_1_5 : STD_LOGIC;
---signal slow_cnt_0_6 : STD_LOGIC;
---signal slow_cnt_0_4 : STD_LOGIC;
---signal slow_cnt_0_2 : STD_LOGIC;
+signal slow_cnt_6 : STD_LOGIC;
+signal slow_cnt_3 : STD_LOGIC;
+signal slow_cnt_1_5 : STD_LOGIC;
+signal slow_cnt_0_6 : STD_LOGIC;
+signal slow_cnt_0_4 : STD_LOGIC;
+signal slow_cnt_0_2 : STD_LOGIC;
 --signal ext_vid_out : std_logic_vector(6 downto 0);
 --signal edge_detector_out : std_logic_vector(3 downto 0);
---signal overlay_gate_out : std_logic_vector(3 downto 0);
+signal overlay_gate_out : std_logic_vector(3 downto 0);
+
+
+  signal comp_output : STD_LOGIC_VECTOR (6 downto 0);
 
 --Matrix Module controls
---signal vid_span : std_logic_vector(7 downto 0);
+signal vid_span : std_logic_vector(7 downto 0);
 
 
 --To analog side
---signal acm_out1 : STD_LOGIC;
---signal acm_out2 : STD_LOGIC;
+signal acm_out1 : STD_LOGIC;
+signal acm_out2 : STD_LOGIC;
 
 -- Matrix control signals
 -- Matrix full
--- constant x_in : integer := 8;
--- constant y_out : integer := 8;
  signal clk       : STD_LOGIC;
  signal matrix_in : STD_LOGIC_VECTOR (64 downto 0) := (others => '0');
 -- signal matrix_in_addr  : STD_LOGIC_VECTOR (5 downto 0);
@@ -127,26 +127,15 @@ signal xy_inv_out : std_logic_vector(17 downto 0);
 -- signal matrix_latch        :  std_logic ;
 -- signal matrix_cs        :  STD_LOGIC_VECTOR(3 downto 0) ;
  signal matrix_out :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
--- signal wr        : STD_LOGIC;
--- signal  Data_In  :    std_logic_vector((x_in * 8) - 1 downto 0);
--- signal  en       :    std_logic_vector(x_in -1 downto 0);
--- signal  mux_sel  :    std_logic_vector((x_in * 3)-1 downto 0);
--- signal  dmux_sel  :    std_logic_vector((y_out * 3)-1 downto 0);
--- signal  en_sel   :    std_logic_vector(positive(ceil(log2(real(x_in)))) downto 0); --this is ugly, i should fix it
--- signal  Data_out :   std_logic_vector((y_out * 8)-1 downto 0);
----- bus overlap and interleaver
---signal  interleaver_in  :    std_logic_vector((x_in * 8) - 1 downto 0);
---signal  interleaver_out  :    std_logic_vector((x_in * 8) - 1 downto 0);
---signal  overlap_in  :    std_logic_vector((x_in * 8) - 1 downto 0);
---signal  overlap_out  :    std_logic_vector((x_in * 8) - 1 downto 0);
+
 
 -- Colour Output
 signal luma_vid_out : std_logic_vector(3 downto 0);
 signal chroma_vid_out : std_logic_vector(5 downto 0);
 
 signal Y : std_logic_vector(7 downto 0);
-signal U : std_logic_vector(7 downto 0);
-signal V : std_logic_vector(7 downto 0);
+signal Cr : std_logic_vector(7 downto 0);
+signal Cb : std_logic_vector(7 downto 0);
 signal R : std_logic_vector(7 downto 0);
 signal G : std_logic_vector(7 downto 0);
 signal B : std_logic_vector(7 downto 0);
@@ -164,12 +153,11 @@ signal chrom_swap : STD_LOGIC;
 --External signals
 signal clk_25 : STD_LOGIC;
 signal ff_clr : STD_LOGIC;
+signal comp_luma_i : STD_LOGIC_VECTOR (7 downto 0);
 
 --mux function
  function multi321 (A,B: in std_logic_vector) return std_logic is
-
   begin
-
       return A(to_integer(unsigned(B)));
   end multi321;
 
@@ -180,12 +168,10 @@ begin
       clk_25    <= clk_25_in;
       luma_vid_out <= luma_out;
       chroma_vid_out <= chroma_mux_out;
-    --temp controlls of muxes
- chrom_swap <= chrom_swap_i;
- clk_x_out <= clk_x;
-  clk_y_out <= clk_y;
+      clk_x_out <= clk_x;
+      clk_y_out <= clk_y;
 
-vga_trimming_signals : entity work.vga_trimming_signals
+     vga_trimming_signals : entity work.vga_trimming_signals
         port map (
       clk_25mhz   => clk_25, 
         h_sync => clk_x,      
@@ -217,10 +203,42 @@ vga_trimming_signals : entity work.vga_trimming_signals
         y =>  xy_inv_out   
        );
        
-      
-       matrix_in(0) <= '0';
-       matrix_in(18 downto 1) <= xy_inv_out;  -- the 0 at the start is a place holder for no pins
-       matrix_in(31 downto 19) <= (others => '0');
+   slow_counter : entity work.pulse_generator ------get it working
+        port map (
+            clk => clk_25,
+            pulse_6hz => slow_cnt_6,
+            pulse_3hz => slow_cnt_3,
+            pulse_1_5hz => slow_cnt_1_5,
+            pulse_0_6hz => slow_cnt_0_6,
+            pulse_0_4hz => slow_cnt_0_4,
+            pulse_0_2hz => slow_cnt_0_2 
+        );
+
+    not_overlay_gate2 <= NOT overlay_gate2; 
+    overlay_gates: entity work.nand4
+       port map (
+        a => overlay_gate1,
+        b =>  not_overlay_gate2,
+        y =>  overlay_gate_out  
+       ); 
+       
+    inverters: entity work.invert_4
+       port map (
+        input => inv_in,
+        output =>  inv_out   
+       );
+       
+       
+       
+       
+    
+    comparitor : entity work.compare_7 
+    Port map( 
+       clk   => clk,
+       luma_i => comp_luma_i,
+       output => comp_output,
+       span => "00000000"
+           );
     ---------------------------------------------------------------
     -- HUGE MULTIPLEXER 
     pin_matrix : entity work.huge_crospoint_wraper
@@ -238,7 +256,36 @@ vga_trimming_signals : entity work.vga_trimming_signals
 
        
        ----------------------------------------asignments
+       -- MAtrix IN
+       matrix_in(0) <= '0';
+       matrix_in(18 downto 1) <= xy_inv_out;  -- the 0 at the start is a place holder for no pins
+       matrix_in(19) <= slow_cnt_6;
+       matrix_in(20) <= slow_cnt_3;
+       matrix_in(21) <= slow_cnt_1_5;
+       matrix_in(22) <= slow_cnt_0_6;
+       matrix_in(23) <= slow_cnt_0_4;
+       matrix_in(24) <= slow_cnt_0_2;
+       matrix_in(28 downto 25) <= overlay_gate_out;
+       matrix_in(31 downto 29) <= inv_out;
+       
+       matrix_in(41 downto 50) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
+       
+       
+       -- MATRIX OUT
        xy_inv_in(17 downto 0)       <= matrix_out(17 downto 0);
+       overlay_gate1(0) <= matrix_out(18);
+       overlay_gate2(0) <= matrix_out(19);
+       overlay_gate1(1) <= matrix_out(20);
+       overlay_gate2(1) <= matrix_out(21);
+       overlay_gate1(2) <= matrix_out(22);
+       overlay_gate2(2) <= matrix_out(23);
+       overlay_gate1(3) <= matrix_out(24);
+       overlay_gate2(3) <= matrix_out(25);
+       inv_in           <= matrix_out(29 downto 26);
+       
+       
+       acm_out1                   <= matrix_out(35);
+       acm_out1                   <= matrix_out(36);
        
        luma_in1(3 downto 0)       <= matrix_out(40 downto 37);
        chroma_mux_in1(2 downto 0) <= matrix_out(43 downto 41);
@@ -246,34 +293,9 @@ vga_trimming_signals : entity work.vga_trimming_signals
        luma_in2(3 downto 0)       <= matrix_out(50 downto 47);
        chroma_mux_in1(5 downto 3) <= matrix_out(53 downto 51); 
        chroma_mux_in2(5 downto 3) <= matrix_out(56 downto 54);
+       chrom_swap                 <= matrix_out(57);
 
-       
-
-
---       luma_in1(0) <= multi321(mux_in, mux_selB(3 downto 0));
---       luma_in1(1) <= multi321(mux_in, mux_selB(7 downto 4));
---       luma_in1(2) <= multi321(mux_in, mux_selB(11 downto 8));
---       luma_in1(3) <= multi321(mux_in, mux_selB(15 downto 12));
-       
---       luma_in2(0) <= multi321(mux_in, mux_selC(3 downto 0));
---       luma_in2(1) <= multi321(mux_in, mux_selC(7 downto 4));
---       luma_in2(2) <= multi321(mux_in, mux_selC(11 downto 8));
---       luma_in2(3) <= multi321(mux_in, mux_selC(15 downto 12));
-       
---       chroma_mux_in1(0) <= multi321(mux_in, mux_selD(3 downto 0));
---       chroma_mux_in1(1) <= multi321(mux_in, mux_selD(7 downto 4));
---       chroma_mux_in1(2) <= multi321(mux_in, mux_selD(11 downto 8));
---       chroma_mux_in1(3) <= multi321(mux_in, mux_selD(15 downto 12));
---       chroma_mux_in1(4) <= multi321(mux_in, mux_selD(19 downto 16));
---       chroma_mux_in1(5) <= multi321(mux_in, mux_selD(23 downto 20));
-       
---       chroma_mux_in2(0) <= multi321(mux_in, mux_selE(3 downto 0));
---       chroma_mux_in2(1) <= multi321(mux_in, mux_selE(7 downto 4));
---       chroma_mux_in2(2) <= multi321(mux_in, mux_selE(11 downto 8));
---       chroma_mux_in2(3) <= multi321(mux_in, mux_selE(15 downto 12));
---       chroma_mux_in2(4) <= multi321(mux_in, mux_selE(19 downto 16));
---       chroma_mux_in2(5) <= multi321(mux_in, mux_selE(23 downto 20));
-       
+      
        -------------------------------------- output
        
        
@@ -287,7 +309,7 @@ vga_trimming_signals : entity work.vga_trimming_signals
         y => luma_out  
        );
        
-           chroma_output : entity work.mux_5 
+     chroma_output : entity work.mux_5 
         Port map ( 
             sel => chrom_swap, -- temp val was colour swap
             a => chroma_mux_in1,
@@ -299,11 +321,19 @@ vga_trimming_signals : entity work.vga_trimming_signals
 
    -- -- Pack chroma and luma into YUV converter
     Y <= (luma_vid_out) & "0000";  
-    U <= chroma_vid_out(5 downto 3) & "00000";  
-    V <= chroma_vid_out(2 downto 0) & "00000";  
-    -- YUV to RGB converter
-
-     -- Pack rgb output into output bus
-     RBG_out <= Y & U & V;
+    Cr <= chroma_vid_out(5 downto 3) & "00000";  
+    Cb <= chroma_vid_out(2 downto 0) & "00000";  
+    -- YCrCb to RGB converter
+    colour_space_conv : entity work.ycrcr2rgb_simple
+      Port map( 
+            y => y,
+            Cr => Cr,
+            Cb => Cb,
+            R => R,
+            G => G,
+            B => B
+      );
+    -- Pack rgb output into output bus
+    RBG_out <= R & G & B;
 
 end Behavioral;
