@@ -266,9 +266,9 @@ begin
        matrix_in(23) <= slow_cnt_0_4;
        matrix_in(24) <= slow_cnt_0_2;
        matrix_in(28 downto 25) <= overlay_gate_out;
-       matrix_in(31 downto 29) <= inv_out;
+       matrix_in(32 downto 29) <= inv_out;
        
-       matrix_in(41 downto 50) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
+       --matrix_in(50 downto 46) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
        
        
        -- MATRIX OUT
@@ -289,9 +289,9 @@ begin
        
        luma_in1(3 downto 0)       <= matrix_out(40 downto 37);
        chroma_mux_in1(2 downto 0) <= matrix_out(43 downto 41);
-       chroma_mux_in2(2 downto 0) <= matrix_out(46 downto 44);
+       chroma_mux_in1(5 downto 3) <= matrix_out(46 downto 44);
        luma_in2(3 downto 0)       <= matrix_out(50 downto 47);
-       chroma_mux_in1(5 downto 3) <= matrix_out(53 downto 51); 
+       chroma_mux_in2(2 downto 0) <= matrix_out(53 downto 51); 
        chroma_mux_in2(5 downto 3) <= matrix_out(56 downto 54);
        chrom_swap                 <= matrix_out(57);
 

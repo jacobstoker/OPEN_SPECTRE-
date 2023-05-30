@@ -17,7 +17,6 @@ architecture behavior of tb_test_digital_side is
             matrix_load: in STD_LOGIC;
             matrix_latch: in STD_LOGIC;
             matrix_cs: in std_logic_vector(3 downto 0);
-            chrom_swap_i: in std_logic;
             clk_x_out  : out STD_LOGIC;
             clk_y_out  : out STD_LOGIC
         );
@@ -45,7 +44,6 @@ architecture behavior of tb_test_digital_side is
     signal matrix_load:  STD_LOGIC;
     signal matrix_latch: STD_LOGIC;
     signal matrix_cs:  std_logic_vector(3 downto 0);
-    signal chrom_swap_i: std_logic := '0';
     signal clk_x_out: std_logic := '0';
     signal clk_Y_out: std_logic := '0';
     
@@ -65,7 +63,6 @@ begin
             matrix_load => matrix_load,
             matrix_latch => matrix_latch,
             matrix_cs => matrix_cs,
-            chrom_swap_i => chrom_swap_i,
             clk_x_out => clk_x_out,
             clk_Y_out => clk_Y_out
         );
@@ -76,9 +73,9 @@ begin
             clk  => clk_25_in,
             hs   => clk_x_out,   
             vs   => clk_y_out,  
-            r    => RBG(23 downto 16),--RBG(7 downto 0),
-            g    => RBG(23 downto 16),--RBG(15 downto 8),
-            b    => RBG(23 downto 16)--RBG(23 downto 16)
+            r    => RBG(7 downto 0),
+            g    => RBG(15 downto 8),
+            b    => RBG(23 downto 16)
             
         );
 
@@ -106,9 +103,9 @@ begin
         wait for 100 ns;
         -- Test case 1
         
-        ---------------------------------------------------------MUX WR COMAND -- luma out x1
-        matrix_in_addr <= "100111"; -- this is the output
-        matrix_in_mux  <= "000001"; -- ithis is the input
+        ---------------------------------------------------------MUX WR COMAND -- 
+        matrix_in_addr <= std_logic_vector(to_unsigned(40, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(4, 6)); -- ithis is the input
         matrix_cs <= "0001";   
         wait for 50 ns;
         matrix_load <= '1';
@@ -117,9 +114,9 @@ begin
         matrix_load <= '0';
         matrix_latch <= '0';
         ---------------------------------------------------------
-        ---------------------------------------------------------MUX WR COMAND -- luma out x7
-        matrix_in_addr <= "100111"; -- this is the output
-        matrix_in_mux  <= "000111"; -- ithis is the input
+        ---------------------------------------------------------MUX WR COMAND -- 
+        matrix_in_addr <=std_logic_vector(to_unsigned(43, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(7, 6)); -- ithis is the input
         matrix_cs <= "0010";   
         wait for 50 ns;
         matrix_load <= '1';
@@ -128,9 +125,9 @@ begin
         matrix_load <= '0';
         matrix_latch <= '0';
         ---------------------------------------------------------
-        ---------------------------------------------------------MUX WR COMAND -- xy invert bit x0 from x5
-        matrix_in_addr <= "000000"; -- this is the output
-        matrix_in_mux  <= "000101"; -- ithis is the input
+        ---------------------------------------------------------
+        matrix_in_addr <= std_logic_vector(to_unsigned(46, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(15, 6)); -- ithis is the input
         matrix_cs <= "0010";   
         wait for 50 ns;
         matrix_load <= '1';
