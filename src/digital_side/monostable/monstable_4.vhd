@@ -14,6 +14,7 @@ end monstable_4;
 
 architecture Behavioral of monstable_4 is
 signal ed_o0, ed_o1, ed_o2, ed_o3 : std_logic;
+signal ed_o2_d,ed_o2_d2, ed_o3_d,ed_o3_d2, ed_o2_stretch, ed_o3_stretch  : std_logic;
 
 begin
     ed_1: entity work.edge_detector
@@ -26,7 +27,7 @@ begin
         port map (
             x => input,
             clk => clk,
-            rising_edge_O => ed_o1
+            falling_edge_O => ed_o1
         );
      ed_3: entity work.edge_detector
         port map (
@@ -38,12 +39,25 @@ begin
         port map (
             x => input,
             clk => clk,
-            rising_edge_O => ed_o3
+            falling_edge_O => ed_o3
         );
         
-        output(0) <= (not input) nand ed_o0;
-        output(1) <= (input) nand ed_o1;
-        output(2) <= (not input) nand ed_o2;
-        output(3) <= (input) nand ed_o3;
+        process(clk) -- edge width stretched 3 clks, does it need to be more?
+        begin
+            ed_o2_d <= ed_o2;
+            ed_o2_d2 <= ed_o2_d;
+            ed_o3_d <= ed_o3;
+            ed_o3_d2 <= ed_o3_d;
+        
+        end process;
+        
+        
+        ed_o2_stretch <= ed_o2 and ed_o2_d and ed_o2_d2;
+        ed_o3_stretch <= ed_o3 and ed_o3_d and ed_o3_d2;
+        
+        output(0) <= ed_o0;
+        output(1) <= ed_o1;
+        output(2) <=  ed_o2_stretch;
+        output(3) <=  ed_o3_stretch;
 
 end Behavioral;
