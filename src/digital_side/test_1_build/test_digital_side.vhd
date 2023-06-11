@@ -203,15 +203,15 @@ begin
         y =>  xy_inv_out   
        );
        
-   slow_counter : entity work.pulse_generator ------get it working
+   slow_counter : entity work.slow_counter ------get it working
         port map (
             clk => clk_25,
-            pulse_6hz => slow_cnt_6,
-            pulse_3hz => slow_cnt_3,
-            pulse_1_5hz => slow_cnt_1_5,
-            pulse_0_6hz => slow_cnt_0_6,
-            pulse_0_4hz => slow_cnt_0_4,
-            pulse_0_2hz => slow_cnt_0_2 
+            hz6 => slow_cnt_6,
+            hz3 => slow_cnt_3,
+            hz1_5 => slow_cnt_1_5,
+            hz_6 => slow_cnt_0_6,
+            hz_4 => slow_cnt_0_4,
+            hz_2 => slow_cnt_0_2 
         );
 
     not_overlay_gate2 <= NOT overlay_gate2; 
