@@ -65,7 +65,7 @@ signal video_on: std_logic;
 --signal ff_clk : STD_LOGIC;
 signal inv_in : std_logic_vector(3 downto 0);
 signal xy_inv_in : std_logic_vector(17 downto 0);
---signal delay_in : STD_LOGIC;
+signal delay_in : STD_LOGIC;
 signal edge_detector_in : STD_LOGIC;
 signal colour_swap : STD_LOGIC;
 signal luma_in1 : std_logic_vector(3 downto 0);
@@ -74,7 +74,8 @@ signal luma_in2 : std_logic_vector(3 downto 0);
 --signal chroma_in2 : std_logic_vector(5 downto 0);
 signal overlay_gate1 : std_logic_vector(3 downto 0);
 signal overlay_gate2 : std_logic_vector(3 downto 0);
-
+signal ff_in_a : STD_LOGIC;
+signal ff_in_b : STD_LOGIC;
 
 --Matrix Out to global
 signal luma_out : std_logic_vector(3 downto 0);
@@ -96,7 +97,7 @@ signal x_count : std_logic_vector(8 downto 0);
 signal y_count : std_logic_vector(8 downto 0);
 signal xy_count : std_logic_vector(17 downto 0);
 signal xy_inv_out : std_logic_vector(17 downto 0);
---signal delay_out : STD_LOGIC;
+signal delay_out : STD_LOGIC;
 signal slow_cnt_6 : STD_LOGIC;
 signal slow_cnt_3 : STD_LOGIC;
 signal slow_cnt_1_5 : STD_LOGIC;
@@ -106,7 +107,8 @@ signal slow_cnt_0_2 : STD_LOGIC;
 --signal ext_vid_out : std_logic_vector(6 downto 0);
 signal edge_detector_out : std_logic_vector(3 downto 0);
 signal overlay_gate_out : std_logic_vector(3 downto 0);
-
+signal ff_out_a : STD_LOGIC;
+signal ff_out_b : STD_LOGIC;
 
   signal comp_output : STD_LOGIC_VECTOR (6 downto 0);
 
@@ -229,12 +231,37 @@ begin
        );
        
     edge : entity work.monstable_4
-  Port map( 
-        input => edge_detector_in,
-        clk  => clk,
-        output => edge_detector_out 
-  );
-       
+      Port map( 
+            input => edge_detector_in,
+            clk  => clk,
+            output => edge_detector_out 
+      );
+      
+    delay_800 : entity work.delay_800us
+      Port map( 
+            input => delay_in,
+            clk  => clk,
+            output => delay_out 
+      );
+           
+    flip_flop1: entity work.D_flipflop_ext
+      port map (
+           D => ff_in_a,
+           clk => clk_y,
+           clear => '0',
+           preset => '0',
+           Q => open,
+           Q_not => ff_out_a
+        );   
+    flip_flop2: entity work.D_flipflop_ext
+      port map (
+           D => ff_in_b,
+           clk => clk_y,
+           clear => '0',
+           preset => '0',
+           Q => ff_out_b,
+           Q_not => open
+        );     
        
        
     
@@ -274,7 +301,10 @@ begin
        matrix_in(28 downto 25) <= overlay_gate_out;
        matrix_in(32 downto 29) <= inv_out;
        matrix_in(36 downto 33) <= edge_detector_out;
-       
+       matrix_in(37) <= delay_out;
+       matrix_in(38) <= ff_out_a;
+       matrix_in(39) <= ff_out_b;
+
        --matrix_in(50 downto 46) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
        
        
@@ -290,8 +320,9 @@ begin
        overlay_gate2(3) <= matrix_out(25);
        inv_in           <= matrix_out(29 downto 26);
        edge_detector_in <= matrix_out(30);
-       
-       
+       delay_in         <= matrix_out(31);
+       ff_out_a         <= matrix_out(32);
+       ff_out_b         <= matrix_out(33);
        
        acm_out1                   <= matrix_out(35);
        acm_out1                   <= matrix_out(36);
