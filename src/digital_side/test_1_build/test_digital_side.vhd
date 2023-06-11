@@ -66,7 +66,7 @@ signal video_on: std_logic;
 signal inv_in : std_logic_vector(3 downto 0);
 signal xy_inv_in : std_logic_vector(17 downto 0);
 --signal delay_in : STD_LOGIC;
---signal edge_detector_in : STD_LOGIC;
+signal edge_detector_in : STD_LOGIC;
 signal colour_swap : STD_LOGIC;
 signal luma_in1 : std_logic_vector(3 downto 0);
 signal luma_in2 : std_logic_vector(3 downto 0);
@@ -104,7 +104,7 @@ signal slow_cnt_0_6 : STD_LOGIC;
 signal slow_cnt_0_4 : STD_LOGIC;
 signal slow_cnt_0_2 : STD_LOGIC;
 --signal ext_vid_out : std_logic_vector(6 downto 0);
---signal edge_detector_out : std_logic_vector(3 downto 0);
+signal edge_detector_out : std_logic_vector(3 downto 0);
 signal overlay_gate_out : std_logic_vector(3 downto 0);
 
 
@@ -203,15 +203,15 @@ begin
         y =>  xy_inv_out   
        );
        
-   slow_counter : entity work.pulse_generator ------get it working
+   slow_counter : entity work.slow_counter ------get it working
         port map (
             clk => clk_25,
-            pulse_6hz => slow_cnt_6,
-            pulse_3hz => slow_cnt_3,
-            pulse_1_5hz => slow_cnt_1_5,
-            pulse_0_6hz => slow_cnt_0_6,
-            pulse_0_4hz => slow_cnt_0_4,
-            pulse_0_2hz => slow_cnt_0_2 
+            hz6 => slow_cnt_6,
+            hz3 => slow_cnt_3,
+            hz1_5 => slow_cnt_1_5,
+            hz_6 => slow_cnt_0_6,
+            hz_4 => slow_cnt_0_4,
+            hz_2 => slow_cnt_0_2 
         );
 
     not_overlay_gate2 <= NOT overlay_gate2; 
@@ -228,6 +228,12 @@ begin
         output =>  inv_out   
        );
        
+    edge : entity work.monstable_4
+  Port map( 
+        input => edge_detector_in,
+        clk  => clk,
+        output => edge_detector_out 
+  );
        
        
        
@@ -267,6 +273,7 @@ begin
        matrix_in(24) <= slow_cnt_0_2;
        matrix_in(28 downto 25) <= overlay_gate_out;
        matrix_in(32 downto 29) <= inv_out;
+       matrix_in(36 downto 33) <= edge_detector_out;
        
        --matrix_in(50 downto 46) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
        
@@ -282,6 +289,8 @@ begin
        overlay_gate1(3) <= matrix_out(24);
        overlay_gate2(3) <= matrix_out(25);
        inv_in           <= matrix_out(29 downto 26);
+       edge_detector_in <= matrix_out(30);
+       
        
        
        acm_out1                   <= matrix_out(35);

@@ -104,8 +104,8 @@ begin
         -- Test case 1
         
         ---------------------------------------------------------MUX WR COMAND -- 
-        matrix_in_addr <= std_logic_vector(to_unsigned(40, 6)); -- this is the output
-        matrix_in_mux  <= std_logic_vector(to_unsigned(4, 6)); -- ithis is the input
+        matrix_in_addr <= std_logic_vector(to_unsigned(17, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(5, 6)); -- ithis is the input
         matrix_cs <= "0001";   
         wait for 50 ns;
         matrix_load <= '1';
@@ -115,9 +115,9 @@ begin
         matrix_latch <= '0';
         ---------------------------------------------------------
         ---------------------------------------------------------MUX WR COMAND -- 
-        matrix_in_addr <=std_logic_vector(to_unsigned(43, 6)); -- this is the output
-        matrix_in_mux  <= std_logic_vector(to_unsigned(7, 6)); -- ithis is the input
-        matrix_cs <= "0010";   
+        matrix_in_addr <=std_logic_vector(to_unsigned(6, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(16, 6)); -- ithis is the input
+        matrix_cs <= "0001";   
         wait for 50 ns;
         matrix_load <= '1';
         matrix_latch <= '1';
@@ -126,9 +126,52 @@ begin
         matrix_latch <= '0';
         ---------------------------------------------------------
         ---------------------------------------------------------
+        matrix_in_addr <= std_logic_vector(to_unsigned(43, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(6, 6)); -- ithis is the input
+        matrix_cs <= "0001";   
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        ---------------------------------------------------------
+                ---------------------------------------------------------
         matrix_in_addr <= std_logic_vector(to_unsigned(46, 6)); -- this is the output
-        matrix_in_mux  <= std_logic_vector(to_unsigned(15, 6)); -- ithis is the input
-        matrix_cs <= "0010";   
+        matrix_in_mux  <= std_logic_vector(to_unsigned(16, 6)); -- ithis is the input
+        matrix_cs <= "0001";   
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        ---------------------------------------------------------
+        matrix_in_addr <= std_logic_vector(to_unsigned(30, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(3, 6)); -- ithis is the input
+        matrix_cs <= "0001";   
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        ---------------------------------------------------------
+        ---------------------------------------------------------
+        matrix_in_addr <= std_logic_vector(to_unsigned(3, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(6, 6)); -- ithis is the input
+        matrix_cs <= "0001";   
+        wait for 50 ns;
+        matrix_load <= '1';
+        matrix_latch <= '1';
+        wait for 50 ns;
+        matrix_load <= '0';
+        matrix_latch <= '0';
+        ---------------------------------------------------------
+                ---------------------------------------------------------
+        matrix_in_addr <= std_logic_vector(to_unsigned(40, 6)); -- this is the output
+        matrix_in_mux  <= std_logic_vector(to_unsigned(33, 6)); -- ithis is the input
+        matrix_cs <= "0001";   
         wait for 50 ns;
         matrix_load <= '1';
         matrix_latch <= '1';

@@ -1,3 +1,131 @@
 xrc.log
 .Xil/XSCT-10718-4241299-1/bd_c8f8.bda
 .Xil/XSCT-7043-4241299-1/processing_systemu.bda
+MVP_1/MVP_1.xpr
+MVP_1/MVP_1.cache/sim/ssm.db
+MVP_1/MVP_1.cache/wt/project.wpc
+MVP_1/MVP_1.cache/wt/synthesis.wdf
+MVP_1/MVP_1.cache/wt/synthesis_details.wdf
+MVP_1/MVP_1.cache/wt/xsim.wdf
+MVP_1/MVP_1.hw/MVP_1.lpr
+MVP_1/MVP_1.ip_user_files/README.txt
+MVP_1/MVP_1.runs/.jobs/vrs_config_1.xml
+MVP_1/MVP_1.runs/synth_1/.vivado.begin.rst
+MVP_1/MVP_1.runs/synth_1/.vivado.end.rst
+MVP_1/MVP_1.runs/synth_1/.Vivado_Synthesis.queue.rst
+MVP_1/MVP_1.runs/synth_1/__synthesis_is_complete__
+MVP_1/MVP_1.runs/synth_1/gen_run.xml
+MVP_1/MVP_1.runs/synth_1/htr.txt
+MVP_1/MVP_1.runs/synth_1/ISEWrap.js
+MVP_1/MVP_1.runs/synth_1/ISEWrap.sh
+MVP_1/MVP_1.runs/synth_1/project.wdf
+MVP_1/MVP_1.runs/synth_1/rundef.js
+MVP_1/MVP_1.runs/synth_1/runme.bat
+MVP_1/MVP_1.runs/synth_1/runme.log
+MVP_1/MVP_1.runs/synth_1/runme.sh
+MVP_1/MVP_1.runs/synth_1/test_digital_side.dcp
+MVP_1/MVP_1.runs/synth_1/test_digital_side.tcl
+MVP_1/MVP_1.runs/synth_1/test_digital_side.vds
+MVP_1/MVP_1.runs/synth_1/test_digital_side_utilization_synth.pb
+MVP_1/MVP_1.runs/synth_1/test_digital_side_utilization_synth.rpt
+MVP_1/MVP_1.runs/synth_1/vivado.jou
+MVP_1/MVP_1.runs/synth_1/vivado.pb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/compile.bat
+MVP_1/MVP_1.sim/sim_1/behav/xsim/elaborate.bat
+MVP_1/MVP_1.sim/sim_1/behav/xsim/elaborate.log
+MVP_1/MVP_1.sim/sim_1/behav/xsim/frame_out.txt
+MVP_1/MVP_1.sim/sim_1/behav/xsim/simulate.bat
+MVP_1/MVP_1.sim/sim_1/behav/xsim/simulate.log
+MVP_1/MVP_1.sim/sim_1/behav/xsim/tb_test_digital_side.tcl
+MVP_1/MVP_1.sim/sim_1/behav/xsim/tb_test_digital_side_behav.wdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/tb_test_digital_side_vhdl.prj
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xelab.pb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.ini
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xvhdl.log
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xvhdl.pb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/Compile_Options.txt
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/TempBreakPointFile.txt
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.dbg
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.mem
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.reloc
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.rlx
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.rtti
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.svtype
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.type
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsim.xdbg
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsimcrash.log
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsimk.exe
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsimkernel.log
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/xsimSettings.ini
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/obj/xsim_0.win64.obj
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/obj/xsim_1.c
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/tb_test_digital_side_behav/obj/xsim_1.win64.obj
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/compare_7.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/counter.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/edge_detector.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/huge_crospoint_test.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/huge_crospoint_wraper.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/invert_4.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/monstable_4.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/mux_5.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/mux2_1.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/nand4.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/pulse_generator.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/slow_counter.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/tb_test_digital_side.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/test_digital_side.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/vga_trimming_signals.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/window_comparator.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/write_file_ex.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/xil_defaultlib.rlx
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/xor_n.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/xor18.vdb
+MVP_1/MVP_1.sim/sim_1/behav/xsim/xsim.dir/xil_defaultlib/ycrcr2rgb_simple.vdb
+MVP_1/MVP_1.srcs/sources_1/new/slow_counter.vhd
+src/digital_side/slow_counter/slow_counter.vhd
+src/synth_tools/output.png
+VIDEOS ABOUT DEVELOPMENT/2023-06-02 14-56-55.mov
+VIDEOS ABOUT DEVELOPMENT/images/03_avalon.jpg
+VIDEOS ABOUT DEVELOPMENT/images/04_x0xb0x.jpg
+VIDEOS ABOUT DEVELOPMENT/images/13fb21ac34bc8eb127ea9b71cfa8f43af185f0bb.jpeg
+VIDEOS ABOUT DEVELOPMENT/images/1516583931207.jpg
+VIDEOS ABOUT DEVELOPMENT/images/1616611991952.jpg
+VIDEOS ABOUT DEVELOPMENT/images/231256701.jpg
+VIDEOS ABOUT DEVELOPMENT/images/350px-FPGA_cell_example.png
+VIDEOS ABOUT DEVELOPMENT/images/4911347.jpg
+VIDEOS ABOUT DEVELOPMENT/images/6aofsvaglm_Medium_WW226365.jpg
+VIDEOS ABOUT DEVELOPMENT/images/abstract-multicolored-glowing-festive-background-free-video.jpg
+VIDEOS ABOUT DEVELOPMENT/images/arty-s7-in-hang-1200x900-cropped.jpg
+VIDEOS ABOUT DEVELOPMENT/images/cyber-metal-grid-tunnel-background-free-video.jpg
+VIDEOS ABOUT DEVELOPMENT/images/download (1).jpg
+VIDEOS ABOUT DEVELOPMENT/images/download (2).jpg
+VIDEOS ABOUT DEVELOPMENT/images/download (3).jpg
+VIDEOS ABOUT DEVELOPMENT/images/download (4).jpg
+VIDEOS ABOUT DEVELOPMENT/images/download (5).jpg
+VIDEOS ABOUT DEVELOPMENT/images/download.jpg
+VIDEOS ABOUT DEVELOPMENT/images/ems_spectre_l.jpg
+VIDEOS ABOUT DEVELOPMENT/images/ems_videoMatrix_l.jpg
+VIDEOS ABOUT DEVELOPMENT/images/ems_videosynthesizer.jpg
+VIDEOS ABOUT DEVELOPMENT/images/google-ar-ghost.jpg
+VIDEOS ABOUT DEVELOPMENT/images/How-CPU-Works.jpg
+VIDEOS ABOUT DEVELOPMENT/images/hqdefault.jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (1).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (2).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (3).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (4).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (5).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (6).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images (7).jpg
+VIDEOS ABOUT DEVELOPMENT/images/images.jpg
+VIDEOS ABOUT DEVELOPMENT/images/images.png
+VIDEOS ABOUT DEVELOPMENT/images/jtliysfg5xg41.png
+VIDEOS ABOUT DEVELOPMENT/images/MESS.jpg
+VIDEOS ABOUT DEVELOPMENT/images/scale.jpg
+VIDEOS ABOUT DEVELOPMENT/images/Screenshot 2023-06-03 104947.png
+VIDEOS ABOUT DEVELOPMENT/images/spectron.jpg
+VIDEOS ABOUT DEVELOPMENT/images/st,small,507x507-pad,600x600,f8f8f8.jpg
+VIDEOS ABOUT DEVELOPMENT/images/thumb.png
+VIDEOS ABOUT DEVELOPMENT/images/v6vjf5r99hx41.png
+VIDEOS ABOUT DEVELOPMENT/images/YCbCr.gif
+VIDEOS ABOUT DEVELOPMENT/INTRO VIDEO/EMS Spectre Intro Vid.mov
+VIDEOS ABOUT DEVELOPMENT/INTRO VIDEO/EMS Spectre Intro Vid2.mov
