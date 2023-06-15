@@ -68,4 +68,6 @@ begin
       noise_1(9 downto 6) <= noise_1_latched;
       noise_2(9 downto 6) <= noise_2_latched;
 
+      -- needs level contorl
+
 end exam;
