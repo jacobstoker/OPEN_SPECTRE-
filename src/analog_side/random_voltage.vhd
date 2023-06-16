@@ -13,12 +13,13 @@ entity random_voltage is
 
 end random_voltage;
 
-architecture exam of random_voltage is
+architecture Behavioral of random_voltage is
 
   signal spio_out_1, spio_out_2  : std_logic_vector(7 downto 0);
   signal Sin, x_clk  : std_logic;
-  signal mux_in : std_logic_vector(7 downto 0) := "001100110"; -- only inputs 0,1,5,6 are set to gnd so i set the rest to 1 i guess
+  signal mux_in, mux_in_des : std_logic_vector(7 downto 0) := "01100011"; -- only inputs 0,1,5,6 are set to gnd so i set the rest to 1 i guess
   signal sipo_dac_1, sipo_dac_2, noise_1_latched, noise_2_latched  : std_logic_vector(3 downto 0);
+  signal mux_sel_in : std_logic_vector(2 downto 0);
 
 begin
 
@@ -32,7 +33,7 @@ begin
       );
 
       sipo_dac_1 <= spio_out_1(3 downto 0);
-      sipo_dac_2 <= spio_out_1(0 downto 3);
+      sipo_dac_2 <= spio_out_1(0) & spio_out_1(1) & spio_out_1(2) & spio_out_1(3);
 
   sipo_2 : entity work.shift_sipo
       port map(
@@ -43,11 +44,13 @@ begin
         Pout => spio_out_2
         );
 
-
-  mux_1 : entity work.mux_8_to_1
+    mux_in_des <= mux_in(7 downto 0);
+    mux_sel_in <= spio_out_2(7)&spio_out_2(5)&recycle;
+    
+  mux_random : entity work.mux_8_to_1
       Port map( 
-          data => mux_in(7 downto 1)&recycle,
-          sel = spio_out_2(7)&spio_out_2(5),
+          data => mux_in_des,
+          sel => mux_sel_in,
           mux_out => sin
       );
 
@@ -70,4 +73,4 @@ begin
 
       -- needs level contorl
 
-end exam;
+end Behavioral;
