@@ -16,16 +16,19 @@ end huge_crospoint_wraper;
 
 architecture Behavioral of huge_crospoint_wraper is
 
-signal matrix_out_0 :  STD_LOGIC_VECTOR (64 downto 0) := (others => '0');
-signal matrix_out_1 :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
-signal matrix_out_2 :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
-signal matrix_out_3 :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
+signal matrix_out_0  :  STD_LOGIC_VECTOR (64 downto 0) := (others => '0');
+signal matrix_out_1  :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
+signal matrix_out_2  :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
+signal matrix_out_3  :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
+signal matrix_pullup :  STD_LOGIC_VECTOR (64 downto 0);
 
 begin
 
+    matrix_pullup <= matrix_in(64 downto 1) & '1'; -- First input to the first matrix is set high
+
     pin_matrix_0: entity work.huge_crospoint_test
       port map (
-           matrix_in => matrix_in,
+           matrix_in => matrix_pullup,
            in_addr  => in_addr,
            in_mux => in_mux,
            clk      => clk,
