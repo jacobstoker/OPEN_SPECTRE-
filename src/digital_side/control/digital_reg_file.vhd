@@ -14,7 +14,7 @@ entity digital_reg_file is
     regs_rst                : in  std_logic;
     regs_en                 : in  std_logic;
     regs_wen                : in  std_logic_vector(3 downto 0);
-    regs_addr               : in  std_logic_vector(15 downto 0);
+    regs_addr               : in  std_logic_vector(12 downto 0);
     regs_wr_data            : in  std_logic_vector(31 downto 0);
     regs_rd_data            : out std_logic_vector(31 downto 0);
     -- outptus
@@ -47,7 +47,7 @@ architecture RTL of digital_reg_file is
     return ret;
   end ra;
 
-  signal addr_reg                    : std_logic_vector(15 downto 0);
+  signal addr_reg                    : std_logic_vector(12 downto 0);
   signal read_reg                    : std_logic_vector(31 downto 0);
   signal write_reg                   : std_logic_vector(31 downto 0);
   signal write_en                    : std_logic;
@@ -97,9 +97,9 @@ begin
   -- outgoing, so inputs to this block
   regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int;
   regs(ra(x"08")) <= x"000000" & "00" & matrix_in_addr_int;
-  regs(ra(x"0C")) <= x"000000" & "00" & matrix_load_int;
-  regs(ra(x"10")) <= x"000000" & "00" & matrix_latch_int;
-  regs(ra(x"14")) <= x"000000" & "00" & matrix_cs_int;
+  regs(ra(x"0C")) <= x"000000" & "0000000" & matrix_load_int;
+  regs(ra(x"10")) <= x"000000" & "0000000" & matrix_latch_int;
+  regs(ra(x"14")) <= x"000000" & "0000" & matrix_cs_int;
 
    regs(ra(x"60")) <= x"DEADBEEF"; -- x"0000000" & vid_4_crc_err_int & vid_3_crc_err_int & vid_2_crc_err_int & vid_1_crc_err_int;
 
