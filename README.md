@@ -25,7 +25,7 @@ For more info in this process take a look at:
 #### 🍨List of Modules and Details Phase 1🍨(WIP)
 
 ##### TEST BUILD 1 NOTES:
-Simplified elemnts simulated, need to build a reg file to drive the muxes, there is too much logic for a vio32.
+Simplified elements simulated, need to build a reg file to drive the muxes, there is too much logic for a vio32.
 Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, Luma2 chroma 1 and cheoma 2 (4bit select lines on the Mux)
 
 ##### Common Modules:
@@ -34,15 +34,10 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | inverter | n-bit wide |YES| YES|
 | xor | n-bit wide |YES| YES|
 | mux func | 32:1 mux |YES| YES|
-| debounceer | counter based |YES| NO|
-| rotery encoder | not tested on HW |YES| YES (sim)|
-| bus overlap | * |YES| YES (no TB)|
-| interlev | ** |YES| YES (no TB)|
-* Takes a vector, splis it into a number of busses with k width n bits overlap (kind of clumsy, not very general)
-** Takes a bus that is n number of concatinated signals (A,B,C,D) and re aragnes them (A1,B1,C1,D1,A2,B2,C2.......
+| debouncer | counter based |YES| NO|
+| rotary encoder | not tested on HW |YES| YES (sim)|
 
 ##### Digital Side Modules:
-
 | Module | Notes | Circuits PDF | Built |Tested |
 | ------ | ------ |-----|-----|-----|
 | 800us delay | clk'd delay ||YES|YES|
@@ -53,10 +48,22 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||NO|NO|
 |Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
 | Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
-| Flipflops ||pg5| NO | NO |
+| Flipflops ||pg5| YES | NO |
 | Video Timing Generator || |YES|YES|
+| Digital Crosspoint ||throughout |YES|YES|
+| Pinmatrix ||throughout |YES|YES|
 
-* check counter frequencys, solve slower then 1hz freqs
+* check counter frequencies, solve slower than 1hz freqs
+
+##### Analogue Side Modules:
+| Module | Notes | Circuits PDF | Built |Tested |
+| ------ | ------ |-----|-----|-----|
+| random voltage gen | ||YES|YES|
+
+##### Other Modules:
+| Module | Notes | Circuits PDF | Built |Tested |
+| ------ | ------ |-----|-----|-----|
+| YCCRCB to RGB | ||YES|YES|
 
 ##### Tools and scripts:
 
@@ -89,7 +96,7 @@ Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you i
 - If you are not any good at git/GitHub, if you write any modules you can email them to us and we will integrate them into the project
 
 ### 🐙License🐙
-Creative Commons CC BY-NC (if you want to use any part let me know.... this is just to stop large comercial companies from taking this if they ever decided to cloan the Spectre)
+Creative Commons CC BY-NC
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
