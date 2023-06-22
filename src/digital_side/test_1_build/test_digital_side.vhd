@@ -49,7 +49,8 @@ entity test_digital_side is
     matrix_cs: in std_logic_vector(3 downto 0);
          
      clk_x_out  : out STD_LOGIC;
-     clk_y_out  : out STD_LOGIC
+     clk_y_out  : out STD_LOGIC;
+     video_on   : out STD_LOGIC
   );
 end test_digital_side;
 
@@ -57,7 +58,6 @@ architecture Behavioral of test_digital_side is
 --Global Signals
 signal clk_x : STD_LOGIC;
 signal clk_y : STD_LOGIC;
-signal video_on: std_logic; 
 
    
 --Matrix Out to module in
