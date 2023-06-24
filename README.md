@@ -73,7 +73,7 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | write_file_ex.vhd | logs video signal to csv file |simulation|YES|YES|
 | vga_sim.py* | reads csv from above makes image |simulation|YES|YES|
 * it is way too hard to see what is happening from the signal traces alone, so this python script turns a single frame of video. [Simulated Images](https://github.com/cfoge/OPEN_SPECTRE-/tree/MVP_1/src/synth_tools/sim_images)
-![VGA simulator output](src/synth_tools/sim_images/play2.png)
+![VGA simulator output](src/synth_tools/sim_images/play 2.png) 
 
 ### 🍣Want to Contribute?🍣
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
