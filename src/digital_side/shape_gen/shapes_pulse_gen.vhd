@@ -10,7 +10,8 @@ entity shapes_pulse_gen is
         pulse_start  : in  std_logic_vector(8 downto 0);
         pulse_len    : in  std_logic_vector(8 downto 0);
         pulse_out    : out std_logic;
-        ramp_out     : out std_logic_vector(8 downto 0)
+        ramp_out     : out std_logic_vector(8 downto 0);
+        parab_out     : out std_logic_vector(8 downto 0)
     );
 end entity shapes_pulse_gen;
 
@@ -18,10 +19,13 @@ architecture Behavioral of shapes_pulse_gen is
     signal counter        : unsigned(8 downto 0);
     signal step_size_calc  : integer range 0 to 100; 
     signal step_size      : integer range 0 to 100; 
+    signal parab_size      : unsigned(8 downto 0); 
     signal pulse_counter  : unsigned(8 downto 0);
     signal pulse_len_int  : unsigned(8 downto 0);
     signal pulse_active   : std_logic;
     signal ramp           : unsigned(8 downto 0);
+    signal parab           : unsigned(8 downto 0);
+    signal parab_up    :boolean ;
 
 begin
     process (clk, rst)
@@ -39,24 +43,61 @@ begin
                     pulse_active <= '0';
                     pulse_counter <= (others => '0');
                     ramp <= (others => '0');
+                    parab <= (others => '1');
                 else
                     pulse_counter <= pulse_counter + 1;
                     ramp <= ramp + step_size;
+                    if pulse_counter > shift_right(unsigned(pulse_len), 1) then
+                        parab_up <= TRUE;  
+                    end if;
+                    if parab_up = TRUE then
+                        parab <= parab + parab_size;  
+                    else
+                        parab <= parab - parab_size;  
+                    end if;
+                    
+                    
                 end if;
             elsif counter = unsigned(pulse_start) then
                 pulse_active <= '1';
+                parab_up <= FALSE;
                 step_size <= step_size_calc;
+                parab_size <= shift_left(to_unsigned(step_size_calc, 9), 1); --step size X2 to make the parabola
                 pulse_counter <= (others => '0');
                 ramp <= (others => '0');
+                parab <= (others => '1');
             end if;
         end if;
     end process;
     
     process (pulse_len_int)
     begin
+           if pulse_len_int = x"0" then
+                step_size_calc <= 0;
+           elsif pulse_len_int = x"1" then
+                step_size_calc <= 512;
+           elsif pulse_len_int = x"2" then
+                step_size_calc <= 256;
+           elsif pulse_len_int = x"3" then
+                step_size_calc <= 171;
+           elsif pulse_len_int = x"4" then
+                step_size_calc <= 128;
+           elsif pulse_len_int = x"5" then
+                step_size_calc <= 102;
+           elsif pulse_len_int = x"6" then
+                step_size_calc <= 85;
+           elsif pulse_len_int = x"7" then
+                step_size_calc <= 73;
+           elsif pulse_len_int = x"8" then
+                step_size_calc <= 64;
+           elsif pulse_len_int = x"9" then
+                step_size_calc <= 57;
+           elsif pulse_len_int = x"10" then
+                step_size_calc <= 51;
+                
         --put logic to look up the stepsize
-        if pulse_len_int > x"4f" then --handle the large stepsized that come as puls elen increases
-            if pulse_len_int > x"4f"  and pulse_len_int < x"5e" then
+       -- if pulse_len_int > x"4f" then --handle the large stepsized that come as puls elen increases
+            elsif pulse_len_int > x"4f"  and pulse_len_int < x"5e" then
                 step_size_calc <= 6;
             elsif pulse_len_int >= x"5e" and pulse_len_int < x"72"  then
                 step_size_calc <= 5;
@@ -72,12 +113,13 @@ begin
                 step_size_calc <= 0;
             end if; 
         
-        end if; 
+       -- end if; 
     end process;
 
     pulse_len_int <= unsigned(pulse_len);
     pulse_out <= pulse_active;
     ramp_out <= std_logic_vector(ramp);
+    parab_out <= std_logic_vector(parab);
 
 end architecture Behavioral;
 
