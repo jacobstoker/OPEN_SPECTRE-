@@ -15,6 +15,7 @@ architecture Behavioral of shapes_pulse_gen_tb is
     signal pulse_len: std_logic_vector(8 downto 0) := (others => '0');
     signal pulse_out: std_logic;
     signal ramp_out: std_logic_vector(8 downto 0);
+    signal zoom     : std_logic_vector(8 downto 0);
     
 begin
     -- Instantiate the DUT (Design Under Test)
@@ -22,6 +23,7 @@ begin
         port map (
             clk => clk,
             rst => rst,
+            zoom => zoom,
             counter_in => counter_in,
             pulse_start => pulse_start,
             pulse_len => pulse_len,
@@ -36,6 +38,7 @@ begin
         counter_in <= (others => '0');
         pulse_start <= "000001010"; -- - 10
         pulse_len   <= "010010011"; --
+        zoom   <= "000001111"; --
 
         
         -- Apply reset
