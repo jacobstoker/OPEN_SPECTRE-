@@ -9,26 +9,33 @@ entity shapes_pulse_gen is
         counter_in   : in  std_logic_vector(8 downto 0);
         pulse_start  : in  std_logic_vector(8 downto 0);
         pulse_len    : in  std_logic_vector(8 downto 0);
+        zoom         : in  std_logic_vector(8 downto 0);
         pulse_out    : out std_logic;
         ramp_out     : out std_logic_vector(8 downto 0);
-        parab_out     : out std_logic_vector(8 downto 0)
+        parab_out    : out std_logic_vector(8 downto 0);
+        reset_ramp   : out std_logic_vector(8 downto 0);
+        noise_out    : out std_logic_vector(8 downto 0)
     );
 end entity shapes_pulse_gen;
 
 architecture Behavioral of shapes_pulse_gen is
     signal counter        : unsigned(8 downto 0);
-    signal step_size_calc  : integer range 0 to 100; 
+    signal step_size_calc : integer range 0 to 100; 
     signal step_size      : integer range 0 to 100; 
-    signal parab_size      : unsigned(8 downto 0); 
+    signal parab_size     : unsigned(8 downto 0); 
     signal pulse_counter  : unsigned(8 downto 0);
     signal pulse_len_int  : unsigned(8 downto 0);
     signal pulse_active   : std_logic;
     signal ramp           : unsigned(8 downto 0);
     signal parab           : unsigned(8 downto 0);
     signal parab_up    :boolean ;
+    signal ramp_rst   : std_logic;
+    signal rst_ramp_out           : std_logic_vector(8 downto 0);
+    signal rst_ramp_mux           : std_logic_vector(8 downto 0);
+    
 
 begin
-    process (clk, rst)
+    process (clk, rst) -- pulse out, ramp out and parabala logic 
     begin
         if rst = '1' then
             counter <= (others => '0');
@@ -115,11 +122,56 @@ begin
         
        -- end if; 
     end process;
+    
+    process (clk, rst) -- random reset ramp logic, counts up till zoom value then uses mux to jump up and rand oddly, needs beter method
+    -- need to jus tuse a ramp get osc reset by the pulse active at 0 and the freq controlled by zoom
+    
+    begin
+        if pulse_active = '0' then
+          ramp_rst <= '1';
+        elsif rising_edge(clk) then       
+            if(pulse_counter mod unsigned(zoom) = 0 ) then
+                ramp_rst <= '1';
+                
+            
+            elsif (pulse_counter > unsigned(zoom) ) then
+                ramp_rst <= '0';
+                rst_ramp_mux <= rst_ramp_out(4 downto 0) & "0000" ;            
+                else
+                ramp_rst <= '0';
+                rst_ramp_mux <= rst_ramp_out(4 downto 0) & "0000" ;
+            end if;
+        end if;
+        
+    end process;
+    
+    -- NOISE GENERATOR
+    noise_gen : entity work.rand_num
+        generic map (
+            N => 8
+        )
+            port map (
+            clk => clk,
+            reset => rst,
+            q => noise_out
+        );
+    -- Random reset ramp * is it actual random?
+        rst_ramp: entity work.counter
+        generic map (
+            width => 9
+        )
+        port map (
+            clk => clk,
+            rst => ramp_rst,
+            enable => '1',
+            count => rst_ramp_out
+        );
 
     pulse_len_int <= unsigned(pulse_len);
     pulse_out <= pulse_active;
     ramp_out <= std_logic_vector(ramp);
     parab_out <= std_logic_vector(parab);
+    reset_ramp <= rst_ramp_mux;
 
 end architecture Behavioral;
 
