@@ -16,10 +16,10 @@ entity shape_gen is
         pos_v   : in  std_logic_vector(8 downto 0);
         zoom_h   : in  std_logic_vector(8 downto 0);
         zoom_v   : in  std_logic_vector(8 downto 0);
-        circle   : in  std_logic_vector(8 downto 0);
-        gear   : in  std_logic_vector(8 downto 0);
-        lantern   : in  std_logic_vector(8 downto 0);
-        fizz   : in  std_logic_vector(8 downto 0);
+        circle_i   : in  std_logic_vector(8 downto 0);
+        gear_i   : in  std_logic_vector(8 downto 0);
+        lantern_i   : in  std_logic_vector(8 downto 0);
+        fizz_i   : in  std_logic_vector(8 downto 0);
 
         shape_a    : out std_logic;
         shape_b    : out std_logic
@@ -43,6 +43,25 @@ architecture Behavioral of shape_gen is
     signal reset_ramp_y           : std_logic_vector(8 downto 0);
     signal reset_ramp_y_length           : unsigned(8 downto 0);
     signal noise_y           : std_logic_vector(8 downto 0);
+    
+    signal mixed_parab        : std_logic_vector(8 downto 0);
+    
+    signal moonlignt           : std_logic;
+    signal criscross_inverted           : std_logic;
+    signal lantern_behind_cutout           : std_logic;
+    signal ring           : std_logic;
+    signal amazon           : std_logic;
+    signal cutout           : std_logic;
+    signal criss_cross           : std_logic;
+    signal gear_circle           : std_logic;
+    signal hoz_seg           : std_logic;
+    signal vert_seg          : std_logic;
+    signal palm_leaves           : std_logic;
+    signal triangles           : std_logic;
+    signal frizz           : std_logic;
+    signal lantern           : std_logic;
+    signal gear           : std_logic;
+    signal circle           : std_logic;
 
 begin
 
@@ -79,6 +98,50 @@ port map(
         noise_out     => noise_y
         );
 
+mixed_parab <= std_logic_vector(unsigned(parab_x) + unsigned(parab_y) / 2);
 
+shape_logic : process (clk)
+begin
+
+--amazon
+amazon <= cutout xor palm_leaves;
+--cutout
+cutout <= criss_cross xor triangles;
+-- criss_cross
+criss_cross <= vert_seg xor hoz_seg;
+-- gear+circle
+gear_circle <= gear xor circle;
+-- palm leaves ???? check this logic, it seems wrong
+if ((triangles = '1') and (vert_seg = '0')) then
+palm_leaves <= '1';
+else
+palm_leaves <= '0';
+end if;
+-- vert_seg
+if (unsigned(reset_ramp_y) > unsigned(mixed_parab)) then
+vert_seg <= '1';
+else
+vert_seg <= '0';
+end if;
+-- hoz_seg
+if (unsigned(reset_ramp_x) > unsigned(mixed_parab)) then
+hoz_seg <= '1';
+else
+hoz_seg <= '0';
+end if;
+-- triangles
+if (unsigned(reset_ramp_x) > unsigned(reset_ramp_y)) then
+triangles <= '1';
+else
+triangles <= '0';
+end if;
+-- circle
+if (unsigned(circle_i) > unsigned(mixed_parab)) then
+circle <= '1';
+else
+circle <= '0';
+end if;
+
+end process;
 
 end Behavioral;
