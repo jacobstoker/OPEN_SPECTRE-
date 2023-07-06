@@ -20,6 +20,8 @@ end entity shapes_pulse_gen;
 
 architecture Behavioral of shapes_pulse_gen is
     signal counter        : unsigned(8 downto 0);
+    signal counter_d        : unsigned(8 downto 0);
+
     signal step_size_calc : integer range 0 to 100; 
     signal step_size      : integer range 0 to 100; 
     signal parab_size     : unsigned(8 downto 0); 
@@ -30,13 +32,17 @@ architecture Behavioral of shapes_pulse_gen is
     signal parab           : unsigned(8 downto 0);
     signal parab_up    :boolean ;
     signal ramp_rst   : std_logic;
+    signal ramp_tick   : std_logic;
+    signal reset_ramp_zoom     : std_logic_vector(8 downto 0); 
+
     signal rst_ramp_out           : std_logic_vector(8 downto 0);
     signal rst_ramp_mux           : std_logic_vector(8 downto 0);
     
 
 begin
-    process (clk, rst) -- pulse out, ramp out and parabala logic 
+    process (clk, rst) -- pulse out, ramp out and parabala logic ------- 
     begin
+    reset_ramp_zoom <= "00000" & zoom(3 downto 0);
         if rst = '1' then
             counter <= (others => '0');
             pulse_counter <= (others => '0');
@@ -44,25 +50,43 @@ begin
             ramp <= (others => '0');
         elsif rising_edge(clk) then
             counter <= unsigned(counter_in);
+            counter_d <= counter;
+            
+            if counter_d /= counter then
+                    ramp_tick <= '1';
+                    else
+                    ramp_tick <= '0';
+                    end if;
+            
             
             if pulse_active = '1' then
-                if pulse_counter = unsigned(pulse_len) then
-                    pulse_active <= '0';
-                    pulse_counter <= (others => '0');
-                    ramp <= (others => '0');
-                    parab <= (others => '1');
-                else
-                    pulse_counter <= pulse_counter + 1;
-                    ramp <= ramp + step_size;
-                    if pulse_counter > shift_right(unsigned(pulse_len), 1) then
-                        parab_up <= TRUE;  
-                    end if;
-                    if parab_up = TRUE then
-                        parab <= parab + parab_size;  
+                if counter_d /= counter then
+                    if pulse_counter = unsigned(pulse_len) then
+                        pulse_active <= '0';
+                        
+                        pulse_counter <= (others => '0');
+                        ramp <= (others => '0');
+                        parab <= (others => '1');
                     else
-                        parab <= parab - parab_size;  
+                        pulse_counter <= pulse_counter + 1;
+                      
+                        ramp <= ramp + step_size;
+                        if pulse_counter > shift_right(unsigned(pulse_len), 1) then
+                            parab_up <= TRUE;  
+                        end if;
+                        if parab_up = TRUE then
+                            parab <= parab + parab_size;  
+                        else
+                            if parab_size > parab then             
+                                    parab <= (others => '0');  
+                                else
+                                    parab <= parab - parab_size;  
+                                end if;
+                        end if;
+                   
+                      
+      
                     end if;
-                    
                     
                 end if;
             elsif counter = unsigned(pulse_start) then
@@ -158,10 +182,10 @@ begin
     -- Random reset ramp * is it actual random?
         rst_ramp: entity work.nco
         port map (
-            i_clk => clk,
+            i_clk => ramp_tick, -- need to slow down more maybe devide counter change by 2 or 4
             i_rstb => rst,
             i_sync_reset =>  pulse_active,
-            i_fcw => zoom,
+            i_fcw => reset_ramp_zoom,
             o_nco => rst_ramp_out
         );
 
@@ -169,7 +193,7 @@ begin
     pulse_out <= pulse_active;
     ramp_out <= std_logic_vector(ramp);
     parab_out <= std_logic_vector(parab);
-    reset_ramp <= rst_ramp_mux;
+    reset_ramp <= rst_ramp_out;
 
 end architecture Behavioral;
 
