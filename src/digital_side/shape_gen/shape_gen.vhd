@@ -62,6 +62,16 @@ architecture Behavioral of shape_gen is
     signal lantern           : std_logic;
     signal gear           : std_logic;
     signal circle           : std_logic;
+    
+    signal shape_bus        : std_logic_vector(15 downto 0);
+    signal shape_a_sel        : std_logic_vector(2 downto 0);
+    signal shape_b_sel        : std_logic_vector(2 downto 0);
+    
+    --mux function
+ function multi321 (A,B: in std_logic_vector) return std_logic is
+  begin
+      return A(to_integer(unsigned(B)));
+  end multi321;
 
 begin
 
@@ -143,5 +153,12 @@ circle <= '0';
 end if;
 
 end process;
+    
+shape_bus <= lantern_behind_cutout & moonlignt & amazon & cutout & palm_leaves & triangles & not criss_cross & criss_cross & hoz_seg & vert_seg & gear_circle & gear & lantern & frizz & ring & circle;
+
+
+shape_a <= multi321(shape_bus, shape_a_sel);
+shape_b <= multi321(shape_bus, shape_b_sel);
+
 
 end Behavioral;
