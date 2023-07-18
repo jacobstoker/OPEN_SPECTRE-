@@ -81,7 +81,7 @@ if (OUTPUT_TYPE == 'html'):
         execute_teroshdl(name, folder, OUTPUT_TYPE, vhdl_symbol, verilog_symbol)
     html_index += '</ul>\n'
 
-    with open('gh-pages/index.html', "w") as text_file:
+    with open('teroshdl_doc/index.html', "w") as text_file:
         print(html_index, file=text_file)
 
 ################################################################################
