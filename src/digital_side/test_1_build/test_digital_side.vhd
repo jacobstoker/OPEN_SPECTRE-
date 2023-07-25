@@ -40,8 +40,27 @@ entity test_digital_side is
       clk_25_in      :in    STD_LOGIC;
       rst      :in    STD_LOGIC;
       RBG_out       : out STD_LOGIC_VECTOR (23 downto 0);
+    
+    -- Shape gens move to anagloge side later?
+        sgen_pos_h_0   : in  std_logic_vector(8 downto 0);
+        sgen_pos_v_0   : in  std_logic_vector(8 downto 0);
+        sgen_zoom_h_0   : in  std_logic_vector(8 downto 0);
+        sgen_zoom_v_0   : in  std_logic_vector(8 downto 0);
+        sgen_circle_i_0   : in  std_logic_vector(8 downto 0);
+        sgen_gear_i_0   : in  std_logic_vector(8 downto 0);
+        sgen_lantern_i_0   : in  std_logic_vector(8 downto 0);
+        sgen_fizz_i_0   : in  std_logic_vector(8 downto 0);
+        
+        sgen_pos_h_1   : in  std_logic_vector(8 downto 0);
+        sgen_pos_v_1   : in  std_logic_vector(8 downto 0);
+        sgen_zoom_h_1   : in  std_logic_vector(8 downto 0);
+        sgen_zoom_v_1   : in  std_logic_vector(8 downto 0);
+        sgen_circle_i_1   : in  std_logic_vector(8 downto 0);
+        sgen_gear_i_1   : in  std_logic_vector(8 downto 0);
+        sgen_lantern_i_1   : in  std_logic_vector(8 downto 0);
+        sgen_fizz_i_1   : in  std_logic_vector(8 downto 0);
       
-      --temp signals to drive the mux's
+    -- signals to drive the mux's
     matrix_in_addr: in std_logic_vector(5 downto 0);
     matrix_in_mux   : in STD_LOGIC_VECTOR (5 downto 0);
     matrix_load: in STD_LOGIC;
@@ -109,6 +128,10 @@ signal edge_detector_out : std_logic_vector(3 downto 0);
 signal overlay_gate_out : std_logic_vector(3 downto 0);
 signal ff_out_a : STD_LOGIC;
 signal ff_out_b : STD_LOGIC;
+signal shape_a_0 : STD_LOGIC;
+signal shape_b_0 : STD_LOGIC;
+signal shape_a_1 : STD_LOGIC;
+signal shape_b_1 : STD_LOGIC;
 
   signal comp_output : STD_LOGIC_VECTOR (6 downto 0);
 
@@ -272,6 +295,44 @@ begin
        output => comp_output,
        span => "00000000"
            );
+           
+    shape_gen_0 : entity work.shape_gen -- move to analoge side later!!!! just for organisational clarity
+    port map (
+        clk      => clk    ,
+        counter_x  => x_count    ,
+        counter_y  => y_count       ,
+        rst      => rst   ,
+        pos_h  => sgen_pos_h_0 ,
+        pos_v    =>  sgen_pos_v_0,
+        zoom_h    => sgen_zoom_h_0 ,
+        zoom_v    =>  sgen_zoom_v_0,
+        circle_i   => sgen_circle_i_0 ,
+        gear_i   =>  sgen_gear_i_0 ,
+        lantern_i   =>  sgen_lantern_i_0 ,
+        fizz_i   =>  sgen_fizz_i_0 ,
+
+        shape_a    => shape_a_0 ,
+        shape_b     => shape_b_0
+    );
+    
+    shape_gen_1 : entity work.shape_gen
+    port map (
+        clk      => clk    ,
+        counter_x  => x_count    ,
+        counter_y  => y_count       ,
+        rst      => rst   ,
+        pos_h  => sgen_pos_h_1 ,
+        pos_v    =>  sgen_pos_v_1,
+        zoom_h    => sgen_zoom_h_1 ,
+        zoom_v    =>  sgen_zoom_v_1,
+        circle_i   => sgen_circle_i_1 ,
+        gear_i   =>  sgen_gear_i_1 ,
+        lantern_i   =>  sgen_lantern_i_1 ,
+        fizz_i   =>  sgen_fizz_i_1 ,
+
+        shape_a    => shape_a_1 ,
+        shape_b     => shape_b_1
+    );
     ---------------------------------------------------------------
     -- HUGE MULTIPLEXER 
     pin_matrix : entity work.huge_crospoint_wraper
@@ -304,7 +365,10 @@ begin
        matrix_in(37) <= delay_out;
        matrix_in(38) <= ff_out_a;
        matrix_in(39) <= ff_out_b;
-
+       matrix_in(40) <= shape_a_0;
+       matrix_in(41) <= shape_b_0;
+       matrix_in(40) <= shape_a_1;
+       matrix_in(41) <= shape_b_1;
        --matrix_in(50 downto 46) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
        
        
