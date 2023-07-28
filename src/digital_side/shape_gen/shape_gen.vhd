@@ -64,8 +64,8 @@ architecture Behavioral of shape_gen is
     signal circle           : std_logic;
     
     signal shape_bus        : std_logic_vector(15 downto 0);
-    signal shape_a_sel        : std_logic_vector(2 downto 0);
-    signal shape_b_sel        : std_logic_vector(2 downto 0);
+    signal shape_a_sel        : std_logic_vector(2 downto 0) := "000";
+    signal shape_b_sel        : std_logic_vector(2 downto 0) := "000";
     
     --mux function
  function multi321 (A,B: in std_logic_vector) return std_logic is
