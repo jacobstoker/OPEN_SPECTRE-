@@ -3,8 +3,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity SQRT is
-    Generic ( b  : natural range 4 to 32 := 16 ); 
-    Port ( value  : in   STD_LOGIC_VECTOR (15 downto 0);
+    Generic ( b  : natural range 4 to 32 := 19 ); 
+    Port ( value  : in   STD_LOGIC_VECTOR (18 downto 0);
            result : out  STD_LOGIC_VECTOR (8 downto 0));
 end SQRT;
 

@@ -22,8 +22,8 @@ architecture Behavioral of shapes_pulse_gen is
     signal counter        : unsigned(8 downto 0);
     signal counter_d        : unsigned(8 downto 0);
 
-    signal step_size_calc : integer range 0 to 100; 
-    signal step_size      : integer range 0 to 100; 
+    signal step_size_calc : integer range 0 to 512; 
+    signal step_size      : integer range 0 to 512; 
     signal parab_size     : unsigned(8 downto 0); 
     signal pulse_counter  : unsigned(8 downto 0);
     signal pulse_len_int  : unsigned(8 downto 0);
