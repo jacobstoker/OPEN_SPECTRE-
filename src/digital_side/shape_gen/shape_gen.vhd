@@ -44,7 +44,9 @@ architecture Behavioral of shape_gen is
     signal reset_ramp_y_length           : unsigned(8 downto 0);
     signal noise_y           : std_logic_vector(8 downto 0);
     
-    signal mixed_parab        : std_logic_vector(8 downto 0);
+     signal mixed_parab        : std_logic_vector(8 downto 0);
+    signal mixed_parab_t2        : std_logic_vector(15 downto 0);
+    signal mixed_parab_t1        : unsigned(15 downto 0);
     
     signal moonlignt           : std_logic;
     signal criscross_inverted           : std_logic;
@@ -108,7 +110,15 @@ port map(
         noise_out     => noise_y
         );
 
-mixed_parab <= std_logic_vector(unsigned(parab_x) + unsigned(parab_y) / 2);
+mixed_parab_t1 <= (unsigned(parab_x) * unsigned(parab_x)) + (unsigned(parab_y) * unsigned(parab_y));
+mixed_parab_t2 <= std_logic_vector(mixed_parab_t1);
+
+sqrt_parab : entity work.sqrt
+port map(
+       value => mixed_parab_t2,
+       result => mixed_parab
+        );
+
 
 shape_logic : process (clk)
 begin
@@ -162,3 +172,5 @@ shape_b <= multi321(shape_bus, shape_b_sel);
 
 
 end Behavioral;
+
+
