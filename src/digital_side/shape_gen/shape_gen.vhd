@@ -45,8 +45,9 @@ architecture Behavioral of shape_gen is
     signal noise_y           : std_logic_vector(8 downto 0);
     
      signal mixed_parab        : std_logic_vector(8 downto 0);
+     signal mixed_parab_i        : std_logic_vector(18 downto 0);
     signal mixed_parab_t2        : std_logic_vector(18 downto 0);
-    signal mixed_parab_t1        : unsigned(18 downto 0);
+    signal mixed_parab_t1        : integer;
     
     signal moonlignt           : std_logic;
     signal criscross_inverted           : std_logic;
@@ -110,15 +111,31 @@ port map(
         noise_out     => noise_y
         );
 
-mixed_parab_t1 <= '0' & ((unsigned(parab_x) * unsigned(parab_x)) + (unsigned(parab_y) * unsigned(parab_y)));
-mixed_parab_t2 <= std_logic_vector(mixed_parab_t1);
 
-sqrt_parab : entity work.sqrt
+process (clk) 
+    begin
+        if rising_edge(clk) then
+        mixed_parab_t1 <=(to_integer(unsigned(parab_x) * unsigned(parab_x)) + to_integer(unsigned(parab_y) * unsigned(parab_y)));
+        if (mixed_parab_t1 > 524287) then
+            mixed_parab_t2 <= (others => '1');
+        else     
+            mixed_parab_t2 <= std_logic_vector(to_unsigned(mixed_parab_t1, mixed_parab_t2'length));
+        end if;
+
+        
+    end if;
+    end process;
+            
+--mixed_parab_t1 <= '0' & ((unsigned(parab_x) * unsigned(parab_x)) + (unsigned(parab_y) * unsigned(parab_y)));
+--mixed_parab_t2 <= std_logic_vector(mixed_parab_t1);
+
+sqrt_parab : entity work.SQRT
 port map(
        value => mixed_parab_t2,
-       result => mixed_parab
+       result => mixed_parab_i
         );
 
+mixed_parab <= mixed_parab_i(9 downto 1);
 
 shape_logic : process (clk)
 begin
