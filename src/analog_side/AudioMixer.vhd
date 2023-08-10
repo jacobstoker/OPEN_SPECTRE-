@@ -1,0 +1,78 @@
+-- mixer to use as each colum in the analoge matrix
+-- needs
+
+-- library ieee;
+-- use ieee.std_logic_1164.all;
+-- use ieee.std_logic_arith.all;
+
+-- package array_pck is
+
+--   type array_int is array (natural range <>) of integer;
+
+--   type array_2    is array (natural range <>) of std_logic_vector(  2-1 downto 0);
+--   type array_3    is array (natural range <>) of std_logic_vector(  3-1 downto 0);
+--   type array_4    is array (natural range <>) of std_logic_vector(  4-1 downto 0);
+--   type array_5    is array (natural range <>) of std_logic_vector(  5-1 downto 0);
+--   type array_6    is array (natural range <>) of std_logic_vector(  6-1 downto 0);
+--   type array_7    is array (natural range <>) of std_logic_vector(  7-1 downto 0);
+--   type array_8    is array (natural range <>) of std_logic_vector(  8-1 downto 0);
+--   type array_11    is array (natural range <>) of std_logic_vector(  11-1 downto 0);
+--   type array_12    is array (natural range <>) of std_logic_vector(  12-1 downto 0);
+  
+-- end array_pck;
+
+-- package body array_pck is
+
+-- end package body array_pck;
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+--use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.numeric_std.ALL;
+library work;
+use work.array_pck.all;
+
+entity AudioMixer is
+    Port (
+        clk : in STD_LOGIC;
+        reset : in STD_LOGIC;
+        inputs : in array_12(1 downto 0); -- 12-bit wide inputs
+        gains : in array_4(1 downto 0);  -- 4-bit gain control for each input
+        output : out STD_LOGIC_VECTOR(11 downto 0)  -- 12-bit wide output
+    );
+end AudioMixer;
+
+architecture Behavioral of AudioMixer is
+    signal accumulator : unsigned(21 downto 0) := (others => '0');
+    signal accumulator_2 : unsigned(21 downto 0) := (others => '0');
+    signal clamped_output : unsigned(11 downto 0);
+begin
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if reset = '1' then
+                accumulator <= (others => '0');
+            else
+             
+          
+                accumulator <= (unsigned(inputs(0)) * unsigned(gains(1)));
+                accumulator_2 <= accumulator / 16; 
+               
+           end if;   
+      
+                -- Clamp the output to prevent overflows and underflows
+                if accumulator_2 > 2047 then  -- Maximum value for 12-bit signed
+                    clamped_output <= (others => '1');
+                elsif accumulator_2 < 1 then  -- Minimum value for 12-bit signed
+                    clamped_output <= (others => '0');
+                else
+                    clamped_output <= accumulator_2(11 downto 0);
+                end if;
+            end if;
+
+    end process;
+
+    output <= std_logic_vector(clamped_output);
+end Behavioral;
