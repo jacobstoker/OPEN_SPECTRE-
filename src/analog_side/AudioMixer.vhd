@@ -38,15 +38,15 @@ entity AudioMixer is
     Port (
         clk : in STD_LOGIC;
         reset : in STD_LOGIC;
-        inputs : in array_12(1 downto 0); -- 12-bit wide inputs
-        gains : in array_4(1 downto 0);  -- 4-bit gain control for each input
+        inputs : in array_12(9 downto 0); -- 12-bit wide inputs
+        gains : in array_4(9 downto 0);  -- 4-bit gain control for each input
         output : out STD_LOGIC_VECTOR(11 downto 0)  -- 12-bit wide output
     );
 end AudioMixer;
 
 architecture Behavioral of AudioMixer is
-    signal accumulator : unsigned(21 downto 0) := (others => '0');
-    signal accumulator_2 : unsigned(21 downto 0) := (others => '0');
+    signal accumulator : unsigned(15 downto 0) := (others => '0');
+    signal accumulator_2 : unsigned(15 downto 0) := (others => '0');
     signal clamped_output : unsigned(11 downto 0);
 begin
     process(clk)
@@ -57,8 +57,19 @@ begin
             else
              
           
-                accumulator <= (unsigned(inputs(0)) * unsigned(gains(1)));
-                accumulator_2 <= accumulator / 16; 
+                accumulator <=  (unsigned(inputs(0)) * unsigned(gains(0)))+
+                                (unsigned(inputs(1)) * unsigned(gains(1)))+
+                                (unsigned(inputs(2)) * unsigned(gains(2)))+
+                                (unsigned(inputs(3)) * unsigned(gains(3)))+
+                                (unsigned(inputs(4)) * unsigned(gains(4)))+
+                                (unsigned(inputs(5)) * unsigned(gains(5)))+
+                                (unsigned(inputs(6)) * unsigned(gains(6)))+
+                                (unsigned(inputs(7)) * unsigned(gains(7)))+
+                                (unsigned(inputs(8)) * unsigned(gains(8)))+
+                                (unsigned(inputs(9)) * unsigned(gains(9)))
+                
+                ;
+                accumulator_2 <= accumulator / 15; 
                
            end if;   
       
