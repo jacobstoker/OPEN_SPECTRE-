@@ -6,15 +6,15 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity YUV_levels is
     Port ( y_signal1 : in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
            y_signal2 : in STD_LOGIC_VECTOR(11 downto 0);
-           y_alpha   : in STD_LOGIC_VECTOR(11 downto 0) ;
+           y_alpha   : in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
            y_result  : out STD_LOGIC_VECTOR(11 downto 0);
            u_signal1 : in STD_LOGIC_VECTOR(11 downto 0) (others => '0');
            u_signal2 : in STD_LOGIC_VECTOR(11 downto 0);
-           u_alpha   : in STD_LOGIC_VECTOR(11 downto 0);
+           u_alpha   : in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
            u_result  : out STD_LOGIC_VECTOR(11 downto 0);
            v_signal1 : in STD_LOGIC_VECTOR(11 downto 0) (others => '0');
            v_signal2 : in STD_LOGIC_VECTOR(11 downto 0);
-           v_alpha   : in STD_LOGIC_VECTOR(11 downto 0);
+           v_alpha   : in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
            v_result  : out STD_LOGIC_VECTOR(11 downto 0));
 end YUV_levels;
 
