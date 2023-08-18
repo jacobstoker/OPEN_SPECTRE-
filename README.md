@@ -106,8 +106,8 @@ Creative Commons CC BY-NC
 
 ### Donations
 We are very thankful to have received donations from the following people:
-Chris Korvin
-Jay Hotchin
+Chris Korvin,
+Jay Hotchin,
 Milton Grimshaw
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
