@@ -59,11 +59,14 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | Module | Notes | Circuits PDF | Built |Tested |
 | ------ | ------ |-----|-----|-----|
 | random voltage gen | ||YES|YES|
+| video out attenuators | ||YES|YES|
+| analoge pin matrix/mixer | ||YES|sort of|
 
 ##### Other Modules:
 | Module | Notes | Circuits PDF | Built |Tested |
 | ------ | ------ |-----|-----|-----|
 | YCCRCB to RGB | ||YES|YES|
+| Audio in|*filter extern and use adc for level?||YES|YES|
 
 ##### Tools and scripts:
 
