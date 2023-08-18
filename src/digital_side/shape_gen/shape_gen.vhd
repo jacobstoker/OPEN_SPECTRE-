@@ -81,7 +81,7 @@ architecture Behavioral of shape_gen is
     signal circle           : std_logic;
     
     signal shape_bus        : std_logic_vector(15 downto 0);
-    signal shape_a_sel        : std_logic_vector(2 downto 0) := "000";
+    signal shape_a_sel        : std_logic_vector(2 downto 0) := "110";
     signal shape_b_sel        : std_logic_vector(2 downto 0) := "000";
     
     --mux function
@@ -95,7 +95,7 @@ begin
 reset_ramp_x_length <= shift_right(unsigned(zoom_h), 2);  -- zoom value x 4 so that the reset ram runs faster then h zoom but has a relation to it
 reset_ramp_y_length <= shift_right(unsigned(zoom_v), 2); 
 
-x_pulse_gen : entity work.shapes_pulse_gen
+x_pulse_gen : entity work.shapes_pulse_gen_x
 port map(
         clk          => clk,
         rst           => rst,
