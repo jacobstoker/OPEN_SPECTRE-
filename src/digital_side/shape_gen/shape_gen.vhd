@@ -58,10 +58,10 @@ architecture Behavioral of shape_gen is
     signal reset_ramp_y_length           : unsigned(8 downto 0);
     signal noise_y           : std_logic_vector(8 downto 0);
     
-     signal mixed_parab        : std_logic_vector(8 downto 0);
-     signal mixed_parab_i        : std_logic_vector(18 downto 0);
-    signal mixed_parab_t2        : std_logic_vector(18 downto 0);
-    signal mixed_parab_t1        : integer;
+    signal mixed_parab        : std_logic_vector(8 downto 0);
+    signal mixed_parab_i        : std_logic_vector(18 downto 0);
+    signal mixed_parab_t2        : std_logic_vector(18 downto 0);    
+    signal mixed_parab_t1        : integer; 
     
     signal moonlignt           : std_logic;
     signal criscross_inverted           : std_logic;
@@ -133,15 +133,16 @@ process (clk)
         if (mixed_parab_t1 > 524287) then
             mixed_parab_t2 <= (others => '1');
         else     
-            mixed_parab_t2 <= std_logic_vector(to_unsigned(mixed_parab_t1, mixed_parab_t2'length));
+            if pulse_y = '1' then
+                mixed_parab_t2 <= std_logic_vector(to_unsigned(mixed_parab_t1, mixed_parab_t2'length));
+            else
+                mixed_parab_t2 <= "1111111111111111111";
+            end if;
         end if;
 
         
     end if;
     end process;
-            
---mixed_parab_t1 <= '0' & ((unsigned(parab_x) * unsigned(parab_x)) + (unsigned(parab_y) * unsigned(parab_y)));
---mixed_parab_t2 <= std_logic_vector(mixed_parab_t1);
 
 sqrt_parab : entity work.SQRT
 port map(

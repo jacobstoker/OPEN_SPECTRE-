@@ -62,6 +62,7 @@ begin
             pulse_counter <= (others => '0');
             pulse_active <= '0';
             ramp <= (others => '0');
+            parab <= (others => '1');
         elsif rising_edge(clk) then
             counter <= unsigned(counter_in);
             counter_d <= counter;
