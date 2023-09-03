@@ -281,6 +281,7 @@ begin
     flip_flop1: entity work.D_flipflop_ext
       port map (
            D =>  ff_out_a_d,
+           m_clk => clk,
            clk => ff_in_b,
            clear => clk_y,
            preset => '0',
@@ -290,6 +291,7 @@ begin
     flip_flop2: entity work.D_flipflop_ext
       port map (
            D => ff_out_b_d,
+           m_clk => clk,
            clk => ff_in_b,
            clear => clk_y,
            preset => '0',
