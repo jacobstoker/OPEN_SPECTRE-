@@ -1,11 +1,10 @@
---640X480 timing generator boilerplate code
-
+--http://tinyvga.com/vga-timing/800x600@60Hz
 library ieee;
 use ieee.std_logic_1164.all;
 
 entity vga_trimming_signals is
     port (
-        clk_25mhz    : in  std_logic;    -- 25MHz clock input
+        clk_25mhz    : in  std_logic;    -- 40mhz clock input SVGA 800x600
         h_sync       : out std_logic;    -- horizontal sync output
         v_sync       : out std_logic;    -- vertical sync output
         video_on     : out std_logic     -- video on/off output
@@ -13,15 +12,17 @@ entity vga_trimming_signals is
 end vga_trimming_signals;
 
 architecture rtl of vga_trimming_signals is
-    -- VGA timings
-    constant h_front_porch : integer := 16;
-    constant h_sync_width  : integer := 96;
-    constant h_back_porch  : integer := 48;
-    constant h_total       : integer := 800;
-    constant v_front_porch : integer := 10;
-    constant v_sync_width  : integer := 2;
-    constant v_back_porch  : integer := 33;
-    constant v_total       : integer := 525;
+
+
+    -- VGA timings 800x600 40mhz
+    constant h_front_porch : integer := 40;
+    constant h_sync_width  : integer := 128;
+    constant h_back_porch  : integer := 88;
+    constant h_total       : integer := 1056;
+    constant v_front_porch : integer := 1;
+    constant v_sync_width  : integer := 4;
+    constant v_back_porch  : integer := 23;
+    constant v_total       : integer := 628;
     
     -- Internal counters
     signal h_count : integer range 0 to h_total - 1 := 0;

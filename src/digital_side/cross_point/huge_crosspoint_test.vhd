@@ -55,7 +55,6 @@ architecture Behavioral of huge_crospoint_test is
   signal latch_en, load_en, reset  : std_logic ;
   signal mux_sel_A :  STD_LOGIC_VECTOR (383 downto 0);
   signal mux_sel_latch :  STD_LOGIC_VECTOR (383 downto 0);
-  signal mux_sel :  STD_LOGIC_VECTOR (5 downto 0);
   signal matrix_out_A :  STD_LOGIC_VECTOR (64 downto 0);
 
 
@@ -68,6 +67,7 @@ reset    <= rst and cs;
 process(clk)
     begin
        if rising_edge(clk) then
+     
         if(reset = '1') then
             mux_sel_A <= (others => '0');
             --mux_sel_latch <= (others => '0'); -- this line creates multi drive
@@ -91,7 +91,10 @@ process(clk)
     matrix_out_A(ii) <= mux_n(matrix_in, mux_sel_latch((ii*6 + 5) downto ii*6));
   end generate g_GENERATE_HUGE_MATRIX_A;
   matrix_out_A(64) <= '0'; -- somthing about the above generate has issues with the 64th mux so ill just fix it to 0 for now
-matrix_out <= matrix_out_A;
+  
+
+  matrix_out <= matrix_out_A;
+
 
 
 end Behavioral;

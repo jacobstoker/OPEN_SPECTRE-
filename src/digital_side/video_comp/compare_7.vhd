@@ -57,6 +57,7 @@ begin
 
 process (clk)   --update comparitor values
     begin
+     if rising_edge(clk) then
         span_div_6 <= std_logic_vector(to_unsigned(to_integer(unsigned(span)) / comp_num,8)) ;
         span_1 <= span - span_div_6;
         span_2 <= span - span_div_6 - span_div_6;
@@ -67,6 +68,7 @@ process (clk)   --update comparitor values
         
         xor_a <= '0' & wc_out(5) & wc_out(4) & wc_out(3) & wc_out(2) & wc_out(1) & wc_out(0);
         xor_b <= wc_out(5) & wc_out(4) & wc_out(3) & wc_out(2) & wc_out(1) & wc_out(0) & '1';
+    end if;
     end process;
 
 

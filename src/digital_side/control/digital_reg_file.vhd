@@ -95,9 +95,9 @@ begin
   -- Assemble the register read array
   ---------------------------------------------------------------------------
   -- outgoing, so inputs to this block
-  regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int;
-  regs(ra(x"08")) <= x"000000" & "00" & matrix_in_addr_int;
-  regs(ra(x"0C")) <= x"000000" & "0000000" & matrix_load_int;
+  regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int; -- this is the matrix input
+  regs(ra(x"08")) <= x"000000" & "00" & matrix_in_addr_int; --this is the matrix output
+  regs(ra(x"0C")) <= x"000000" & "0000000" & matrix_load_int; 
   regs(ra(x"10")) <= x"000000" & "0000000" & matrix_latch_int;
   regs(ra(x"14")) <= x"000000" & "0000" & matrix_cs_int;
 
