@@ -43,6 +43,16 @@ architecture Behavioral of xpoint_or is
     
 begin
     internal_bus <= input and mask;
-    output <= or_reduce(internal_bus);
+    
+    process(input,mask)
+    begin
+        if or_reduce(mask) = '0' then --pullup behavior
+            output <= '1';
+        else
+            output <= or_reduce(internal_bus);
+        end if;
+    end process;
+    
+ 
 
 end Behavioral;
