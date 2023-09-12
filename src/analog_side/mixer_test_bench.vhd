@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.ALL;
 library work;
 use work.array_pck.all;
 
@@ -51,6 +52,7 @@ begin
   process
   begin
     rst <= '1';
+     mixer_inputs <= (others => (others => '0')); -- Initialize mixer_inputs to all zeros
     wait for 100 ns;
     rst <= '0';
     
@@ -61,26 +63,33 @@ begin
     wr <= '1';
     out_addr <= 0;
     ch_addr <= 0;
-    gain_in <= "1111"; -- Example gain value
-    mixer_inputs <= (others => (others => '0')); -- Initialize mixer_inputs to all zeros
+--    gain_in <= "1111"; -- Example gain value
+   
     wait for 10 ns;
     wr <= '0';
-    mixer_inputs(0) <= "000000000001";
-    mixer_inputs(1) <= "000000000010";
-    mixer_inputs(2) <= "000000000100";
-    mixer_inputs(3) <= "000000001000";
-    mixer_inputs(4) <= "000000010000";
+--     mixer_inputs(0) <= (others => '1');
+        mixer_inputs(0) <= "000000111111";
+        mixer_inputs(2) <= "000000111111";
+--    mixer_inputs(0) <= "000000000001";
+--    mixer_inputs(1) <= "000000000010";
+--    mixer_inputs(2) <= "000000000100";
+--    mixer_inputs(3) <= "000000001000";
+--      mixer_inputs(4) <= "000000010000";
     
     
     -- Loop through out_addr and ch_addr from 0 to 9
     for i in 0 to 9 loop
          out_addr <= i;
       for j in 0 to 9 loop
-        ch_addr <= j;
-        wr <= '1'; -- Pulse wr high
-        wait for 10 ns;
-        wr <= '0'; -- Pulse wr low
-        wait for 10 ns;
+            ch_addr <= j;
+        for k in 0 to 15 loop
+            gain_in <= std_logic_vector(to_unsigned(k, gain_in'length));
+            
+            wr <= '1'; -- Pulse wr high
+            wait for 10 ns;
+            wr <= '0'; -- Pulse wr low
+            wait for 10 ns;
+          end loop;
       end loop;
     end loop;
     

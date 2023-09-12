@@ -93,6 +93,18 @@ begin
             when others => -- 'U', 'X', '-', etc.
                 mixer_gains_9i(ch_addr) <= (others => '0');
         end case;
+        
+        elsif rst = '1' then
+             mixer_gains_0i <= (others => (others => '0'));
+             mixer_gains_1i <= (others => (others => '0'));
+             mixer_gains_2i <= (others => (others => '0'));
+             mixer_gains_3i <= (others => (others => '0'));
+             mixer_gains_4i <= (others => (others => '0'));
+             mixer_gains_5i <= (others => (others => '0'));
+             mixer_gains_6i <= (others => (others => '0'));
+             mixer_gains_7i <= (others => (others => '0'));
+             mixer_gains_8i <= (others => (others => '0'));
+             mixer_gains_9i <= (others => (others => '0'));
        end if;
     
     end if;

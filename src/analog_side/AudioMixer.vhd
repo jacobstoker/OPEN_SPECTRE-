@@ -46,10 +46,10 @@ begin
            end if;   
       
                 -- Clamp the output to prevent overflows and underflows
-                if accumulator_2 > 2047 then  -- Maximum value for 12-bit signed
+                if accumulator_2 > 4094 then  -- Maximum value for 12-bit unsigned
                     clamped_output <= (others => '1');
-                elsif accumulator_2 < 1 then  -- Minimum value for 12-bit signed
-                    clamped_output <= (others => '0');
+--                elsif accumulator_2 < 1 then  -- Minimum value for 12-bit signed
+--                    clamped_output <= (others => '0');
                 else
                     clamped_output <= accumulator_2(11 downto 0);
                 end if;
