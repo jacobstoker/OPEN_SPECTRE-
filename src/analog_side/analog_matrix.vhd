@@ -7,10 +7,19 @@ use work.array_pck.all;
 
 entity analog_matrix is
     Port (
-        clk : in STD_LOGIC;
-        reset : in STD_LOGIC;
-        inputs : in array_12(9 downto 0); -- 12-bit wide inputs
-        --gains : in array_4(9 downto 0);  -- 4-bit gain control for each input
+         clk : in STD_LOGIC;
+         reset : in STD_LOGIC;
+         mixer_inputs : in array_12(9 downto 0);
+         mixer_gains_0 : in array_4(9 downto 0);
+         mixer_gains_1 : in array_4(9 downto 0);
+         mixer_gains_2 : in array_4(9 downto 0);
+         mixer_gains_3 : in array_4(9 downto 0);
+         mixer_gains_4 : in array_4(9 downto 0);
+         mixer_gains_5 : in array_4(9 downto 0);
+         mixer_gains_6 : in array_4(9 downto 0);
+         mixer_gains_7 : in array_4(9 downto 0);
+         mixer_gains_8 : in array_4(9 downto 0);
+         mixer_gains_9 : in array_4(9 downto 0);
         outputs : out array_12(9 downto 0)  -- 12-bit wide outputs
     );
 end analog_matrix;
@@ -26,17 +35,7 @@ architecture Behavioral of analog_matrix is
         );
     end component;
 
-    signal mixer_inputs : array_12(9 downto 0);
-    signal mixer_gains_0 : array_4(9 downto 0);
-    signal mixer_gains_1 : array_4(9 downto 0);
-    signal mixer_gains_2 : array_4(9 downto 0);
-    signal mixer_gains_3 : array_4(9 downto 0);
-    signal mixer_gains_4 : array_4(9 downto 0);
-    signal mixer_gains_5 : array_4(9 downto 0);
-    signal mixer_gains_6 : array_4(9 downto 0);
-    signal mixer_gains_7 : array_4(9 downto 0);
-    signal mixer_gains_8 : array_4(9 downto 0);
-    signal mixer_gains_9 : array_4(9 downto 0);
+
 
     signal mixer_outputs : STD_LOGIC_VECTOR(119 downto 0);
 
