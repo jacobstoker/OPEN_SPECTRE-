@@ -58,12 +58,14 @@ begin
         
         process(clk) -- edge width stretched 3 clks, does it need to be more?
         begin
-            ed_o2_d <= ed_o2;
-            ed_o2_d2 <= ed_o2_d;
-            ed_o2_d3 <= ed_o2_d2;
-            ed_o3_d <= ed_o3;
-            ed_o3_d2 <= ed_o3_d;
-            ed_o3_d3 <= ed_o3_d2;        
+            if rising_edge(clk) then
+                ed_o2_d <= ed_o2;
+                ed_o2_d2 <= ed_o2_d;
+                ed_o2_d3 <= ed_o2_d2;
+                ed_o3_d <= ed_o3;
+                ed_o3_d2 <= ed_o3_d;
+                ed_o3_d3 <= ed_o3_d2;    
+            end if;    
         end process;
         
         
