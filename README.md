@@ -45,8 +45,8 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | XY counters |9 bit counter  |pg5(xorgates & invertors)|YES|YES|
 | XY invert logic |  |pg5(xorgates & invertors)|YES|YES|
 | Edge Detector/Monostables | 1clk edge, make longer |pg 5|YES|YES|
-| Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||NO|NO|
-|Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
+| Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||YES|YES|
+| Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
 | Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
 | Flipflops ||pg5| YES | NO |
 | Video Timing Generator || |YES|YES|
@@ -61,12 +61,14 @@ Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, 
 | random voltage gen | ||YES|YES|
 | video out attenuators | ||YES|YES|
 | analoge pin matrix/mixer | ||YES|sort of|
+| shape gen| ||Almost done|NO|
 
 ##### Other Modules:
 | Module | Notes | Circuits PDF | Built |Tested |
 | ------ | ------ |-----|-----|-----|
 | YCCRCB to RGB | ||YES|YES|
 | Audio in|*filter extern and use adc for level?||YES|YES|
+| Register interface to digital side| ||YES|YES|
 
 ##### Tools and scripts:
 
