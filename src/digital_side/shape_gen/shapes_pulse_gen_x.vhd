@@ -7,7 +7,7 @@
 --  \____/|_|    |______|_| \_|      |_____/|_|    |______\_____|  |_|  |_|  \_\______|
 --                               ______                                                
 --                              |______|                                               
--- Module Name: shapes_pulse_gen by RD Jordan
+-- Module Name: shapes_pulse_gen_x by RD Jordan
 -- Created: Early 2023
 -- Description: 
 -- Dependencies: 
@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity shapes_pulse_gen is
+entity shapes_pulse_gen_x is
     port (
         clk          : in  std_logic;
         rst          : in  std_logic;
@@ -30,9 +30,9 @@ entity shapes_pulse_gen is
         reset_ramp   : out std_logic_vector(8 downto 0);
         noise_out    : out std_logic_vector(8 downto 0)
     );
-end entity shapes_pulse_gen;
+end entity shapes_pulse_gen_x;
 
-architecture Behavioral of shapes_pulse_gen is
+architecture Behavioral of shapes_pulse_gen_x is
     signal counter        : unsigned(8 downto 0);
     signal counter_d        : unsigned(8 downto 0);
 
@@ -61,17 +61,15 @@ begin
             counter <= (others => '0');
             pulse_counter <= (others => '0');
             pulse_active <= '0';
+            ramp_tick <= '0';
             ramp <= (others => '0');
             parab <= (others => '1');
         elsif rising_edge(clk) then
             counter <= unsigned(counter_in);
             counter_d <= counter;
             
-            if counter_d /= counter then
-                    ramp_tick <= '1';
-                    else
-                    ramp_tick <= '0';
-                    end if;
+            ramp_tick <= not ramp_tick;
+
             
             
             if pulse_active = '1' then

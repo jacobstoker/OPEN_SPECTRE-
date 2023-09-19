@@ -1,4 +1,18 @@
 
+--   ____  _____  ______ _   _         _____ _____  ______ _____ _______ _____  ______ 
+--  / __ \|  __ \|  ____| \ | |       / ____|  __ \|  ____/ ____|__   __|  __ \|  ____|
+-- | |  | | |__) | |__  |  \| |      | (___ | |__) | |__ | |       | |  | |__) | |__   
+-- | |  | |  ___/|  __| | . ` |       \___ \|  ___/|  __|| |       | |  |  _  /|  __|  
+-- | |__| | |    | |____| |\  |       ____) | |    | |___| |____   | |  | | \ \| |____ 
+--  \____/|_|    |______|_| \_|      |_____/|_|    |______\_____|  |_|  |_|  \_\______|
+--                               ______                                                
+--                              |______|                                               
+-- Module Name: shape_gen by RD Jordan
+-- Created: Early 2023
+-- Description: 
+-- Dependencies: 
+-- Additional Comments: You can view the project here: https://github.com/cfoge/OPEN_SPECTRE-
+
 ----------------------------------------------------------------------------------
 
 
@@ -44,10 +58,10 @@ architecture Behavioral of shape_gen is
     signal reset_ramp_y_length           : unsigned(8 downto 0);
     signal noise_y           : std_logic_vector(8 downto 0);
     
-     signal mixed_parab        : std_logic_vector(8 downto 0);
-     signal mixed_parab_i        : std_logic_vector(18 downto 0);
-    signal mixed_parab_t2        : std_logic_vector(18 downto 0);
-    signal mixed_parab_t1        : integer;
+    signal mixed_parab        : std_logic_vector(8 downto 0);
+    signal mixed_parab_i        : std_logic_vector(18 downto 0);
+    signal mixed_parab_t2        : std_logic_vector(18 downto 0);    
+    signal mixed_parab_t1        : integer; 
     
     signal moonlignt           : std_logic;
     signal criscross_inverted           : std_logic;
@@ -67,7 +81,7 @@ architecture Behavioral of shape_gen is
     signal circle           : std_logic;
     
     signal shape_bus        : std_logic_vector(15 downto 0);
-    signal shape_a_sel        : std_logic_vector(2 downto 0) := "000";
+    signal shape_a_sel        : std_logic_vector(2 downto 0) := "110";
     signal shape_b_sel        : std_logic_vector(2 downto 0) := "000";
     
     --mux function
@@ -81,7 +95,7 @@ begin
 reset_ramp_x_length <= shift_right(unsigned(zoom_h), 2);  -- zoom value x 4 so that the reset ram runs faster then h zoom but has a relation to it
 reset_ramp_y_length <= shift_right(unsigned(zoom_v), 2); 
 
-x_pulse_gen : entity work.shapes_pulse_gen
+x_pulse_gen : entity work.shapes_pulse_gen_x
 port map(
         clk          => clk,
         rst           => rst,
@@ -119,15 +133,16 @@ process (clk)
         if (mixed_parab_t1 > 524287) then
             mixed_parab_t2 <= (others => '1');
         else     
-            mixed_parab_t2 <= std_logic_vector(to_unsigned(mixed_parab_t1, mixed_parab_t2'length));
+            if pulse_y = '1' then
+                mixed_parab_t2 <= std_logic_vector(to_unsigned(mixed_parab_t1, mixed_parab_t2'length));
+            else
+                mixed_parab_t2 <= "1111111111111111111";
+            end if;
         end if;
 
         
     end if;
     end process;
-            
---mixed_parab_t1 <= '0' & ((unsigned(parab_x) * unsigned(parab_x)) + (unsigned(parab_y) * unsigned(parab_y)));
---mixed_parab_t2 <= std_logic_vector(mixed_parab_t1);
 
 sqrt_parab : entity work.SQRT
 port map(

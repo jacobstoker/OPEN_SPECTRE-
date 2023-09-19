@@ -1,3 +1,17 @@
+
+--   ____  _____  ______ _   _         _____ _____  ______ _____ _______ _____  ______ 
+--  / __ \|  __ \|  ____| \ | |       / ____|  __ \|  ____/ ____|__   __|  __ \|  ____|
+-- | |  | | |__) | |__  |  \| |      | (___ | |__) | |__ | |       | |  | |__) | |__   
+-- | |  | |  ___/|  __| | . ` |       \___ \|  ___/|  __|| |       | |  |  _  /|  __|  
+-- | |__| | |    | |____| |\  |       ____) | |    | |___| |____   | |  | | \ \| |____ 
+--  \____/|_|    |______|_| \_|      |_____/|_|    |______\_____|  |_|  |_|  \_\______|
+--                               ______                                                
+--                              |______|                                               
+-- Module Name: YUV_levels by RD Jordan
+-- Created: Early 2023
+-- Description: 
+-- Dependencies: 
+-- Additional Comments: You can view the project here: https://github.com/cfoge/OPEN_SPECTRE-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
@@ -8,11 +22,11 @@ entity YUV_levels is
            y_signal2 : in STD_LOGIC_VECTOR(11 downto 0);
            y_alpha   : in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
            y_result  : out STD_LOGIC_VECTOR(11 downto 0);
-           u_signal1 : in STD_LOGIC_VECTOR(11 downto 0) (others => '0');
+           u_signal1 : in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
            u_signal2 : in STD_LOGIC_VECTOR(11 downto 0);
            u_alpha   : in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
            u_result  : out STD_LOGIC_VECTOR(11 downto 0);
-           v_signal1 : in STD_LOGIC_VECTOR(11 downto 0) (others => '0');
+           v_signal1 : in STD_LOGIC_VECTOR(11 downto 0) := (others => '0');
            v_signal2 : in STD_LOGIC_VECTOR(11 downto 0);
            v_alpha   : in STD_LOGIC_VECTOR(11 downto 0) := (others => '1');
            v_result  : out STD_LOGIC_VECTOR(11 downto 0));
