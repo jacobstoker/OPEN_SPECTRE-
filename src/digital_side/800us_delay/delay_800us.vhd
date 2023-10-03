@@ -1,17 +1,17 @@
-
---   ____  _____  ______ _   _         _____ _____  ______ _____ _______ _____  ______ 
---  / __ \|  __ \|  ____| \ | |       / ____|  __ \|  ____/ ____|__   __|  __ \|  ____|
--- | |  | | |__) | |__  |  \| |      | (___ | |__) | |__ | |       | |  | |__) | |__   
--- | |  | |  ___/|  __| | . ` |       \___ \|  ___/|  __|| |       | |  |  _  /|  __|  
--- | |__| | |    | |____| |\  |       ____) | |    | |___| |____   | |  | | \ \| |____ 
---  \____/|_|    |______|_| \_|      |_____/|_|    |______\_____|  |_|  |_|  \_\______|
---                               ______                                                
---                              |______|                                               
--- Module Name: delay_800us by RD Jordan
--- Created: Early 2023
--- Description: 
--- Dependencies: 
--- Additional Comments: You can view the project here: https://github.com/cfoge/OPEN_SPECTRE-
+-------------------------------------------------------------------------------
+-- File Downloaded from http://www.nandland.com
+--
+-- Description: Creates a Synchronous FIFO made out of registers.
+--              Generic: g_WIDTH sets the width of the FIFO created.
+--              Generic: g_DEPTH sets the depth of the FIFO created.
+--
+--              Total FIFO register usage will be width * depth
+--              Note that this fifo should not be used to cross clock domains.
+--              (Read and write clocks NEED TO BE the same clock domain)
+--
+--              FIFO Full Flag will assert as soon as last word is written.
+--              FIFO Empty Flag will assert as soon as last word is read.
+--
 --              FIFO is 100% synthesizable.  It uses assert statements which do
 --              not synthesize, but will cause your simulation to crash if you
 --              are doing something you shouldn't be doing (reading from an

@@ -1,18 +1,4 @@
 
---   ____  _____  ______ _   _         _____ _____  ______ _____ _______ _____  ______ 
---  / __ \|  __ \|  ____| \ | |       / ____|  __ \|  ____/ ____|__   __|  __ \|  ____|
--- | |  | | |__) | |__  |  \| |      | (___ | |__) | |__ | |       | |  | |__) | |__   
--- | |  | |  ___/|  __| | . ` |       \___ \|  ___/|  __|| |       | |  |  _  /|  __|  
--- | |__| | |    | |____| |\  |       ____) | |    | |___| |____   | |  | | \ \| |____ 
---  \____/|_|    |______|_| \_|      |_____/|_|    |______\_____|  |_|  |_|  \_\______|
---                               ______                                                
---                              |______|                                               
--- Module Name: digital_reg_file by RD Jordan
--- Created: Early 2023
--- Description: 
--- Dependencies: 
--- Additional Comments: You can view the project here: https://github.com/cfoge/OPEN_SPECTRE-
-
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -34,10 +20,9 @@ entity digital_reg_file is
     -- outptus
     -- Pinmatrix
     matrix_out_addr               : out std_logic_vector(5 downto 0);
-    matrix_in_addr                : out std_logic_vector(5 downto 0);
+    matrix_mask_out                : out std_logic_vector(63 downto 0);
     matrix_load                   : out std_logic;
-    matrix_latch                  : out std_logic;
-    matrix_cs                     : out std_logic_vector(3 downto 0);
+
     
     -- debug
     debug                   : out std_logic_vector(127 downto 0)
@@ -67,10 +52,9 @@ architecture RTL of digital_reg_file is
   signal write_en                    : std_logic;
   
    signal matrix_out_addr_int               : std_logic_vector(5 downto 0);
-    signal matrix_in_addr_int                : std_logic_vector(5 downto 0);
    signal  matrix_load_int                   : std_logic;
-    signal matrix_latch_int                  : std_logic;
-   signal matrix_cs_int                     : std_logic_vector(3 downto 0);
+   signal mask_lower               : std_logic_vector(31 downto 0);
+   signal mask_upper               : std_logic_vector(31 downto 0);
 
 begin
 
@@ -110,10 +94,9 @@ begin
   ---------------------------------------------------------------------------
   -- outgoing, so inputs to this block
   regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int; -- this is the matrix input
-  regs(ra(x"08")) <= x"000000" & "00" & matrix_in_addr_int; --this is the matrix output
   regs(ra(x"0C")) <= x"000000" & "0000000" & matrix_load_int; 
-  regs(ra(x"10")) <= x"000000" & "0000000" & matrix_latch_int;
-  regs(ra(x"14")) <= x"000000" & "0000" & matrix_cs_int;
+  regs(ra(x"10")) <= mask_lower;
+  regs(ra(x"14")) <= mask_upper;
 
    regs(ra(x"60")) <= x"DEADBEEF"; -- x"0000000" & vid_4_crc_err_int & vid_3_crc_err_int & vid_2_crc_err_int & vid_1_crc_err_int;
 
@@ -128,14 +111,12 @@ begin
         --save reg 1 for somthing like a status reg
           when  x"04" =>
             matrix_out_addr_int         <= write_reg(5 downto 0);
-          when  x"08" =>
-            matrix_in_addr_int         <= write_reg(5 downto 0);
           when  x"0C" =>
             matrix_load_int         <= write_reg(0);
           when  x"10" =>
-            matrix_latch_int         <= write_reg(0);
+            mask_lower         <= write_reg;
           when  x"14" =>
-            matrix_cs_int         <= write_reg(3 downto 0);
+            mask_upper         <= write_reg;
 
           when others  =>
             -- do nothing
@@ -147,11 +128,9 @@ begin
   ---------------------------------------------------------------------------
   -- Output signals
   ---------------------------------------------------------------------------
-    matrix_out_addr <=  matrix_out_addr_int;             
-   matrix_in_addr <=  matrix_in_addr_int;            
+    matrix_out_addr <=  matrix_out_addr_int;                       
    matrix_load <=  matrix_load_int    ;         
-  matrix_latch <=  matrix_latch_int    ;        
-  matrix_cs <= matrix_cs_int         ;         
+  matrix_mask_out <=  mask_upper & mask_lower    ;             
 
 
 end RTL;
