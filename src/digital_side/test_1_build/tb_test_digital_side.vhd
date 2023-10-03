@@ -13,10 +13,7 @@ architecture behavior of tb_test_digital_side is
             rst: in std_logic;
             RBG_out: out std_logic_vector(23 downto 0);
             matrix_in_addr: in std_logic_vector(5 downto 0);
-            matrix_in_mux   : in STD_LOGIC_VECTOR (5 downto 0);
             matrix_load: in STD_LOGIC;
-            matrix_latch: in STD_LOGIC;
-            matrix_cs: in std_logic_vector(3 downto 0);
             clk_x_out  : out STD_LOGIC;
             clk_y_out  : out STD_LOGIC
         );
@@ -59,10 +56,7 @@ begin
             rst => rst,
             RBG_out => RBG_out,
             matrix_in_addr => matrix_in_addr,
-            matrix_in_mux => matrix_in_mux,
             matrix_load => matrix_load,
-            matrix_latch => matrix_latch,
-            matrix_cs => matrix_cs,
             clk_x_out => clk_x_out,
             clk_Y_out => clk_Y_out
         );

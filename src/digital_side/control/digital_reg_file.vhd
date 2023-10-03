@@ -93,12 +93,12 @@ begin
   -- Assemble the register read array
   ---------------------------------------------------------------------------
   -- outgoing, so inputs to this block
-  regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int; -- this is the matrix input
-  regs(ra(x"0C")) <= x"000000" & "0000000" & matrix_load_int; 
+  regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int; -- this is the matrix output
+  regs(ra(x"0C")) <= x"000000" & "0000000" & matrix_load_int; -- load flag
   regs(ra(x"10")) <= mask_lower;
   regs(ra(x"14")) <= mask_upper;
 
-   regs(ra(x"60")) <= x"DEADBEEF"; -- x"0000000" & vid_4_crc_err_int & vid_3_crc_err_int & vid_2_crc_err_int & vid_1_crc_err_int;
+   regs(ra(x"60")) <= x"DEADBEEF"; --test reg
 
   -- ---------------------------------------------------------------------------
   -- Write MUX

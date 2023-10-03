@@ -38,24 +38,23 @@ entity test_digital_side is
   Port ( 
       sys_clk      :in    STD_LOGIC;
       clk_25_in      :in    STD_LOGIC;
-      clk_x,clk_y   :in STD_LOGIC;
       rst      :in    STD_LOGIC;
       RBG_out       : out STD_LOGIC_VECTOR (23 downto 0);
       
       --temp signals to drive the mux's
     matrix_in_addr: in std_logic_vector(5 downto 0);
     matrix_load: in STD_LOGIC;
-    matrix_mask_in : in std_logic_vector(63 downto 0)
---     clk_x_out  : out STD_LOGIC;
---     clk_y_out  : out STD_LOGIC;
---     video_on   : out STD_LOGIC
+    matrix_mask_in : in std_logic_vector(63 downto 0);
+     clk_x_out  : out STD_LOGIC;
+     clk_y_out  : out STD_LOGIC;
+     video_on   : out STD_LOGIC
   );
 end test_digital_side;
 
 architecture Behavioral of test_digital_side is
 --Global Signals
---signal clk_x : STD_LOGIC;
---signal clk_y : STD_LOGIC;
+signal clk_x : STD_LOGIC;
+signal clk_y : STD_LOGIC;
 
    
 --Matrix Out to module in
@@ -184,16 +183,16 @@ begin
       clk_25    <= clk_25_in;
       luma_vid_out <= luma_out;
       chroma_vid_out <= chroma_mux_out;
---      clk_x_out <= clk_x;
---      clk_y_out <= clk_y;
+      clk_x_out <= clk_x;
+      clk_y_out <= clk_y;
 
---     vga_trimming_signals : entity work.vga_trimming_signals
---        port map (
---      clk_25mhz   => clk_25, 
---        h_sync => clk_x,      
---        v_sync  => clk_y,     
---        video_on  => video_on
---        );
+     vga_trimming_signals : entity work.vga_trimming_signals
+        port map (
+      clk_25mhz   => clk_25, 
+        h_sync => clk_x,      
+        v_sync  => clk_y,     
+        video_on  => video_on
+        );
 
     x_counter : entity work.counter
         port map (
