@@ -356,7 +356,21 @@ begin
        --shapes1 a&b
        --shapes2 a&b
        matrix_in(49 downto 43) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
-       -- 
+       matrix_in(50) <= '0'; -- gnd
+       -- matrix in extras (add now)
+       -- osc1_sqr
+       -- osc2_sqr
+       -- random1
+       -- random2
+       -- audio in T
+       -- audio in B
+       -- ext input (58)
+       
+       --matrix in extras add later
+       -- special x/y counter 1
+       -- special x/y counter 2?
+       -- celular automita
+       -- sequancer???
        
        -- MATRIX OUT
 
