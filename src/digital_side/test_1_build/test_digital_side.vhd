@@ -44,7 +44,9 @@ entity test_digital_side is
       --temp signals to drive the mux's
     matrix_in_addr: in std_logic_vector(5 downto 0);
     matrix_load: in STD_LOGIC;
-    matrix_mask_in : in std_logic_vector(63 downto 0);
+    matrix_mask_in : in std_logic_vector(63 downto 0); --controls which inputs are routed to a selected output
+    invert_matrix : in std_logic_vector(63 downto 0); --inverts a matrix input globaly
+    
      clk_x_out  : out STD_LOGIC;
      clk_y_out  : out STD_LOGIC;
      video_on   : out STD_LOGIC
@@ -126,6 +128,7 @@ signal acm_out2 : STD_LOGIC;
 -- Matrix full
  signal clk       : STD_LOGIC;
  signal matrix_in : STD_LOGIC_VECTOR (63 downto 0) := (others => '0');
+ signal matrix_in_inv : STD_LOGIC_VECTOR (63 downto 0) := (others => '0'); -- matrix input after it has passed through the inverters
  signal matrix_out_e1 :  STD_LOGIC_VECTOR (63 downto 0):= (others => '0');
  signal matrix_out :  STD_LOGIC_VECTOR (63 downto 0):= (others => '0');
 
@@ -297,11 +300,25 @@ begin
        output => comp_output,
        span => "11111111"
            );
+    
+    ----------------------------------------------------------------
+    -- Matrix input inverters       
+    matrix_input_inverters: entity work.xor_n
+       generic map (
+        n => 64
+       )
+       port map (
+        a => matrix_in,
+        b => invert_matrix,
+        y => matrix_in_inv  
+       );
+       
+           
     ---------------------------------------------------------------
     -- HUGE MULTIPLEXER 
     pin_matrix : entity work.or_matrix_full
     Port map ( 
-           input => matrix_in,
+           input => matrix_in_inv,
            mask_addr => matrix_in_addr,
            mask     => matrix_mask_in,
            clk        => clk,
@@ -320,6 +337,7 @@ begin
 --            end if;        
 --      end process;
        
+
        ----------------------------------------asignments
        -- MAtrix IN
        matrix_in(17 downto 0) <= xy_inv_out;  -- the 0 at the start is a place holder for no pins
@@ -338,7 +356,7 @@ begin
        --shapes1 a&b
        --shapes2 a&b
        matrix_in(49 downto 43) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
-       
+       -- 
        
        -- MATRIX OUT
 
