@@ -1,17 +1,3 @@
-
---   ____  _____  ______ _   _         _____ _____  ______ _____ _______ _____  ______ 
---  / __ \|  __ \|  ____| \ | |       / ____|  __ \|  ____/ ____|__   __|  __ \|  ____|
--- | |  | | |__) | |__  |  \| |      | (___ | |__) | |__ | |       | |  | |__) | |__   
--- | |  | |  ___/|  __| | . ` |       \___ \|  ___/|  __|| |       | |  |  _  /|  __|  
--- | |__| | |    | |____| |\  |       ____) | |    | |___| |____   | |  | | \ \| |____ 
---  \____/|_|    |______|_| \_|      |_____/|_|    |______\_____|  |_|  |_|  \_\______|
---                               ______                                                
---                              |______|                                               
--- Module Name: test_digital_side by RD Jordan
--- Created: Early 2023
--- Description: 
--- Dependencies: 
--- Additional Comments: You can view the project here: https://github.com/cfoge/OPEN_SPECTRE-
 ----------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
@@ -55,32 +41,11 @@ entity test_digital_side is
       clk_x,clk_y   :in STD_LOGIC;
       rst      :in    STD_LOGIC;
       RBG_out       : out STD_LOGIC_VECTOR (23 downto 0);
-    
-    -- Shape gens move to anagloge side later?
-        sgen_pos_h_0   : in  std_logic_vector(8 downto 0);
-        sgen_pos_v_0   : in  std_logic_vector(8 downto 0);
-        sgen_zoom_h_0   : in  std_logic_vector(8 downto 0);
-        sgen_zoom_v_0   : in  std_logic_vector(8 downto 0);
-        sgen_circle_i_0   : in  std_logic_vector(8 downto 0);
-        sgen_gear_i_0   : in  std_logic_vector(8 downto 0);
-        sgen_lantern_i_0   : in  std_logic_vector(8 downto 0);
-        sgen_fizz_i_0   : in  std_logic_vector(8 downto 0);
-        
-        sgen_pos_h_1   : in  std_logic_vector(8 downto 0);
-        sgen_pos_v_1   : in  std_logic_vector(8 downto 0);
-        sgen_zoom_h_1   : in  std_logic_vector(8 downto 0);
-        sgen_zoom_v_1   : in  std_logic_vector(8 downto 0);
-        sgen_circle_i_1   : in  std_logic_vector(8 downto 0);
-        sgen_gear_i_1   : in  std_logic_vector(8 downto 0);
-        sgen_lantern_i_1   : in  std_logic_vector(8 downto 0);
-        sgen_fizz_i_1   : in  std_logic_vector(8 downto 0);
       
-    -- signals to drive the mux's
+      --temp signals to drive the mux's
     matrix_in_addr: in std_logic_vector(5 downto 0);
-    matrix_in_mux   : in STD_LOGIC_VECTOR (5 downto 0);
     matrix_load: in STD_LOGIC;
-    matrix_latch: in STD_LOGIC;
-    matrix_cs: in std_logic_vector(3 downto 0)        
+    matrix_mask_in : in std_logic_vector(63 downto 0)
 --     clk_x_out  : out STD_LOGIC;
 --     clk_y_out  : out STD_LOGIC;
 --     video_on   : out STD_LOGIC
@@ -147,10 +112,6 @@ signal edge_detector_out : std_logic_vector(3 downto 0);
 signal overlay_gate_out : std_logic_vector(3 downto 0);
 signal ff_out_a : STD_LOGIC;
 signal ff_out_b : STD_LOGIC;
-signal shape_a_0 : STD_LOGIC;
-signal shape_b_0 : STD_LOGIC;
-signal shape_a_1 : STD_LOGIC;
-signal shape_b_1 : STD_LOGIC;
 
   signal comp_output : STD_LOGIC_VECTOR (6 downto 0);
 
@@ -165,9 +126,9 @@ signal acm_out2 : STD_LOGIC;
 -- Matrix control signals
 -- Matrix full
  signal clk       : STD_LOGIC;
- signal matrix_in : STD_LOGIC_VECTOR (64 downto 0) := (others => '0');
- signal matrix_out_e1 :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
- signal matrix_out :  STD_LOGIC_VECTOR (64 downto 0):= (others => '0');
+ signal matrix_in : STD_LOGIC_VECTOR (63 downto 0) := (others => '0');
+ signal matrix_out_e1 :  STD_LOGIC_VECTOR (63 downto 0):= (others => '0');
+ signal matrix_out :  STD_LOGIC_VECTOR (63 downto 0):= (others => '0');
 
 
 -- Colour Output
@@ -315,32 +276,19 @@ begin
            
     flip_flop1: entity work.D_flipflop_ext
       port map (
-           D =>  ff_out_a_d,
-           m_clk => clk,
-           clk => ff_in_b,
-           clear => clk_y,
-           preset => '0',
-           Q => open,
-           Q_not => ff_out_a
+           clk => clk_25,
+           trig => ff_in_a,
+           rst => clk_y,
+           ff_out => ff_out_a
         );   
     flip_flop2: entity work.D_flipflop_ext
       port map (
-           D => ff_out_b_d,
-           m_clk => clk,
-           clk => ff_in_b,
-           clear => clk_y,
-           preset => '0',
-           Q => open,
-           Q_not => ff_out_b
-        );     
+           clk => clk_25,
+           trig => ff_in_b,
+           rst => clk_y,
+           ff_out => ff_out_b
+        );      
        
-    ff_feedback : process(clk)
-    begin
-        if rising_edge(clk) then
-            ff_out_a_d <= ff_out_a;
-            ff_out_b_d <= ff_out_b;
-        end if;
-    end process; 
        
     
     comparitor : entity work.compare_7 
@@ -350,57 +298,18 @@ begin
        output => comp_output,
        span => "11111111"
            );
-           
-    shape_gen_0 : entity work.shape_gen -- move to analoge side later!!!! just for organisational clarity
-    port map (
-        clk      => clk    ,
-        counter_x  => x_count    ,
-        counter_y  => y_count       ,
-        rst      => rst   ,
-        pos_h  => sgen_pos_h_0 ,
-        pos_v    =>  sgen_pos_v_0,
-        zoom_h    => sgen_zoom_h_0 ,
-        zoom_v    =>  sgen_zoom_v_0,
-        circle_i   => sgen_circle_i_0 ,
-        gear_i   =>  sgen_gear_i_0 ,
-        lantern_i   =>  sgen_lantern_i_0 ,
-        fizz_i   =>  sgen_fizz_i_0 ,
-
-        shape_a    => shape_a_0 ,
-        shape_b     => shape_b_0
-    );
-    
-    shape_gen_1 : entity work.shape_gen
-    port map (
-        clk      => clk    ,
-        counter_x  => x_count    ,
-        counter_y  => y_count       ,
-        rst      => rst   ,
-        pos_h  => sgen_pos_h_1 ,
-        pos_v    =>  sgen_pos_v_1,
-        zoom_h    => sgen_zoom_h_1 ,
-        zoom_v    =>  sgen_zoom_v_1,
-        circle_i   => sgen_circle_i_1 ,
-        gear_i   =>  sgen_gear_i_1 ,
-        lantern_i   =>  sgen_lantern_i_1 ,
-        fizz_i   =>  sgen_fizz_i_1 ,
-
-        shape_a    => shape_a_1 ,
-        shape_b     => shape_b_1
-    );
     ---------------------------------------------------------------
     -- HUGE MULTIPLEXER 
-    pin_matrix : entity work.huge_crospoint_wraper
+    pin_matrix : entity work.or_matrix_full
     Port map ( 
-           matrix_in => matrix_in,
-           in_addr => matrix_in_addr,
-           in_mux => matrix_in_mux,
+           input => matrix_in,
+           mask_addr => matrix_in_addr,
+           mask     => matrix_mask_in,
            clk        => clk,
-           rst       => rst,
-           load       =>matrix_load,
-           latch      =>matrix_latch,
-           cs        => matrix_cs,
-           matrix_out  => matrix_out
+--           rst       => rst,
+           mask_en       =>matrix_load,
+--           latch      =>matrix_latch,
+           output  => matrix_out
            );
            
            
@@ -414,24 +323,22 @@ begin
        
        ----------------------------------------asignments
        -- MAtrix IN
-       matrix_in(0) <= '0';
-       matrix_in(18 downto 1) <= xy_inv_out;  -- the 0 at the start is a place holder for no pins
-       matrix_in(19) <= slow_cnt_6;
-       matrix_in(20) <= slow_cnt_3;
-       matrix_in(21) <= slow_cnt_1_5;
-       matrix_in(22) <= slow_cnt_0_6;
-       matrix_in(23) <= slow_cnt_0_4;
-       matrix_in(24) <= slow_cnt_0_2;
-       matrix_in(28 downto 25) <= overlay_gate_out;
-       matrix_in(32 downto 29) <= inv_out;
-       matrix_in(36 downto 33) <= edge_detector_out;
-       matrix_in(37) <= delay_out;
-       matrix_in(38) <= ff_out_a;
-       matrix_in(39) <= ff_out_b;
-       matrix_in(40) <= shape_a_0;
-       matrix_in(41) <= shape_b_0;
-       matrix_in(40) <= shape_a_1;
-       matrix_in(41) <= shape_b_1;
+       matrix_in(17 downto 0) <= xy_inv_out;  -- the 0 at the start is a place holder for no pins
+       matrix_in(18) <= slow_cnt_6;
+       matrix_in(19) <= slow_cnt_3;
+       matrix_in(20) <= slow_cnt_1_5;
+       matrix_in(21) <= slow_cnt_0_6;
+       matrix_in(22) <= slow_cnt_0_4;
+       matrix_in(23) <= slow_cnt_0_2;
+       matrix_in(27 downto 24) <= overlay_gate_out;
+       matrix_in(31 downto 28) <= inv_out;
+       matrix_in(35 downto 32) <= edge_detector_out;
+       matrix_in(36) <= delay_out;
+       matrix_in(37) <= ff_out_a;
+       matrix_in(38) <= ff_out_b;
+       --shapes1 a&b
+       --shapes2 a&b
+       matrix_in(49 downto 43) <= comp_output; -- migh tneed to be reveresed to match the pinout on the moriginal
        
        
        -- MATRIX OUT
@@ -455,7 +362,7 @@ begin
        acm_out1                   <= matrix_out(34);
        acm_out1                   <= matrix_out(35);
        
-       luma_in1(3 downto 0)       <= matrix_out(39 downto 336);
+       luma_in1(3 downto 0)       <= matrix_out(39 downto 36);
        chroma_mux_in1(2 downto 0) <= matrix_out(42 downto 40);
        chroma_mux_in1(5 downto 3) <= matrix_out(45 downto 43);
        luma_in2(3 downto 0)       <= matrix_out(49 downto 46);
