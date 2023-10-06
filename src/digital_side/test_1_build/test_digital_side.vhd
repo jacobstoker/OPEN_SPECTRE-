@@ -289,7 +289,7 @@ begin
     clk    => clk,
     luma_i => comp_luma_i, -- set to feedback mode at present
     output => comp_output,
-    span   => "11111111"
+    span   => vid_span
     );
 
   ----------------------------------------------------------------
