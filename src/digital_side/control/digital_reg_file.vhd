@@ -26,6 +26,11 @@ entity digital_reg_file is
     invert_matrix   : out std_logic_vector(63 downto 0); -- inverts matrix inputs before they go into the 'patch pannel'
     -- Comparitor
     vid_span : out std_logic_vector(7 downto 0);
+    --analoge side
+    out_addr : out std_logic_vector(3 downto 0);
+    ch_addr  : out std_logic_vector(3 downto 0);
+    gain_in  : out std_logic_vector(4 downto 0);
+    anna_matrix_wr  : out std_logic;
 
     -- debug
     debug : out std_logic_vector(127 downto 0)
@@ -54,13 +59,20 @@ architecture RTL of digital_reg_file is
   signal write_reg : std_logic_vector(31 downto 0);
   signal write_en  : std_logic;
 
+  --digital side
   signal matrix_out_addr_int : std_logic_vector(5 downto 0);
   signal matrix_load_int     : std_logic;
   signal mask_lower          : std_logic_vector(31 downto 0);
   signal mask_upper          : std_logic_vector(31 downto 0);
-  signal inv_lower          : std_logic_vector(31 downto 0);
-  signal inv_upper          : std_logic_vector(31 downto 0);
-  signal vid_span_int : std_logic_vector(7 downto 0);
+  signal inv_lower           : std_logic_vector(31 downto 0);
+  signal inv_upper           : std_logic_vector(31 downto 0);
+  signal vid_span_int        : std_logic_vector(7 downto 0);
+  -- analoge side
+  signal out_addr_int : std_logic_vector(3 downto 0);
+  signal ch_addr_int  : std_logic_vector(3 downto 0);
+  signal gain_in_int  : std_logic_vector(4 downto 0);
+  signal anna_matrix_wr_int : std_logic;
+
 begin
 
   ---------------------------------------------------------------------------
@@ -131,7 +143,7 @@ begin
           when x"20" =>
             inv_lower <= write_reg;
           when x"24" =>
-          vid_span_int <= write_reg(7 downto 0);
+            vid_span_int <= write_reg(7 downto 0);
 
           when others =>
             -- do nothing
@@ -147,6 +159,10 @@ begin
   matrix_load     <= matrix_load_int;
   matrix_mask_out <= mask_upper & mask_lower;
   invert_matrix   <= inv_upper & inv_lower;
-  vid_span        <= vid_span_int
+  vid_span        <= vid_span_int;
+  out_addr        <= out_addr_int;
+  ch_addr         <= ch_addr_int;
+  gain_in         <= gain_in_int;
+  anna_matrix_wr_int <= anna_matrix_wr;
 
-  end RTL;
+end RTL;
