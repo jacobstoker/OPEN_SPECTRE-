@@ -27,10 +27,10 @@ entity digital_reg_file is
     -- Comparitor
     vid_span : out std_logic_vector(7 downto 0);
     --analoge side
-    out_addr : out std_logic_vector(3 downto 0);
-    ch_addr  : out std_logic_vector(3 downto 0);
-    gain_in  : out std_logic_vector(4 downto 0);
-    anna_matrix_wr  : out std_logic;
+    out_addr       : out std_logic_vector(3 downto 0);
+    ch_addr        : out std_logic_vector(3 downto 0);
+    gain_in        : out std_logic_vector(4 downto 0);
+    anna_matrix_wr : out std_logic;
 
     -- debug
     debug : out std_logic_vector(127 downto 0)
@@ -68,9 +68,9 @@ architecture RTL of digital_reg_file is
   signal inv_upper           : std_logic_vector(31 downto 0);
   signal vid_span_int        : std_logic_vector(7 downto 0);
   -- analoge side
-  signal out_addr_int : std_logic_vector(3 downto 0);
-  signal ch_addr_int  : std_logic_vector(3 downto 0);
-  signal gain_in_int  : std_logic_vector(4 downto 0);
+  signal out_addr_int       : std_logic_vector(3 downto 0);
+  signal ch_addr_int        : std_logic_vector(3 downto 0);
+  signal gain_in_int        : std_logic_vector(4 downto 0);
   signal anna_matrix_wr_int : std_logic;
 
 begin
@@ -111,16 +111,30 @@ begin
   ---------------------------------------------------------------------------
   -- outgoing, so inputs to this block
   -- regs(ra(x"00")) <= xxxxxxxxxxxxxxxxxxxxx;  -- read only reg with the FPGA build number
+  
+  -- digital side
   regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int; -- this is the matrix output
   regs(ra(x"08")) <= x"000000" & "0000000" & matrix_load_int; -- load flag
   regs(ra(x"10")) <= mask_lower;
   regs(ra(x"14")) <= mask_upper;
   -- regs(ra(x"18")) <= xxxxxxxxxxxx; saved for future matrix expantion
-  regs(ra(x"1C")) <= inv_lower;
-  regs(ra(x"20")) <= inv_upper;
+  regs(ra(x"1C")) <= inv_lower; -- inverts the matrix inputs, lower 32
+  regs(ra(x"20")) <= inv_upper; -- inverts the matrix inputs, upper 32
   regs(ra(x"24")) <= x"000000" & vid_span_int;
 
+  -- analoge side matrix
+  regs(ra(x"28")) <= x"000000" & "0000" & out_addr_int;
+  regs(ra(x"2C")) <= x"000000" & "0000" & ch_addr_int;
+  regs(ra(x"30")) <= x"000000" & "000" & gain_in_int;
+  regs(ra(x"34")) <= x"000000" & "0000000" & anna_matrix_wr_int;
+
+-- other
   regs(ra(x"60")) <= x"DEADBEEF"; --test reg 1
+
+  signal out_addr_int       : std_logic_vector(3 downto 0);
+  signal ch_addr_int        : std_logic_vector(3 downto 0);
+  signal gain_in_int        : std_logic_vector(4 downto 0);
+  signal anna_matrix_wr_int : std_logic;
 
   -- ---------------------------------------------------------------------------
   -- Write MUX
@@ -155,14 +169,14 @@ begin
   ---------------------------------------------------------------------------
   -- Output signals
   ---------------------------------------------------------------------------
-  matrix_out_addr <= matrix_out_addr_int;
-  matrix_load     <= matrix_load_int;
-  matrix_mask_out <= mask_upper & mask_lower;
-  invert_matrix   <= inv_upper & inv_lower;
-  vid_span        <= vid_span_int;
-  out_addr        <= out_addr_int;
-  ch_addr         <= ch_addr_int;
-  gain_in         <= gain_in_int;
+  matrix_out_addr    <= matrix_out_addr_int;
+  matrix_load        <= matrix_load_int;
+  matrix_mask_out    <= mask_upper & mask_lower;
+  invert_matrix      <= inv_upper & inv_lower;
+  vid_span           <= vid_span_int;
+  out_addr           <= out_addr_int;
+  ch_addr            <= ch_addr_int;
+  gain_in            <= gain_in_int;
   anna_matrix_wr_int <= anna_matrix_wr;
 
 end RTL;
