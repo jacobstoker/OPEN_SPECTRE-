@@ -52,7 +52,7 @@ entity AudioMixer is
         clk : in STD_LOGIC;
         reset : in STD_LOGIC;
         inputs : in array_12(9 downto 0); -- 12-bit wide inputs
-        gains : in array_4(9 downto 0);  -- 4-bit gain control for each input
+        gains : in array_5(9 downto 0);  -- 5-bit gain control for each input 32 levels
         output : out STD_LOGIC_VECTOR(11 downto 0)  -- 12-bit wide output
     );
 end AudioMixer;

@@ -33,7 +33,7 @@ entity analog_side is
     wr       :in    STD_LOGIC;
     out_addr     :in     std_logic_vector(3 downto 0) ;
     ch_addr      :in     std_logic_vector(3 downto 0);
-    gain_in  :in    std_logic_vector(3 downto 0);
+    gain_in  :in    std_logic_vector(4 downto 0);
     mixer_inputs : in array_12(9 downto 0);
     outputs : out array_12(9 downto 0)  -- 12-bit wide outputs
     

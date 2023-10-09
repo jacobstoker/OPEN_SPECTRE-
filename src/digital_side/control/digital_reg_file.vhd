@@ -128,6 +128,26 @@ begin
   regs(ra(x"30")) <= x"000000" & "000" & gain_in_int;
   regs(ra(x"34")) <= x"000000" & "0000000" & anna_matrix_wr_int;
 
+  -- shape gen
+  -- pos_h   : in  std_logic_vector(8 downto 0);
+  -- pos_v   : in  std_logic_vector(8 downto 0);
+  -- zoom_h   : in  std_logic_vector(8 downto 0);
+  -- zoom_v   : in  std_logic_vector(8 downto 0);
+  -- circle_i   : in  std_logic_vector(8 downto 0);
+  -- gear_i   : in  std_logic_vector(8 downto 0);
+  -- lantern_i   : in  std_logic_vector(8 downto 0);
+  -- fizz_i   : in  std_logic_vector(8 downto 0);
+
+  -- osc 1 & 2
+
+  -- random gen
+  -- noise_freq : in std_logic_vector(9 downto 0);
+  -- slew_in : in std_logic_vector(2 downto 0);
+  --cycle recycle 1 bit
+
+  -- output y,cr,cb levels
+  -- 3x alpha channels 12 bit each
+
 -- other
   regs(ra(x"60")) <= x"DEADBEEF"; --test reg 1
 

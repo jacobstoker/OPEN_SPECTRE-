@@ -40,7 +40,7 @@ entity mixer_interface is
     clk      :in    STD_LOGIC;
     rst      :in    STD_LOGIC;
     wr       :in    STD_LOGIC;
-    out_addr     :in    integer ;
+    out_addr     :in    integer;
     ch_addr      :in    integer;
     gain_in  :in    std_logic_vector(4 downto 0); --gain is 5 bits 32 levels
     mixer_inputs : in array_12(9 downto 0);
