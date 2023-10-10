@@ -61,7 +61,7 @@ entity test_digital_side is
     shape_a_analog : out std_logic_vector(7 downto 0);
     shape_b_analog : out std_logic_vector(7 downto 0);
     acm_out1_o : out std_logic;
-    acm_out2_o : out std_logic;
+    acm_out2_o : out std_logic
   );
 end test_digital_side;
 
