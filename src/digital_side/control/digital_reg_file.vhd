@@ -196,8 +196,12 @@ begin
   -- output y,cr,cb levels
   regs(ra(x"64")) <= x"00" & cr_level_i & y_level_i;
   regs(ra(x"68")) <= x"00000" & cb_level_i;
-  -- 3x alpha channels 12 bit each
-  -- osc 1 & 2
+  -- osc 1 & 2 (put side by side in reg like shape gen)
+-- pitch
+-- deviation
+--amplitude/sync (concatinated)
+
+
 
   -- other
   regs(ra(x"90")) <= x"DEADBEEF"; --test reg 1
@@ -262,6 +266,14 @@ begin
             noise_freq_i    <= write_reg(9 downto 0);
             slew_in_i       <= write_reg(12 downto 10);
             cycle_recycle_i <= write_reg(13);
+
+            when x"64" =>
+            y_level_i <= write_reg(11 downto 0);
+            cr_level_i <= write_reg(23 downto 12);
+            when x"68" =>
+            cb_level_i <= write_reg(12 downto 0);
+
+
 
             -- do nothing
         end case;
