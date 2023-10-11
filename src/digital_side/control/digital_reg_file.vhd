@@ -32,27 +32,31 @@ entity digital_reg_file is
     gain_in        : out std_logic_vector(4 downto 0);
     anna_matrix_wr : out std_logic;
 
-    pos_h_1        : out std_logic_vector(8 downto 0);
-    pos_v_1        : out std_logic_vector(8 downto 0);
-    zoom_h_1       : out std_logic_vector(8 downto 0);
-    zoom_v_1       : out std_logic_vector(8 downto 0);
-    circle_1       : out std_logic_vector(8 downto 0);
-    gear_1         : out std_logic_vector(8 downto 0);
-    lantern_1      : out std_logic_vector(8 downto 0);
-    fizz_1         : out std_logic_vector(8 downto 0);
+    pos_h_1   : out std_logic_vector(8 downto 0);
+    pos_v_1   : out std_logic_vector(8 downto 0);
+    zoom_h_1  : out std_logic_vector(8 downto 0);
+    zoom_v_1  : out std_logic_vector(8 downto 0);
+    circle_1  : out std_logic_vector(8 downto 0);
+    gear_1    : out std_logic_vector(8 downto 0);
+    lantern_1 : out std_logic_vector(8 downto 0);
+    fizz_1    : out std_logic_vector(8 downto 0);
 
-    pos_h_2        : out std_logic_vector(8 downto 0);
-    pos_v_2        : out std_logic_vector(8 downto 0);
-    zoom_h_2       : out std_logic_vector(8 downto 0);
-    zoom_v_2       : out std_logic_vector(8 downto 0);
-    circle_2       : out std_logic_vector(8 downto 0);
-    gear_2         : out std_logic_vector(8 downto 0);
-    lantern_2      : out std_logic_vector(8 downto 0);
-    fizz_2         : out std_logic_vector(8 downto 0);
+    pos_h_2   : out std_logic_vector(8 downto 0);
+    pos_v_2   : out std_logic_vector(8 downto 0);
+    zoom_h_2  : out std_logic_vector(8 downto 0);
+    zoom_v_2  : out std_logic_vector(8 downto 0);
+    circle_2  : out std_logic_vector(8 downto 0);
+    gear_2    : out std_logic_vector(8 downto 0);
+    lantern_2 : out std_logic_vector(8 downto 0);
+    fizz_2    : out std_logic_vector(8 downto 0);
 
-    noise_freq     : out std_logic_vector(9 downto 0);
-    slew_in        : out std_logic_vector(2 downto 0);
-    cycle_recycle  : out std_logic;
+    noise_freq    : out std_logic_vector(9 downto 0);
+    slew_in       : out std_logic_vector(2 downto 0);
+    cycle_recycle : out std_logic;
+
+    y_level  : out std_logic_vector(11 downto 0);
+    cr_level : out std_logic_vector(11 downto 0);
+    cb_level : out std_logic_vector(11 downto 0);
 
     -- debug
     debug : out std_logic_vector(127 downto 0)
@@ -95,28 +99,31 @@ architecture RTL of digital_reg_file is
   signal gain_in_int        : std_logic_vector(4 downto 0);
   signal anna_matrix_wr_int : std_logic;
 
-  --analog side
-  signal pos_h_i_1    :  std_logic_vector(8 downto 0);
-  signal pos_v_i_1    :  std_logic_vector(8 downto 0);
-  signal zoom_h_i_1   :  std_logic_vector(8 downto 0);
-  signal zoom_v_i_1   :  std_logic_vector(8 downto 0);
-  signal circle_i_1   :  std_logic_vector(8 downto 0);
-  signal gear_i_1     :  std_logic_vector(8 downto 0);
-  signal lantern_i_1  :  std_logic_vector(8 downto 0);
-  signal fizz_i_1     :  std_logic_vector(8 downto 0);
-
-  signal pos_h_i_2    :  std_logic_vector(8 downto 0);
-  signal pos_v_i_2    :  std_logic_vector(8 downto 0);
-  signal zoom_h_i_2   :  std_logic_vector(8 downto 0);
-  signal zoom_v_i_2   :  std_logic_vector(8 downto 0);
-  signal circle_i_2   :  std_logic_vector(8 downto 0);
-  signal gear_i_2     :  std_logic_vector(8 downto 0);
-  signal lantern_i_2  :  std_logic_vector(8 downto 0);
-  signal fizz_i_2     :  std_logic_vector(8 downto 0);
-
-  signal  noise_freq_i        : std_logic_vector(9 downto 0);
-  signal  slew_in_i           : std_logic_vector(2 downto 0);
-  signal  cycle_recycle_i     : std_logic;
+  --Shape gen 1 & 2
+  signal pos_h_i_1   : std_logic_vector(8 downto 0);
+  signal pos_v_i_1   : std_logic_vector(8 downto 0);
+  signal zoom_h_i_1  : std_logic_vector(8 downto 0);
+  signal zoom_v_i_1  : std_logic_vector(8 downto 0);
+  signal circle_i_1  : std_logic_vector(8 downto 0);
+  signal gear_i_1    : std_logic_vector(8 downto 0);
+  signal lantern_i_1 : std_logic_vector(8 downto 0);
+  signal fizz_i_1    : std_logic_vector(8 downto 0);
+  signal pos_h_i_2   : std_logic_vector(8 downto 0);
+  signal pos_v_i_2   : std_logic_vector(8 downto 0);
+  signal zoom_h_i_2  : std_logic_vector(8 downto 0);
+  signal zoom_v_i_2  : std_logic_vector(8 downto 0);
+  signal circle_i_2  : std_logic_vector(8 downto 0);
+  signal gear_i_2    : std_logic_vector(8 downto 0);
+  signal lantern_i_2 : std_logic_vector(8 downto 0);
+  signal fizz_i_2    : std_logic_vector(8 downto 0);
+  -- noise gen
+  signal noise_freq_i    : std_logic_vector(9 downto 0);
+  signal slew_in_i       : std_logic_vector(2 downto 0);
+  signal cycle_recycle_i : std_logic;
+  -- color output levels
+  signal y_level_i  : std_logic_vector(11 downto 0);
+  signal cr_level_i : std_logic_vector(11 downto 0);
+  signal cb_level_i : std_logic_vector(11 downto 0);
 
 begin
 
@@ -156,7 +163,7 @@ begin
   ---------------------------------------------------------------------------
   -- outgoing, so inputs to this block
   -- regs(ra(x"00")) <= xxxxxxxxxxxxxxxxxxxxx;  -- read only reg with the FPGA build number
-  
+
   -- digital side
   regs(ra(x"04")) <= x"000000" & "00" & matrix_out_addr_int; -- this is the matrix output
   regs(ra(x"08")) <= x"000000" & "0000000" & matrix_load_int; -- load flag
@@ -173,43 +180,27 @@ begin
   regs(ra(x"30")) <= x"000000" & "000" & gain_in_int;
   regs(ra(x"34")) <= x"000000" & "0000000" & anna_matrix_wr_int;
 
-  -- shape gen 1
-  regs(ra(x"3C")) <= pos_h_i_1   ; 
-  regs(ra(x"40")) <= pos_v_i_1   ; 
-  regs(ra(x"44")) <= zoom_h_i_1  ; 
-  regs(ra(x"48")) <= zoom_v_i_1  ; 
-  regs(ra(x"4C")) <= circle_i_1  ; 
-  regs(ra(x"50")) <= gear_i_1    ; 
-  regs(ra(x"54")) <= lantern_i_1 ; 
-  regs(ra(x"5C")) <= fizz_i_1    ; 
- -- shape gen 2
-  regs(ra(x"60")) <= pos_h_i_2   ; 
-  regs(ra(x"64")) <= pos_v_i_2   ; 
-  regs(ra(x"68")) <= zoom_h_i_2  ; 
-  regs(ra(x"6C")) <= zoom_v_i_2  ; 
-  regs(ra(x"70")) <= circle_i_2  ; 
-  regs(ra(x"74")) <= gear_i_2    ; 
-  regs(ra(x"7C")) <= lantern_i_2 ; 
-  regs(ra(x"80")) <= fizz_i_2    ; 
-
-  -- osc 1 & 2
+  -- shape gen 1 & 2
+  regs(ra(x"3C")) <= x"0000" & pos_h_i_2 & pos_h_i_1;
+  regs(ra(x"40")) <= x"0000" & pos_v_i_2 & pos_v_i_1;
+  regs(ra(x"44")) <= x"0000" & zoom_h_i_2 & zoom_h_i_1;
+  regs(ra(x"48")) <= x"0000" & zoom_v_i_2 & zoom_v_i_1;
+  regs(ra(x"4C")) <= x"0000" & circle_i_2 & circle_i_1;
+  regs(ra(x"50")) <= x"0000" & gear_i_2 & gear_i_1;
+  regs(ra(x"54")) <= x"0000" & lantern_i_2 & lantern_i_1;
+  regs(ra(x"5C")) <= x"0000" & fizz_i_2 & fizz_i_1;
 
   -- random gen
-  -- noise_freq : in std_logic_vector(9 downto 0);
-  -- slew_in : in std_logic_vector(2 downto 0);
-  --cycle recycle 1 bit
+  regs(ra(x"60")) <= x"0000" & "00" & cycle_recycle_i & slew_in_i & noise_freq_i;
 
   -- output y,cr,cb levels
+  regs(ra(x"64")) <= x"00" & cr_level_i & y_level_i;
+  regs(ra(x"68")) <= x"00000" & cb_level_i;
   -- 3x alpha channels 12 bit each
+  -- osc 1 & 2
 
--- other
+  -- other
   regs(ra(x"90")) <= x"DEADBEEF"; --test reg 1
-
---  signal out_addr_int       : std_logic_vector(3 downto 0);
---  signal ch_addr_int        : std_logic_vector(3 downto 0);
---  signal gain_in_int        : std_logic_vector(4 downto 0);
---  signal anna_matrix_wr_int : std_logic;
-
   -- ---------------------------------------------------------------------------
   -- Write MUX
   ---------------------------------------------------------------------------
@@ -232,8 +223,46 @@ begin
             inv_lower <= write_reg;
           when x"24" =>
             vid_span_int <= write_reg(7 downto 0);
+          when x"28" =>
+            out_addr_int <= write_reg(3 downto 0);
+          when x"2C" =>
+            ch_addr_int <= write_reg(3 downto 0);
+          when x"30" =>
+            gain_in_int <= write_reg(4 downto 0);
+          when x"34" =>
+            anna_matrix_wr_int <= write_reg(0);
+          when x"38" =>
+            pos_h_i_1 <= write_reg(8 downto 0);
+            pos_h_i_2 <= write_reg(17 downto 9);
+          when x"3C" =>
+            pos_v_i_1 <= write_reg(8 downto 0);
+            pos_v_i_2 <= write_reg(17 downto 9);
+          when x"40" =>
+            pos_h_i_1 <= write_reg(8 downto 0);
+            pos_h_i_2 <= write_reg(17 downto 9);
+          when x"44" =>
+            zoom_h_i_1 <= write_reg(8 downto 0);
+            zoom_h_i_2 <= write_reg(17 downto 9);
+          when x"48" =>
+            zoom_v_i_1 <= write_reg(8 downto 0);
+            zoom_v_i_2 <= write_reg(17 downto 9);
+          when x"4C" =>
+            circle_i_1 <= write_reg(8 downto 0);
+            circle_i_2 <= write_reg(17 downto 9);
+          when x"50" =>
+            gear_i_1 <= write_reg(8 downto 0);
+            gear_i_2 <= write_reg(17 downto 9);
+          when x"54" =>
+            lantern_i_1 <= write_reg(8 downto 0);
+            lantern_i_2 <= write_reg(17 downto 9);
+          when x"58" =>
+            fizz_i_1 <= write_reg(8 downto 0);
+            fizz_i_2 <= write_reg(17 downto 9);
+          when x"60" =>
+            noise_freq_i    <= write_reg(9 downto 0);
+            slew_in_i       <= write_reg(12 downto 10);
+            cycle_recycle_i <= write_reg(13);
 
-          when others =>
             -- do nothing
         end case;
       end if;
@@ -243,37 +272,41 @@ begin
   ---------------------------------------------------------------------------
   -- Output signals
   ---------------------------------------------------------------------------
-  matrix_out_addr    <= matrix_out_addr_int;
-  matrix_load        <= matrix_load_int;
-  matrix_mask_out    <= mask_upper & mask_lower;
-  invert_matrix      <= inv_upper & inv_lower;
-  vid_span           <= vid_span_int;
-  out_addr           <= out_addr_int;
-  ch_addr            <= ch_addr_int;
-  gain_in            <= gain_in_int;
+  matrix_out_addr <= matrix_out_addr_int;
+  matrix_load     <= matrix_load_int;
+  matrix_mask_out <= mask_upper & mask_lower;
+  invert_matrix   <= inv_upper & inv_lower;
+  vid_span        <= vid_span_int;
+  out_addr        <= out_addr_int;
+  ch_addr         <= ch_addr_int;
+  gain_in         <= gain_in_int;
 
-  anna_matrix_wr     <= anna_matrix_wr_int;
+  anna_matrix_wr <= anna_matrix_wr_int;
 
-  pos_h_1    <= pos_h_i_1   ; 
-  pos_v_1    <= pos_v_i_1   ; 
-  zoom_h_1   <= zoom_h_i_1  ; 
-  zoom_v_1   <= zoom_v_i_1  ; 
-  circle_1   <= circle_i_1  ; 
-  gear_1     <= gear_i_1    ; 
-  lantern_1  <= lantern_i_1 ; 
-  fizz_1     <= fizz_i_1    ; 
+  pos_h_1   <= pos_h_i_1;
+  pos_v_1   <= pos_v_i_1;
+  zoom_h_1  <= zoom_h_i_1;
+  zoom_v_1  <= zoom_v_i_1;
+  circle_1  <= circle_i_1;
+  gear_1    <= gear_i_1;
+  lantern_1 <= lantern_i_1;
+  fizz_1    <= fizz_i_1;
 
-  pos_h_2    <= pos_h_i_2   ; 
-  pos_v_2    <= pos_v_i_2   ; 
-  zoom_h_2   <= zoom_h_i_2  ; 
-  zoom_v_2   <= zoom_v_i_2  ; 
-  circle_2   <= circle_i_2  ; 
-  gear_2     <= gear_i_2    ; 
-  lantern_2  <= lantern_i_2 ; 
-  fizz_2     <= fizz_i_2    ; 
+  pos_h_2   <= pos_h_i_2;
+  pos_v_2   <= pos_v_i_2;
+  zoom_h_2  <= zoom_h_i_2;
+  zoom_v_2  <= zoom_v_i_2;
+  circle_2  <= circle_i_2;
+  gear_2    <= gear_i_2;
+  lantern_2 <= lantern_i_2;
+  fizz_2    <= fizz_i_2;
 
-  noise_freq    <= noise_freq_i       ;   
-  slew_in       <= slew_in_i          ;   
-  cycle_recycle <= cycle_recycle_i  ;   
+  noise_freq    <= noise_freq_i;
+  slew_in       <= slew_in_i;
+  cycle_recycle <= cycle_recycle_i;
+
+  y_level  <= y_level_i;
+  cr_level <= cr_level_i;
+  cb_level <= cb_level_i;
 
 end RTL;
