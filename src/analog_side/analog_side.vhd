@@ -195,6 +195,31 @@ begin
       outputs      => outputs
     );
 
+    osc1: entity work.osc
+    port
+    map (
+    Clock      => clk,
+    rst        => rst,
+    freq    => ,
+    deviation  => ,
+    sync    => ,
+    sqr_out    => osc1_out_sq,
+    sin_out    => osc1_out_sin,
+    );
+
+    osc2: entity work.osc
+    port
+    map (
+    Clock      => clk,
+    rst        => rst,
+    freq    => ,
+    deviation  => ,
+    sync    => ,
+    sqr_out    => osc2_out_sq,
+    sin_out    => osc2_out_sin,
+    );
+
+
   random_1 : entity work.random_voltage
     port
     map (
