@@ -43,8 +43,8 @@ entity mixer_interface is
     out_addr     :in    integer;
     ch_addr      :in    integer;
     gain_in  :in    std_logic_vector(4 downto 0); --gain is 5 bits 32 levels
-    mixer_inputs : in array_12(9 downto 0);
-    outputs : out array_20(9 downto 0)  
+    mixer_inputs : in array_12(10 downto 0);
+    outputs : out array_12(19 downto 0)  
 
   );
 end mixer_interface;

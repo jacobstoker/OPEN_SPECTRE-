@@ -23,7 +23,7 @@ entity analog_matrix is
     Port (
          clk : in STD_LOGIC;
          reset : in STD_LOGIC;
-         mixer_inputs : in array_12(9 downto 0);
+         mixer_inputs : in array_12(10 downto 0);
          mixer_gains_0 : in array_5(9 downto 0);
          mixer_gains_1 : in array_5(9 downto 0);
          mixer_gains_2 : in array_5(9 downto 0);
@@ -44,7 +44,7 @@ entity analog_matrix is
          mixer_gains_17 : in array_5(9 downto 0);
          mixer_gains_18 : in array_5(9 downto 0);
          mixer_gains_19 : in array_5(9 downto 0);
-        outputs : out array_20(9 downto 0)  
+        outputs : out array_12(19 downto 0)  
     );
 end analog_matrix;
 
