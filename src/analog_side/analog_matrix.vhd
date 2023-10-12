@@ -23,18 +23,28 @@ entity analog_matrix is
     Port (
          clk : in STD_LOGIC;
          reset : in STD_LOGIC;
-         mixer_inputs : in array_12(9 downto 0);
-         mixer_gains_0 : in array_4(9 downto 0);
-         mixer_gains_1 : in array_4(9 downto 0);
-         mixer_gains_2 : in array_4(9 downto 0);
-         mixer_gains_3 : in array_4(9 downto 0);
-         mixer_gains_4 : in array_4(9 downto 0);
-         mixer_gains_5 : in array_4(9 downto 0);
-         mixer_gains_6 : in array_4(9 downto 0);
-         mixer_gains_7 : in array_4(9 downto 0);
-         mixer_gains_8 : in array_4(9 downto 0);
-         mixer_gains_9 : in array_4(9 downto 0);
-        outputs : out array_12(9 downto 0)  -- 12-bit wide outputs
+         mixer_inputs : in array_12(10 downto 0);
+         mixer_gains_0 : in array_5(9 downto 0);
+         mixer_gains_1 : in array_5(9 downto 0);
+         mixer_gains_2 : in array_5(9 downto 0);
+         mixer_gains_3 : in array_5(9 downto 0);
+         mixer_gains_4 : in array_5(9 downto 0);
+         mixer_gains_5 : in array_5(9 downto 0);
+         mixer_gains_6 : in array_5(9 downto 0);
+         mixer_gains_7 : in array_5(9 downto 0);
+         mixer_gains_8 : in array_5(9 downto 0);
+         mixer_gains_9 : in array_5(9 downto 0);
+         mixer_gains_10 : in array_5(9 downto 0);
+         mixer_gains_11 : in array_5(9 downto 0);
+         mixer_gains_12 : in array_5(9 downto 0);
+         mixer_gains_13 : in array_5(9 downto 0);
+         mixer_gains_14 : in array_5(9 downto 0);
+         mixer_gains_15 : in array_5(9 downto 0);
+         mixer_gains_16 : in array_5(9 downto 0);
+         mixer_gains_17 : in array_5(9 downto 0);
+         mixer_gains_18 : in array_5(9 downto 0);
+         mixer_gains_19 : in array_5(9 downto 0);
+        outputs : out array_12(19 downto 0)  
     );
 end analog_matrix;
 
@@ -44,14 +54,11 @@ architecture Behavioral of analog_matrix is
             clk : in STD_LOGIC;
             reset : in STD_LOGIC;
             inputs : in array_12(9 downto 0);
-            gains : in array_4(9 downto 0);
+            gains : in array_5(9 downto 0);
             output : out STD_LOGIC_VECTOR(11 downto 0)
         );
     end component;
 
-
-
-    signal mixer_outputs : STD_LOGIC_VECTOR(119 downto 0);
 
 begin
     -- Instantiate 10 instances of the AudioMixer module
@@ -134,6 +141,102 @@ begin
         gains => mixer_gains_9,
         output => outputs(9)
     );
+
+    Mixer10: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_10,
+        output => outputs(10)
+    );
+
+    Mixer11: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_11,
+        output => outputs(11)
+    );
+
+    Mixer12: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_12,
+        output => outputs(12)
+    );
+
+    Mixer13: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_13,
+        output => outputs(13)
+    );
+
+    Mixer14: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_14,
+        output => outputs(14)
+    );
+
+    Mixer15: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_15,
+        output => outputs(15)
+    );
+
+
+    Mixer15: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_15,
+        output => outputs(15)
+    );
+
+
+    Mixer16: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_16,
+        output => outputs(16)
+    );
+
+
+    Mixer17: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_17,
+        output => outputs(17)
+    );
+
+
+    Mixer18: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_18,
+        output => outputs(18)
+    );
+
+
+    Mixer19: AudioMixer port map (
+        clk => clk,
+        reset => reset,
+        inputs => mixer_inputs,
+        gains => mixer_gains_19,
+        output => outputs(19)
+    );
+
+
+
 
 
 
