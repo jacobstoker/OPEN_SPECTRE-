@@ -31,62 +31,65 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity ycrcr2rgb_simple is
+entity ycbcr2rgb_simple is
   Port ( 
-        y : in std_logic_vector(7 downto 0);
-        cr : in std_logic_vector(7 downto 0);
+        y  : in std_logic_vector(7 downto 0);
         cb : in std_logic_vector(7 downto 0);
-        r : out std_logic_vector(7 downto 0);
-        g : out std_logic_vector(7 downto 0);
-        b : out std_logic_vector(7 downto 0)
+        cr : in std_logic_vector(7 downto 0);
+        r  : out std_logic_vector(7 downto 0);
+        g  : out std_logic_vector(7 downto 0);
+        b  : out std_logic_vector(7 downto 0)
   );
-end ycrcr2rgb_simple;
+end ycbcr2rgb_simple;
 
-architecture Behavioral of ycrcr2rgb_simple is
+architecture Behavioral of ycbcr2rgb_simple is
 
-signal y_i  : integer range 0 to 255;
-signal cr_i : integer range 0 to 255;
-signal cb_i : integer range 0 to 255;
+-- Scaled Coeff = Original Coeff * 256
+constant R_COEFF  : signed(9 downto 0) := to_signed(359, 10); -- 359 = 1.402 * 256
+constant G_COEFF1 : signed(7 downto 0) := to_signed(88, 8);   -- 88  = 0.344 * 256
+constant G_COEFF2 : signed(8 downto 0) := to_signed(182,9);   -- 182 = 0.714 * 256
+constant B_COEFF  : signed(9 downto 0) := to_signed(455, 10); -- 455 = 1.722 * 256
 
-signal r_i : integer range 0 to 255;
-signal g_i : integer range 0 to 255;
-signal b_i : integer range 0 to 255;
+--                                        Range of values:
+signal y_i     : signed(8 downto 0);  --      0 to 255
+signal cr_i    : signed(7 downto 0);  --   -128 to 127
+signal cb_i    : signed(7 downto 0);  --   -128 to 127
+signal r_mult  : signed(16 downto 0); -- -45952 to 45593 
+signal g_mult1 : signed(13 downto 0); -- -11264 to 11176
+signal g_mult2 : signed(14 downto 0); -- -23296 to 23114
+signal b_mult  : signed(15 downto 0); -- -58240 to 57785
+signal r_i     : signed(9 downto 0);  --   -179 to 433
+signal g_i     : signed(9 downto 0);  --   -133 to 390
+signal b_i     : signed(9 downto 0);  --   -277 to 480
 
 begin
-y_i <= to_integer(unsigned(y));
-cr_i <= to_integer(unsigned(cr));
-cb_i <= to_integer(unsigned(cb));
 
-r_i <= ((298 * y_i) / 256)  + ((405 * cr_i) / 256) -222;
-g_i <= ((298 * y_i) / 256) - ((100 * cb_i) / 256)  - ((208* cr_i) / 256) +135;
-b_i <= ((298 * y_i) / 256)  + ((516 * cb_i) / 256) -276;
+-- Convert to signed
+y_i  <= signed('0' & y);
+cr_i <= resize(signed('0' & cr) - to_signed(128, 9), cr_i'length);
+cb_i <= resize(signed('0' & cb) - to_signed(128, 9), cb_i'length);
 
-process (r_i, g_i, b_i) is
-begin
-    if r_i < 0 then
-        r <= std_logic_vector(to_unsigned(0, r'length)); 
-    elsif  r_i > 255 then
-        r <= std_logic_vector(to_unsigned(255, r'length));
-    else
-        r <= std_logic_vector(to_unsigned(r_i, r'length));
-    end if;
-    
-    if g_i < 0 then
-        g <= std_logic_vector(to_unsigned(0, g'length)); 
-    elsif  g_i > 255 then
-        g <= std_logic_vector(to_unsigned(255, g'length));
-    else
-        g <= std_logic_vector(to_unsigned(g_i, g'length));
-    end if;
-    
-        if b_i < 0 then
-        b <= std_logic_vector(to_unsigned(0, b'length)); 
-    elsif  b_i > 255 then
-        b <= std_logic_vector(to_unsigned(255, b'length));
-    else
-        b <= std_logic_vector(to_unsigned(b_i, b'length));
-    end if;
-    
-end process;
+r_mult <= resize(cr_i * R_COEFF, r_mult'length);
+r_i    <= y_i + resize(shift_right(r_mult, 8), 10);
+
+g_mult1 <= resize(cb_i * G_COEFF1, g_mult1'length); 
+g_mult2 <= resize(cr_i * G_COEFF2, g_mult2'length); 
+g_i     <= y_i - resize(shift_right((g_mult1 + g_mult2), 8), 10);
+
+b_mult <= resize(cb_i * B_COEFF, b_mult'length);   
+b_i    <= y_i + resize(shift_right(b_mult, 8), 10); 
+
+-- Clamp in case of overflow + underflow
+r <= (others => '1') when r_i > to_signed(255, 10) else
+     (others => '0') when r_i < to_signed(0,   10) else
+     std_logic_vector(r_i(7 downto 0));
+
+g <= (others => '1') when g_i > to_signed(255, 10) else
+     (others => '0') when g_i < to_signed(0,   10) else
+     std_logic_vector(g_i(7 downto 0));
+
+b <= (others => '1') when b_i > to_signed(255, 10) else
+     (others => '0') when b_i < to_signed(0,   10) else
+     std_logic_vector(b_i(7 downto 0)); 
 
 end Behavioral;
