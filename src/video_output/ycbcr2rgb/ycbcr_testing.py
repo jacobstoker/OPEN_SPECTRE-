@@ -2,6 +2,7 @@ import numpy as np
 import random
 
 # Golden model for YCBCR to RGB
+# NOTE: this is using the ITU-R BT.709 standard
 def ycbcr_to_rgb(y, cb, cr):
     y = int(y, 16)
     cb = int(cb, 16)
@@ -60,7 +61,8 @@ def generate_infile():
 
 
 def get_error():
-
+    #TODO: Ideally this should know where the vhdl outfile lives but that will be workspace setup dependent I guess
+    #      Needs thinking about, for now you just need to copy the vhdl outfile to this directory
     model_outfile = open("ycbcr_model_outfile.txt", "r")
     vhdl_outfile  = open("ycbcr_vhdl_outfile.txt.txt", "r")
 
@@ -69,8 +71,11 @@ def get_error():
     absolute_error_b = []
 
     for line_model, line_vhdl in zip(model_outfile, vhdl_outfile):
-        r_v, g_v, b_v = [int(val) for val in line_vhdl.split(" ")]
         r_m, g_m, b_m = [int(val) for val in line_model.split(" ")]
+        # Couldn't work out how to add spaces between the hex characters in stupid vhdl lol
+        r_v = int(line_vhdl[0:2], 16)
+        g_v = int(line_vhdl[2:4], 16)
+        b_v = int(line_vhdl[4:6], 16) 
 
         absolute_error_r.append(np.abs(r_v - r_m))
         absolute_error_g.append(np.abs(g_v - g_m))
