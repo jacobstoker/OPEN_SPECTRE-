@@ -97,6 +97,8 @@ begin
         end loop;                       
         file_close(outfile);
         report "Closed ycbcr_vhdl_outfile.txt" severity NOTE;
+        wait;
     end process;
+    
 
 end Behavioral;

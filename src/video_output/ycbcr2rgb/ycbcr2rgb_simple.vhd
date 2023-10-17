@@ -55,9 +55,9 @@ signal y_i     : signed(8 downto 0);  --      0 to 255
 signal cr_i    : signed(7 downto 0);  --   -128 to 127
 signal cb_i    : signed(7 downto 0);  --   -128 to 127
 signal r_mult  : signed(16 downto 0); -- -45952 to 45593 
-signal g_mult1 : signed(13 downto 0); -- -11264 to 11176
-signal g_mult2 : signed(14 downto 0); -- -23296 to 23114
-signal b_mult  : signed(15 downto 0); -- -58240 to 57785
+signal g_mult1 : signed(14 downto 0); -- -11264 to 11176
+signal g_mult2 : signed(15 downto 0); -- -23296 to 23114
+signal b_mult  : signed(16 downto 0); -- -58240 to 57785
 signal r_i     : signed(9 downto 0);  --   -179 to 433
 signal g_i     : signed(9 downto 0);  --   -133 to 390
 signal b_i     : signed(9 downto 0);  --   -277 to 480
