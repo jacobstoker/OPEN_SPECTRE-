@@ -106,6 +106,11 @@ Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you i
 ### 🐙License🐙
 Creative Commons CC BY-NC
 
+### Contributors
+-Remi Freer
+-Jacob Stoker
+-Robert D Jordan
+
 ### Donations
 We are very thankful to have received donations from the following people:
 Chris Korvin,
