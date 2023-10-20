@@ -12,7 +12,7 @@ Open to donations and contributors with FPGA experience. 😀
 
 ### Design Info
 #### 🎉Aim 🎉
-The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
+The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA, but also to use it as a building block to make a Spectre that is both true to the original and also a modern tool for creativity.
 For more info in this process take a look at: 
 [Cloning Hardware Ethos](top%20level%20design/Cloning%20a%20process%20not%20a%20device.md)
 
@@ -20,7 +20,7 @@ For more info in this process take a look at:
 [Auto Generated Documentation](https://cfoge.github.io/OPEN_SPECTRE-/) **CURENTLY BROKEN LINK**
 
 #### 🥨Top Level Diagram🥨
-![EMS Diagram](/top%20level%20design/block_design_original.JPG)
+![EMS Diagram](/top%20level%20design/ems_diagram.drawio.png)
 
 #### 🍨List of Modules and Details Phase 1🍨(WIP)
 
@@ -28,60 +28,12 @@ For more info in this process take a look at:
 Simplified elements simulated, need to build a reg file to drive the muxes, there is too much logic for a vio32.
 Use microblaze or Zynq to drive a reg file that drives the 20 muxes for Luma 1, Luma2 chroma 1 and cheoma 2 (4bit select lines on the Mux)
 
-##### Common Modules:
-| Module | Notes | Built |Tested |
-| ------ | ------ |-----|-----|
-| inverter | n-bit wide |YES| YES|
-| xor | n-bit wide |YES| YES|
-| mux func | 32:1 mux |YES| YES|
-| debouncer | counter based |YES| NO|
-| rotary encoder | not tested on HW |YES| YES (sim)|
-
-##### Digital Side Modules:
-| Module | Notes | Circuits PDF | Built |Tested |
-| ------ | ------ |-----|-----|-----|
-| 800us delay | clk'd delay ||YES|YES|
-| Overlay Gates |  |pg5|YES|YES|
-| XY counters |9 bit counter  |pg5(xorgates & invertors)|YES|YES|
-| XY invert logic |  |pg5(xorgates & invertors)|YES|YES|
-| Edge Detector/Monostables | 1clk edge, make longer |pg 5|YES|YES|
-| Slowcounter* | counters with rates of 6,3,1.5,8,4 & 2Hz ||YES|YES|
-| Video In Comparitor|8/10bit luma only video signal to 7bit comparitor with span controll|pg 13| YES* need to check operation | NO* check test cases| 
-| Inverters |4x digital inverters (1bit)|pg5| YES (common module) | YES |
-| Flipflops ||pg5| YES | NO |
-| Video Timing Generator || |YES|YES|
-| Digital Crosspoint ||throughout |YES|YES|
-| Pinmatrix ||throughout |YES|YES|
-
-* check counter frequencies, solve slower than 1hz freqs
-
-##### Analogue Side Modules:
-| Module | Notes | Circuits PDF | Built |Tested |
-| ------ | ------ |-----|-----|-----|
-| random voltage gen | ||YES|YES|
-| video out attenuators | ||YES|YES|
-| analoge pin matrix/mixer | ||YES|sort of|
-| shape gen| ||Almost done|NO|
-
-##### Other Modules:
-| Module | Notes | Circuits PDF | Built |Tested |
-| ------ | ------ |-----|-----|-----|
-| YCCRCB to RGB | ||YES|YES|
-| Audio in|*filter extern and use adc for level?||YES|YES|
-| Register interface to digital side| ||YES|YES|
-
-##### Tools and scripts:
-
-| Module | Notes | Design Stage | Built |Tested |
-| ------ | ------ |-----|-----|-----|
-| make_coe_wave.py | makes xilinx coe for rom IP |pre synth|YES|YES|
-| write_file_ex.vhd | logs video signal to csv file |simulation|YES|YES|
-| vga_sim.py* | reads csv from above makes image |simulation|YES|YES|
-* it is way too hard to see what is happening from the signal traces alone, so this python script turns a single frame of video. [Simulated Images](https://github.com/cfoge/OPEN_SPECTRE-/tree/MVP_1/src/synth_tools/sim_images)
-![VGA simulator output](src/synth_tools/sim_images/play2.png) 
+List of Modules and their current state: (out of date) [here!](modules.md)
 
 ### Devlog:
-If you want to watch the videos I have been making along the way, you can do that [here!](Devlog.md)
+<img src="/top%20level%20design/devlog/playlist.png" width="350">
+
+If you want to watch the videos I have been making along the way, you can do that [here!](Devlog.md), or on Youtube, [here!](https://www.youtube.com/watch?v=KFnwisze7SQ&list=PLvfa5uBvhecMLK6bUgnpbkl8QMMuvigXx&pp=gAQBiAQB)
 
 ### 🍣Want to Contribute?🍣
 Amazing! If you have FPGA and or Verilog/VHDL skills we would love to have you involved. But, first, there are a few things you should know. 
