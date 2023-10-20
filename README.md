@@ -32,6 +32,7 @@ List of Modules and their current state: (out of date) [here!](modules.md)
 
 ### Devlog:
 ![Devlog on Youtube](/top%20level%20design/devlog/playlist.png) .
+<img src="/top%20level%20design/devlog/playlist.png" width="150">
 
 If you want to watch the videos I have been making along the way, you can do that [here!](Devlog.md), or on Youtube, [here!](https://www.youtube.com/watch?v=KFnwisze7SQ&list=PLvfa5uBvhecMLK6bUgnpbkl8QMMuvigXx&pp=gAQBiAQB)
 
