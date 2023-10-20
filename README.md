@@ -12,7 +12,7 @@ Open to donations and contributors with FPGA experience. 😀
 
 ### Design Info
 #### 🎉Aim 🎉
-The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA
+The aim of this project is to preserve this rare and unique video synth by recreating it in an FPGA, but also to use it as a building block to make a Spectre that is both true to the original and also a modern tool for creativity.
 For more info in this process take a look at: 
 [Cloning Hardware Ethos](top%20level%20design/Cloning%20a%20process%20not%20a%20device.md)
 
@@ -20,7 +20,7 @@ For more info in this process take a look at:
 [Auto Generated Documentation](https://cfoge.github.io/OPEN_SPECTRE-/) **CURENTLY BROKEN LINK**
 
 #### 🥨Top Level Diagram🥨
-![EMS Diagram](/top%20level%20design/block_design_original.JPG)
+![EMS Diagram](/top%20level%20design/ems_diagram.drawio.png)
 
 #### 🍨List of Modules and Details Phase 1🍨(WIP)
 
